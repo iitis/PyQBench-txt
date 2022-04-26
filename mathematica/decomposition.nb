@@ -1,0 +1,88 @@
+
+In[1]:= <<QI`
+During evaluation of In[1]:= Package QI version 0.4.39 (last modification: 13/02/2017).
+In[2]:= RX[ϕ_]:={{Cos[ϕ/2],-I Sin[ϕ/2]},{-I Sin[ϕ/2],Cos[ϕ/2]}};
+RY[ϕ_]:={{Cos[ϕ/2], Sin[ϕ/2]},{-Sin[ϕ/2],Cos[ϕ/2]}}
+RZ[ϕ_]:={{Exp[I*ϕ/2],0},{0,Exp[-I*ϕ/2]}};
+CNOT = Proj[{1,0}]⊗Id[2]+Proj[{0,1}]⊗sx;
+PH[α_]:={{Exp[α*I],0},{0,Exp[α*I]}};
+
+
+In[53]:= $Assumptions=0<α<=2π;
+$Assumptions=0<β<=2π;
+$Assumptions=0<θ<=2π;
+$Assumptions=0<δ<=2π;
+
+
+
+(*for SU(2)*)
+
+In[25]:= W = RZ[α].RY[θ].RZ[β]
+Out[25]= (E^((I α)/2+(I β)/2) Cos[θ/2]	E^((I α)/2-(I β)/2) Sin[θ/2]
+-E^(-((I α)/2)+(I β)/2) Sin[θ/2]	E^(-((I α)/2)-(I β)/2) Cos[θ/2]
+
+)
+In[29]:= A = RZ[α].RY[θ/2]
+B = RY[-θ/2].RZ[-(α+β)/2]
+CC = RZ[(β-α)/2]
+
+Out[29]= (E^((I α)/2) Cos[θ/4]	E^((I α)/2) Sin[θ/4]
+-E^(-((I α)/2)) Sin[θ/4]	E^(-((I α)/2)) Cos[θ/4]
+
+)
+Out[30]= (E^(1/4 I (-α-β)) Cos[θ/4]	-E^(-(1/4) I (-α-β)) Sin[θ/4]
+E^(1/4 I (-α-β)) Sin[θ/4]	E^(-(1/4) I (-α-β)) Cos[θ/4]
+
+)
+Out[31]= (E^(1/4 I (-α+β))	0
+0	E^(-(1/4) I (-α+β))
+
+)
+In[36]:= A.sx.B.sx.CC//Simplify
+Out[36]= (E^(1/2 I (α+β)) Cos[θ/2]	E^(1/2 I (α-β)) Sin[θ/2]
+-E^(-(1/2) I (α-β)) Sin[θ/2]	E^(-(1/2) I (α+β)) Cos[θ/2]
+
+)
+In[59]:= W//Simplify
+Out[59]= (E^((I β)/2) (Cos[α/2] Cos[θ/2]+I Sin[α/2] Sin[θ/2])	E^(-((I β)/2)) (-I Cos[θ/2] Sin[α/2]+Cos[α/2] Sin[θ/2])
+E^((I β)/2) (-I Cos[θ/2] Sin[α/2]-Cos[α/2] Sin[θ/2])	E^(-((I β)/2)) (Cos[α/2] Cos[θ/2]-I Sin[α/2] Sin[θ/2])
+
+)
+
+
+
+In[46]:= (Id[2]⊗A).CNOT.(Id[2]⊗B).CNOT.(Id[2]⊗CC)//FullSimplify
+Out[46]= (1	0	0	0
+0	1	0	0
+0	0	E^(1/2 I (α+β)) Cos[θ/2]	E^(1/2 I (α-β)) Sin[θ/2]
+0	0	-E^(-(1/2) I (α-β)) Sin[θ/2]	E^(-(1/2) I (α+β)) Cos[θ/2]
+
+)
+In[43]:= 
+W//FullSimplify
+Out[43]= (E^((I β)/2) (Cos[α/2] Cos[θ/2]+I Sin[α/2] Sin[θ/2])	E^(-((I β)/2)) (-I Cos[θ/2] Sin[α/2]+Cos[α/2] Sin[θ/2])
+E^((I β)/2) (-I Cos[θ/2] Sin[α/2]-Cos[α/2] Sin[θ/2])	E^(-((I β)/2)) (Cos[α/2] Cos[θ/2]-I Sin[α/2] Sin[θ/2])
+
+)
+
+
+
+
+(*for U(2)*)
+In[59]:= W = PH[δ].RZ[α].RY[θ].RZ[β]//Simplify
+Out[59]= (E^(1/2 I (α+β+2 δ)) Cos[θ/2]	E^(1/2 I (α-β+2 δ)) Sin[θ/2]
+-E^(-(1/2) I (α-β-2 δ)) Sin[θ/2]	E^(-(1/2) I (α+β-2 δ)) Cos[θ/2]
+
+)
+In[64]:= A = RZ[α].RY[θ/2];
+B = RY[-θ/2].RZ[-(α+β)/2];
+CC = RZ[(β-α)/2];
+EE = RZ[-δ].PH[δ/2];
+
+In[68]:= (EE⊗Id[2]).(Id[2]⊗A).CNOT.(Id[2]⊗B).CNOT.(Id[2]⊗CC)//FullSimplify
+Out[68]= (1	0	0	0
+0	1	0	0
+0	0	E^(1/2 I (α+β+2 δ)) Cos[θ/2]	E^(1/2 I (α-β+2 δ)) Sin[θ/2]
+0	0	-E^(-(1/2) I (α-β-2 δ)) Sin[θ/2]	E^(-(1/2) I (α+β-2 δ)) Cos[θ/2]
+
+)
