@@ -550,19 +550,18 @@ have
 \end{scheme}
 This scheme is only theoretical. It is not possible to implement it on Rigetti 
 architecture. For this, we will consider two approaches. The first one is 
-described 
-by using postselection whereas the second one is considered by implementation 
+described  by using postselection whereas the second one is considered by implementation 
 of controlled unitary gate. 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Construction of $V_0$ and $V_1$}
-	It turned out that for case $\phi = \frac{k \pi}{16}$, where $k=0,\ldots,31$ the controlled unitary $V_0$ and $V_1$ have the following form
+	For each $\phi \in \R$,  the controlled unitary $V_0$ and $V_1$ have the following form
 	\begin{equation}
-	V_0 = \left(\begin{array}{cc}i \sin\left( \frac{\pi(16-k)}{64} \right)&-i \cos\left( \frac{\pi(16-k)}{64} \right)\\ \cos\left( \frac{\pi(16-k)}{64} \right)& \sin\left( \frac{\pi(16-k)}{64} \right)\end{array}\right) 
+	V_0 = \left(\begin{array}{cc}i \sin\left( \frac{\pi - \phi}{4} \right)&-i \cos\left( \frac{\pi - \phi}{4} \right)\\ \cos\left( \frac{\pi - \phi}{4}\right)& \sin\left( \frac{\pi - \phi}{4} \right)\end{array}\right),
 	\end{equation}
 	
 		\begin{equation}
-	V_1 = \left(\begin{array}{cc}-i \cos\left( \frac{\pi(16-k)}{64} \right) &i \sin\left( \frac{\pi(16-k)}{64} \right)\\\sin\left( \frac{\pi(16-k)}{64} \right) &  \cos\left( \frac{\pi(16-k)}{64} \right) \end{array}\right) 
+	V_1 = \left(\begin{array}{cc}-i \cos\left(\frac{\pi - \phi}{4}\right) &i \sin\left( \frac{\pi - \phi}{4}\right)\\\sin\left( \frac{\pi - \phi}{4} \right) &  \cos\left( \frac{\pi - \phi}{4} \right) \end{array}\right).
 	\end{equation}
 	
 \newpage
@@ -581,7 +580,7 @@ of controlled unitary gate.
 \rangle. $
 \item We prepare one of two unitary channel $\Phi_{U} $ or $\Phi_{\1}$. 
 \item We implement unitary $V_0 $ or $ V_1$.
-\item We prepare the measurement $\Delta$ in standard basis (already exist on 
+\item We prepare the measurement $\Delta$ in standard basis (already exists on 
 Rigetti architecture) on each qubits.
 \item We calculate the probability of correct discrimination in the following 
 way
