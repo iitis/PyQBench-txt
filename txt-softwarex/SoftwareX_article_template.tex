@@ -78,9 +78,14 @@
 \newcommand{\NOT}{\sigma_x}
 \newcommand{\idop}[1][\XX]{\ensuremath{\1_{#1}}}
 \newcommand{\diaguni}{\ensuremath{\mathcal{DU}}}
+\newcommand{\diag}{\mathrm{diag}}
+\newcommand{\tr}{\mathrm{tr}}
 %\DeclareMathOperator{\diag}{diag}
 %\DeclareMathOperator{\diag}{diag}
 \journal{SoftwareX}
+
+\newtheorem{theorem}{Theorem}
+
 
 \begin{document}
 
@@ -362,15 +367,21 @@ $
 $ Every von Neumann measurement  $\PP_{U}$ can be also rewritten as $\Delta \circ \Phi_{(UE)^\dagger}$, where $\Delta$ denotes the completely dephasing channel.  
 
 
+
+
+
+
+
+
+\subsubsection{Diamond norm}
 Let us now consider linear mappings transforming  square matrices into square 
 matrices 
 that is \ $\Phi: M_{d_1} \to M_{d_2}$. 
  We define its completely bounded trace
-	norm, also known as a diamond norm, as
-	\begin{equation}
-	\|\Phi\|_\diamond = \max_{\|X\|_1=1} \| \left(\Phi \otimes \1\right) (X) \|_1.
-	\end{equation}
-
+norm, also known as a diamond norm, as
+\begin{equation}
+\|\Phi\|_\diamond = \max_{\|X\|_1=1} \| \left(\Phi \otimes \1\right) (X) \|_1.
+\end{equation}
 
 
 The celebrated result by Helstrom~\cite{helstrom1976quantum} gives an upper
@@ -381,8 +392,55 @@ p \leq \frac12 + \frac14 \| \Phi - \Psi \|_\diamond.
 \end{equation}
 
 
-In the general case, the diamond norm of a Hermiticity-preserving maps $\Phi$ can be computed using the Semidefinite Program~\cite{watrous2018theory} and state 
-primal and dual problem in the following form:	
+\begin{theorem}
+Let $U\in \UU_d$ and let $\PP_U$ and $\PP_\Id$ be two von Neumann 
+measurements. 
+Let also 
+$\diaguni_d$ be the set of diagonal unitary matrices of dimension $d$. Then
+\begin{equation}
+\|\PP_U - \PP_\Id\|_\diamond = \min_{E \in \diaguni_d} \|\Phi_{UE} - 
+\Phi_\Id\|_\diamond,
+\end{equation}
+where $\Phi_U$ is unitary channel.
+\end{theorem}
+
+
+\paragraph{Discrimination of unitary channels}
+
+Before we proceed to presenting our main results, we need to briefly discuss the
+problem of discrimination of unitary channels. This can be done without the
+usage of entangled input. In order to formulate the condition for perfect
+discrimination of unitary channels we introduce the notion of numerical range of
+a matrix $A \in M_d$, denoted by $W(A) =\{\bra{x}A\ket{x}: \ket{x} \in 
+\mathbb{C}^d, \;
+\;\braket{x}{x}=1\}$. The celebrated Hausdorf-T\"oplitz
+theorem states that
+$W(A)$ is a convex set and therefore $W(A) =\{\tr A \sigma : \sigma \in \Omega_d
+\}$. Let us now recall the well-known result for the
+distinguishability of unitary channels.
+	Let $U \in \UU_d$ and $\Phi_U: \rho \mapsto U \rho U^\dagger$ be a unitary 
+	channel. 
+	Then 
+	\begin{equation}
+	\| \Phi_U  - \Phi_{\1} \|_\diamond = 2 \sqrt{1-\nu^2},
+	\end{equation}
+	where $\nu = \min_{x \in W(U^\dagger)} |x|  $. 
+
+%\begin{proposition}
+ Let $U = H_2 \diag(1, e^{i \phi}) H_2^\dagger$, $\phi \in [0, 2\pi)$ and	let 
+ $\Phi_U$ and $\Phi_\Id$ be two unitary channels. The following equation holds 
+	\begin{equation}
+	\min_{E \in \diaguni_2} \|\Phi_{UE} - 
+	\Phi_\Id\|_\diamond = \|\Phi_{U} - 
+	\Phi_\Id\|_\diamond
+	\end{equation}
+%\end{proposition}
+
+
+%In the general case, the diamond norm of a Hermiticity-preserving maps $\Phi$ 
+%can be computed using the Semidefinite Program~\cite{watrous2018theory} and 
+%state 
+%primal and dual problem in the following form:	
 
 %
 %\begin{minipage}{0.495\linewidth}
@@ -443,18 +501,51 @@ A postselection method provides us with a clever going around the obstacle. The 
 
 
 \section{Illustrative Examples}
-\subsection{One-qubit measurements}
-Let us consider one-qubit von Neumann measurements $\PP_U$ and $\PP_\Id$. In this simplest case,  we consider two von Neumann measurements $\PP_\1$ and $\PP_U$ for $U = H_2 diag(0,\ee^{\ii \phi}) H_2$, where $H_d$--Hadamard matrix of dimension $d$, $0 \le \phi < 2\pi$.    By theoretical results, the expected probability $p_{success}$ of correct distinction between two measurements $\PP_\1$ and $\PP_U$  is given by
+
+Let us focus on single-qubit von Neumann measurements $\PP_\1$ and $\PP_U$.
+Assume that the unitary matrix $U$ is of the form 
 \begin{equation}
-p_{success} = \frac{1}{2} + \frac{1}{4} ||\PP_U - \PP_\1 ||_\diamond = \frac{1}{2} + \frac{|1-\ee^{\ii \phi}|}{4}
+U = H \diag (1, \ee^{\ii \phi}) H^\dagger,
 \end{equation}
-by the assumption the discriminator is on the form $\ket{\psi} = \frac{1}{\sqrt{2}} ( \ket{00} +  \ket{11} )$. 
-(tu wyniki z rigettiego...)
+where $H$ is the Hadamard matrix of dimension two and $\phi \in [0, 2 \pi)$.
+In this section we will compare theoretical probability of correct 
+discrimination between these measurements and the realization on real devices.
+The theoretical probability can be calculated using Holevo-Helstrom theorem. 
+This probability will be calculated in 
+subsection~\ref{sec:example_theoretical_probability}. Later, we will 
+discuss the realization of this scheme on real devices in 
+subsection~\ref{sec:example_realization}. For such realization, we 
+will need the proper input state, (see sec.~\ref{sec:example_discriminator}) 
+and final measurement (see sec.~\ref{sec_example_final_measurement}). 
+
+\subsection{Theoretical bound}\label{sec:example_theoretical_probability}
+
+
+\subsection{Realization}\label{sec:example_realization}
+
+\subsubsection{Discriminator}\label{sec:example_discriminator}
+
+\subsubsection{Final measurement}\label{sec_example_final_measurement}
+
+
+%Let us consider one-qubit von Neumann measurements $\PP_U$ and $\PP_\Id$. In 
+%this simplest case,  we consider two von Neumann measurements $\PP_\1$ and 
+%$\PP_U$ for $U = H_2 diag(0,\ee^{\ii \phi}) H_2$, where $H_d$--Hadamard matrix 
+%of dimension $d$, $0 \le \phi < 2\pi$.    By theoretical results, the expected 
+%probability $p_{success}$ of correct distinction between two measurements 
+%$\PP_\1$ and $\PP_U$  is given by
+%\begin{equation}
+%p_{success} = \frac{1}{2} + \frac{1}{4} ||\PP_U - \PP_\1 ||_\diamond = 
+%\frac{1}{2} + \frac{|1-\ee^{\ii \phi}|}{4}
+%\end{equation}
+%by the assumption the discriminator is on the form $\ket{\psi} = 
+%\frac{1}{\sqrt{2}} ( \ket{00} +  \ket{11} )$. 
+%(tu wyniki z rigettiego...)
 
 
 
 
-\subsection{Two-qubit measurements}
+
 
 \section{Impact }
 
