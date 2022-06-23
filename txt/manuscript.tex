@@ -90,6 +90,7 @@
 \newtheorem{proposition}{Proposition}
 \newtheorem{remark}{Remark}
 \newtheorem{scheme}{Scheme}
+\newtheorem{lemma}{Lemma}
 
 \begin{document}
 
@@ -410,13 +411,16 @@ $M_d$.  The subset of $M_d$ consisting of Hermitian matrices of dimension $d$
 will  be  denoted  by $\HH_d$,  while  the  set  of  positive semidefinite 
 matrices of dimension $d$ by $\HH_d^+$. The set of quantum states, that is 
 positive semidefinite operators having
-trace equal to one, will be denoted $\DD_d$.  The subset of $M_d$ consisting of 
+trace equal to one, will be denoted $\Omega_d$.  The subset of $M_d$ consisting of 
 unitary matrices will be denoted by
 $\UU_d$, while its subgroup of diagonal unitary operators will be denoted by
-$\DD \UU_d$.  An unitary transformation 
-\todo[inline]{channel} CPTP 
-
-$\Phi_{U}$ is defined as $\Phi_U(\cdot) := U \cdot U^\dagger$ for  $U \in 
+$\DD \UU_d$.  We will also need a linear
+mapping transforming $M_{d_1}$ into $M_{d_2}$, which will be denoted \begin{equation}
+\Phi: M_{d_1 } \rightarrow M_{d_2}.
+\end{equation} Finally, we introduce a special subset of all mappings $\Phi$, called quantum channels, which are completely positive
+and trace preserving (CPTP).
+Mostly, we will use the unitary channels
+$\Phi_{U}$ which are defined as $\Phi_U(\cdot) = U \cdot U^\dagger$ for  $U \in 
 \UU_d$. A general quantum
 measurement, that is a positive operator valued measure (POVM) $\PP$ is a
 collection of positive semidefinite operators $\{E_1, \ldots, E_m \}$ called
@@ -424,12 +428,12 @@ collection of positive semidefinite operators $\{E_1, \ldots, E_m \}$ called
 all the effects are rank-one projection operators, then such a measurement is
 called von Neumann measurement. Every von Neumann measurement can be
 parameterized by a unitary matrix and hence we will use the notation $\PP_{U}$
-for a von Neumann measurement with effects $\{\proj{u_1}, \ldots, \proj{u_d}\}$,
-where $\ket{u_i}$ is the $i$-th column of the unitary matrix $U$. The action of
-quantum measurement $\PP_{U}$ on some state $\rho \in \mathcal{D}_d$ can be
+for a von Neumann measurement with effects $\{\proj{u_0}, \ldots, \proj{u_{d-1}}\}$,
+where $\ket{u_i}$ is the $i+1$-th column of the unitary matrix $U$. The action of
+quantum measurement $\PP_{U}$ on some state $\rho \in \Omega_d$ can be
 expressed as the action of a quantum channel
 $
-\PP_{U} : \rho \rightarrow \sum_{i=1}^d \bra{u_i} \rho \ket{u_i} \proj{i}.
+\PP_{U} : \rho \rightarrow \sum_{i=0}^{d-1} \bra{u_i} \rho \ket{u_i} \proj{i}.
 $ Every von Neumann measurement  $\PP_{U}$ can be also rewritten as $\Delta 
 \circ \Phi_{(UE)^\dagger}$, where $\Delta$ denotes the completely dephasing 
 channel.  
@@ -452,32 +456,28 @@ norm, also known as a diamond norm, as
 \end{equation}
 
 
-The celebrated result by Helstrom~\cite{helstrom1976quantum} gives an upper
-bound on the probability of correct distinction between two quantum channels
-$\Phi$ and $\Psi$ in terms of their distance with the use of the diamond norm
+The celebrated result by Helstrom~\cite{helstrom1976quantum} gives the optimal  probability of correct discrimination between two quantum operations, $\TT$  and $\SS$, 
+in terms of their distance with the use of the diamond norm
 \begin{equation}
-p \leq \frac12 + \frac14 \| \Phi - \Psi \|_\diamond.
+p =  \frac12 + \frac14 \| \TT - \SS \|_\diamond.
 \end{equation}
 
-
-\begin{theorem}
-Let $U\in \UU_d$ and let $\PP_U$ and $\PP_\Id$ be two von Neumann 
-measurements. 
-Let also 
-$\diaguni_d$ be the set of diagonal unitary matrices of dimension $d$. Then
+In case then 
+we consider the discrimination setup between two von Neumann 
+measurements $\PP_U$ and $\PP_\Id$, $U\in \UU_d$ we obtain that (from Theorem 1 \cite{puchala2018strategies})
 \begin{equation}
 \|\PP_U - \PP_\Id\|_\diamond = \min_{E \in \diaguni_d} \|\Phi_{UE} - 
 \Phi_\Id\|_\diamond,
 \end{equation}
-where $\Phi_U$ is unitary channel.
-\end{theorem}
+where $\Phi_U$ is unitary channel and 
+$\diaguni_d$ be the set of diagonal unitary matrices of dimension $d$
+
 
 
 \paragraph{Discrimination of unitary channels}
 
 Before we proceed to presenting our main results, we need to briefly discuss the
-problem of discrimination of unitary channels. This can be done without the
-usage of entangled input. In order to formulate the condition for perfect
+problem of discrimination of unitary channels.  In order to formulate the condition for perfect
 discrimination of unitary channels we introduce the notion of numerical range of
 a matrix $A \in M_d$, denoted by $W(A) =\{\bra{x}A\ket{x}: \ket{x} \in 
 \mathbb{C}^d, \;
@@ -495,7 +495,7 @@ distinguishability of unitary channels.
 	where $\nu = \min_{x \in W(U^\dagger)} |x|  $. 
 
 %\begin{proposition}
- Let $U = H_2 \diag(1, e^{i \phi}) H_2^\dagger$, $\phi \in [0, 2\pi)$ and	let 
+ Let $U = H \diag(1, e^{i \phi}) H^\dagger$, $\phi \in [0, 2\pi)$ and	let 
  $\Phi_U$ and $\Phi_\Id$ be two unitary channels. The following equation holds 
 	\begin{equation}
 	\min_{E \in \diaguni_2} \|\Phi_{UE} - 
@@ -591,7 +591,7 @@ where $H$ is the Hadamard matrix of dimension two and $\phi \in [0, 2 \pi)$.
 In this section we will compare theoretical probability of correct 
 discrimination between these measurements and the realization on real devices.
 The theoretical probability can be calculated using Holevo-Helstrom theorem and 
-Theorem [] from~\cite{puchala2018strategies}. 
+Theorem 1 from~\cite{puchala2018strategies}. 
 This probability will be calculated in 
 subsection~\ref{sec:example_theoretical_probability}. Later, we will 
 discuss the realization of this scheme on real devices in 
@@ -609,25 +609,45 @@ where $\phi \in [0, 2\pi)$ is given by
 p = \frac{1}{2} + \frac{|1 - e^{i \phi}  |}{4} . 
 \end{equation}
 \end{theorem}
-
+\begin{proof}
+	From Holevo-Helstrom theorem we obtain
+	\begin{equation}
+	p = \frac{1}{2} + \frac{1}{4} \| \PP_{U} - \PP_{\Id} \|_\diamond,
+	\end{equation}
+	therefore from Theorem 1 in \cite{puchala2018strategies} we have 
+	\begin{equation}
+	\|\PP_U - \PP_\Id\|_\diamond = \min_{E \in \diaguni_d} \|\Phi_{UE} - 
+	\Phi_\Id\|_\diamond. 
+	\end{equation}
+	From Lemma~\ref{lemma:min-e-optimal} we show that 
+	\begin{equation}
+		\min_{E \in \diaguni_2} \|\Phi_{UE} - 
+	\Phi_\Id\|_\diamond = \|\Phi_{U} - 
+	\Phi_\Id\|_\diamond
+	\end{equation} and hence, from the problem of discrimination of unitary channels, we receive 
+	\begin{equation}
+	p = \frac{1}{2} + \frac{1}{2} \sqrt{1 - \nu^2} = \frac{1}{2} + \frac{|1-e^{i \phi}|}{4},
+	\end{equation} which completes the proof.
+\end{proof}
 
 \todo[inline]{change proof of proposition into proof of theorem}
-\begin{proposition}
+\begin{lemma}\label{lemma:min-e-optimal}
  Let $U = H \diag(1, e^{i \phi}) H^\dagger$, $\phi \in [0, 2\pi)$ and	let 
  $\Phi_U$ and $\Phi_\Id$ be two unitary channels. The following equation holds 
 	\begin{equation}
 	\min_{E \in \diaguni_2} \|\Phi_{UE} - 
 	\Phi_\Id\|_\diamond = \|\Phi_{U} - 
-	\Phi_\Id\|_\diamond
+	\Phi_\Id\|_\diamond,
 	\end{equation}
-\end{proposition}
+
+\end{lemma}
 \begin{proof} We know that
 $
 	\| \Phi_U  - \Phi_{\1} \|_\diamond = 2 \sqrt{1-\nu^2},
 $
-	where $\nu = \min_{x \in W(U^\dagger)} |x|  $. For $U = H_2 
-	\left(\begin{array}{cc}1&0\\0&e^{i \phi}\end{array}\right)  H_2^\dagger$ we 
-	obtain that $\nu = \frac{|1 + e^{i \phi} | }{2}$. 
+	where $\nu = \min_{x \in W(U^\dagger)} |x|  $. For $U = H 
+	\left(\begin{array}{cc}1&0\\0&e^{i \phi}\end{array}\right)  H^\dagger$ the readers briefly observe that $W(U^\dagger) $ 
+	obtain that $\nu^2 = 1 - \frac{|1 - e^{i \phi} | }{2}$. 
 	The condition $ 	\min_{E \in \diaguni_2} \|\Phi_{UE} - 
 	\Phi_\Id\|_\diamond = \|\Phi_{U} - 
 	\Phi_\Id\|_\diamond $ is equivalent to prove that
@@ -654,17 +674,16 @@ For that, our task is reduce to show that
 	\begin{equation}
 	U= \lambda_1 \ketbra{x_1}{x_1} + \lambda_2 \ketbra{x_1}{x_2}, 
 	\end{equation}
-	where  for eigenvector $\lambda_1 = e^{\mathbf{i} \phi}$ the eigenvector is 
+	where  for eigenvector $\lambda_1 = e^{i \phi}$ the eigenvector is 
 	of the form $\ket{x_1} = 
 	\left[\begin{array}{c}\frac{1}{\sqrt{2}}\\-\frac{1}{\sqrt{2}}\end{array}\right]$,
 	 whereas for  $\lambda_2 = 1$ we have $\ket{x_2} = 
 	\left[\begin{array}{c}\frac{1}{\sqrt{2}}\\\frac{1}{\sqrt{2}}\end{array}\right]$.
-	
-	Then we have 
+	Then, we have 
 \begin{equation}
 \begin{split}
 & \forall E \in \diaguni_2 \,\,\, | \tr \rho U E | = \frac{1}{2}  \left| \tr 
-H_2 \diag(1, e^{i\phi}) H_2^\dagger E \right| =  \\ &
+H \diag(1, e^{i\phi}) H^\dagger E \right| =  \\ &
 \frac{1}{2} \left| \tr\left((  e^{i \phi} \proj{x_1} + 1 \proj{x_2} ) E \right) 
 \right|  = 
 \frac{1}{2} \left| e^{i \phi}  \bra{x_1} E \ket{x_1} + \bra{x_2} E \ket{x_2} 
@@ -702,7 +721,7 @@ and $\PP_\1$, where $U = H\diag(1, e^{i \phi}) H^\dagger $ and $\phi \in [0,
 
 \begin{theorem}\label{rozrpomiarow}
 Let us $\mathcal{P}_U, \mathcal{P}_\1$ be two von Neumann measurements,  $U = 
-H_2 \diag(1, e^{i \phi}) H_2^\dagger$, $\phi \in [0, 2\pi)$ such that $0 
+H \diag(1, e^{i \phi}) H^\dagger$, $\phi \in [0, 2\pi)$ such that $0 
 \not\in W(U)$.  If there exists the discriminator $\rho \in \Omega_2$ of the 
 form $\rho = \frac{1}{2}\rho_1 + \frac{1}{2} \rho_2$ such that
 	\begin{enumerate}
@@ -748,7 +767,7 @@ Recall, let us note $U$ as
 \begin{equation}
 U= \lambda_1 \ketbra{x_1}{x_1} + \lambda_2 \ketbra{x_1}{x_2}, 
 \end{equation}
-where  for eigenvector $\lambda_1 = e^{\mathbf{i} \phi}$ the eigenvector is of 
+where  for eigenvector $\lambda_1 = e^{i \phi}$ the eigenvector is of 
 the form $\ket{x_1} = 
 \left[\begin{array}{c}\frac{1}{\sqrt{2}}\\-\frac{1}{\sqrt{2}}\end{array}\right]$,
  whereas for  $\lambda_2 = 1$ we have $\ket{x_2} = 
@@ -782,7 +801,7 @@ Hence, for $U $ we have
 	where $\rho_{1,1},\rho_{2,2} \ge 0$ and  $\rho_{1,1}+\rho_{2,2}=1$.
 
 	$2^\circ$ Consider  $\phi \not = \pi$. 
-The spectrum of $U$ is of the form $\sigma(U) = \{e^{\mathbf{i} \phi},1\}$. 
+The spectrum of $U$ is of the form $\sigma(U) = \{e^{i \phi},1\}$. 
 Hence $0 \not\in W\left(U\right)$.  Let us note $U$ as 
 	\begin{equation}
 	U= \lambda_1 \ketbra{x_1}{x_1} + \lambda_2 \ketbra{x_1}{x_2}.
@@ -881,7 +900,7 @@ which completes the proof.
 		(\1\otimes 
 		\sqrt{\rho_0})\right\|_1
 	\end{equation}
-	for  $U = H_2\diag(1, e^{i \phi}) H_2^\dagger $, 
+	for  $U = H\diag(1, e^{i \phi}) H^\dagger $, 
 		where $\phi \in [0, 2\pi)$. 
 \end{remark}
 
@@ -1051,7 +1070,7 @@ cases}}
 
 %Let us consider one-qubit von Neumann measurements $\PP_U$ and $\PP_\Id$. In 
 %this simplest case,  we consider two von Neumann measurements $\PP_\1$ and 
-%$\PP_U$ for $U = H_2 diag(0,\ee^{\ii \phi}) H_2$, where $H_d$--Hadamard matrix 
+%$\PP_U$ for $U = H diag(0,\ee^{\ii \phi}) H$, where $H_d$--Hadamard matrix 
 %of dimension $d$, $0 \le \phi < 2\pi$.    By theoretical results, the expected 
 %probability $p_{success}$ of correct distinction between two measurements 
 %$\PP_\1$ and $\PP_U$  is given by
