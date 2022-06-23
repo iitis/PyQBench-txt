@@ -514,7 +514,8 @@ U = H \diag (1, \ee^{\ii \phi}) H^\dagger,
 where $H$ is the Hadamard matrix of dimension two and $\phi \in [0, 2 \pi)$.
 In this section we will compare theoretical probability of correct 
 discrimination between these measurements and the realization on real devices.
-The theoretical probability can be calculated using Holevo-Helstrom theorem. 
+The theoretical probability can be calculated using Holevo-Helstrom theorem and 
+Theorem [] from~\cite{puchala2018strategies}. 
 This probability will be calculated in 
 subsection~\ref{sec:example_theoretical_probability}. Later, we will 
 discuss the realization of this scheme on real devices in 
@@ -524,6 +525,17 @@ and final measurement (see sec.~\ref{sec_example_final_measurement}).
 
 \subsection{Theoretical bound}\label{sec:example_theoretical_probability}
 
+\begin{theorem}
+The optimal probability of correct discrimination between von Neumann
+measurements $\PP_U$ and $\PP_{\Id}$ for $U = H \diag(1, e^{i \phi}) H^\dagger$,
+where $\phi \in [0, 2\pi)$ is given by
+\begin{equation}
+p = \frac{1}{2} + \frac{|1 - e^{i \phi}  |}{4} . 
+\end{equation}
+\end{theorem}
+
+
+\todo[inline]{change proof of proposition into proof of theorem}
 \begin{proposition}
  Let $U = H \diag(1, e^{i \phi}) H^\dagger$, $\phi \in [0, 2\pi)$ and	let 
  $\Phi_U$ and $\Phi_\Id$ be two unitary channels. The following equation holds 
@@ -576,19 +588,26 @@ For that, our task is reduce to show that
 \end{proof}
 
 
-\begin{remark}
-	The probability of correct discrimination of von Neumann measurements 
-	$\PP_U$ and $\PP_{\Id}$ for $U = H_2 \diag(1, e^{i \phi}) H_2^\dagger$, 
-	where $\phi \in [0, 2\pi)$ is given by
-	\begin{equation}
-	p \le \frac{1}{2} + \frac{|1 - e^{i \phi}  |}{4} . 
-	\end{equation}
-\end{remark}
-
-
 \subsection{Realization}\label{sec:example_realization}
+Now we focus on the realization of the discrimination protocol. We will 
+discriminate between $\PP_U$ and $\PP_\1$. To do so, we need to know exact 
+forms of the input state and final measurement. We will indicate the optimal 
+input state in subsection~\ref{sec:example_discriminator} and the final 
+measurement in subsection~\ref{sec_example_final_measurement}.
+
 
 \subsubsection{Discriminator}\label{sec:example_discriminator}
+
+\begin{proposition}
+Consider the problem of discrimination between von Neumann measurements $\PP_U$ 
+and $\PP_\1$, where $U = H\diag(1, e^{i \phi}) H^\dagger $ and $\phi \in [0, 
+2\pi)$.  The optimal input state has the form
+\begin{equation}
+\ket{\psi_{AB}} = \frac{1}{\sqrt{2}} |\Id_2 \rangle \rangle.
+\end{equation}
+\end{proposition}
+
+\todo[inline]{add formal proof of the proposition}
 
 \begin{theorem}\label{rozrpomiarow}
 Let us $\mathcal{P}_U, \mathcal{P}_\1$ be two von Neumann measurements,  $U = H_2 \diag(1, e^{i \phi}) H_2^\dagger$, $\phi \in [0, 2\pi)$ such that $0 \not\in W(U)$.  If there exists the discriminator $\rho \in \Omega_2$ of the form $\rho = \frac{1}{2}\rho_1 + \frac{1}{2} \rho_2$ such that
@@ -718,63 +737,89 @@ which completes the proof.
 
 
 \subsubsection{Final measurement}\label{sec_example_final_measurement}
-\begin{scheme}
-Let us consider the problem of discrimination of von Neumann measurements 
-$\PP_U$
-and $\PP_{\Id}$ for $U = H_2 \diag(1, e^{i \phi}) H_2^\dagger$, 
-	where $\phi \in [0, 2\pi)$. The schematic representation of theoretical 
-	setup is shown in Fig.~\ref{fig:theoretical}. 
+In this subsection we will derive exact form of the final measurement in the
+problem of discrimination of von Neumann measurements $\PP_U$ and $\PP_{\Id}$
+for $U = H \diag(1, e^{i \phi}) H^\dagger$, where $\phi \in [0, 2\pi)$.
+
+
+\begin{proposition}
+The  final measurement has the form
+\begin{equation}
+\begin{split}
+\mu(0) = \proj{0} \otimes V_0 \proj{0} V_0^\dagger +  \proj{1} \otimes V_1 
+\proj{0} V_1^\dagger  \\ 
+\mu(1) = \proj{0} \otimes V_0 \proj{1} V_0^\dagger +  \proj{1} \otimes V_1 
+\proj{1} V_1^\dagger,
+\end{split}
+\end{equation}
+where for each $\phi \in \mathbb{R}$,  the controlled unitaries $V_0$ and $V_1$ 
+have the form
+\begin{equation}
+V_0 = \left(\begin{array}{cc}i \sin\left( \frac{\pi - \phi}{4} \right)&-i 
+\cos\left( \frac{\pi - \phi}{4} \right)\\ \cos\left( \frac{\pi - 
+\phi}{4}\right)& \sin\left( \frac{\pi - \phi}{4} \right)\end{array}\right),
+\end{equation}
+\begin{equation}
+V_1 = \left(\begin{array}{cc}-i \cos\left(\frac{\pi - \phi}{4}\right) &i 
+\sin\left( \frac{\pi - \phi}{4}\right)\\\sin\left( \frac{\pi - \phi}{4} \right) 
+&  \cos\left( \frac{\pi - \phi}{4} \right) \end{array}\right).
+\end{equation}
+\end{proposition}
+\todo[inline]{add proof of the proposition}
+
+%The schematic representation of theoretical 
+%setup is shown in Fig.~\ref{fig:theoretical}. 
 
 From ~\cite{puchala2018strategies}(Proposition 4) and Lemma~\ref{lemma:rho} we 
 have 
-	\begin{equation}
-	\ket{\psi} = | \sqrt{\rho}^\top \rangle \rangle = \frac{1}{\sqrt{2}} |\Id_2 
-	\rangle \rangle. 
-	\end{equation}
-	From Holevo-Helstrom theorem  we constrain a measurement $\mu$.  
-	Let us define \begin{equation}
-	X  = \left( \PP_U \otimes \Id_2 \right)(\proj{\psi}) -  \left( \PP_\Id 
-	\otimes \Id_2 \right)(\proj{\psi})
-	\end{equation}
-	where $\ket{\psi}$ is defined in Remark~\ref{remark:discriminator}. From 
-	Hahn-Jordan decomposition let \begin{equation}
-	X = P - Q
-	\end{equation}
-	where $P, Q \ge 0 $. Observe, that $P $ and $Q$ are block-diagonal. 
-	Let us define projectors $\Pi_P$ and $\Pi_Q$ onto  $im(P)$ and $im(Q)$, 
-	respectively. Then  $\Pi_P$ and $\Pi_Q$ have the following forms
-	\begin{equation}
-	\Pi_P = \left(\begin{array}{cc}\proj{x_p}&0\\0&\proj{y_p}\end{array}\right) 
-	\end{equation}
-	and 
-	\begin{equation}
-	\Pi_Q = \left(\begin{array}{cc}\proj{x_q}&0\\0&\proj{y_q}\end{array}\right) 
-	\end{equation}
-	Hence, we define $V_0$ such that
-	\begin{equation}
-	\begin{split}
-	V_0 \ket{x_p} = \ket{0} \\ 
-	V_0 \ket{x_q} = \ket{1}
-	\end{split}
-	\end{equation}
-	and $V_1$ such that
-	\begin{equation}
-	\begin{split}
-	V_1 \ket{y_p} = \ket{0} \\ 
-	V_1 \ket{y_q} = \ket{1}
-	\end{split}
-	\end{equation}
-	The explicit form of $V_0$ and $V_1$ we can see in \texttt{one-qubit.nb}.
-	Finally, we obtain the measurement $\mu$ of the form
-	\begin{equation}
-	\begin{split}
-	 \mu(0) = \proj{0} \otimes V_0 \proj{0} V_0^\dagger +  \proj{1} \otimes V_1 
-	 \proj{0} V_1^\dagger  \\ 
-	\mu(1) = \proj{0} \otimes V_0 \proj{1} V_0^\dagger +  \proj{1} \otimes V_1 
-	\proj{1} V_1^\dagger  
-	\end{split}
-	\end{equation}
-\end{scheme}
+\begin{equation}
+\ket{\psi} = | \sqrt{\rho}^\top \rangle \rangle = \frac{1}{\sqrt{2}} |\Id_2 
+\rangle \rangle. 
+\end{equation}
+From Holevo-Helstrom theorem  we constrain a measurement $\mu$.  
+Let us define \begin{equation}
+X  = \left( \PP_U \otimes \Id_2 \right)(\proj{\psi}) -  \left( \PP_\Id 
+\otimes \Id_2 \right)(\proj{\psi})
+\end{equation}
+where $\ket{\psi}$ is defined in Remark~\ref{remark:discriminator}. From 
+Hahn-Jordan decomposition let \begin{equation}
+X = P - Q
+\end{equation}
+where $P, Q \ge 0 $. Observe, that $P $ and $Q$ are block-diagonal. 
+Let us define projectors $\Pi_P$ and $\Pi_Q$ onto  $im(P)$ and $im(Q)$, 
+respectively. Then  $\Pi_P$ and $\Pi_Q$ have the following forms
+\begin{equation}
+\Pi_P = \left(\begin{array}{cc}\proj{x_p}&0\\0&\proj{y_p}\end{array}\right) 
+\end{equation}
+and 
+\begin{equation}
+\Pi_Q = \left(\begin{array}{cc}\proj{x_q}&0\\0&\proj{y_q}\end{array}\right) 
+\end{equation}
+Hence, we define $V_0$ such that
+\begin{equation}
+\begin{split}
+V_0 \ket{x_p} = \ket{0} \\ 
+V_0 \ket{x_q} = \ket{1}
+\end{split}
+\end{equation}
+and $V_1$ such that
+\begin{equation}
+\begin{split}
+V_1 \ket{y_p} = \ket{0} \\ 
+V_1 \ket{y_q} = \ket{1}
+\end{split}
+\end{equation}
+The explicit form of $V_0$ and $V_1$ we can see in \texttt{one-qubit.nb}.
+Finally, we obtain the measurement $\mu$ of the form
+\begin{equation}
+\begin{split}
+\mu(0) = \proj{0} \otimes V_0 \proj{0} V_0^\dagger +  \proj{1} \otimes V_1 
+\proj{0} V_1^\dagger  \\ 
+\mu(1) = \proj{0} \otimes V_0 \proj{1} V_0^\dagger +  \proj{1} \otimes V_1 
+\proj{1} V_1^\dagger  
+\end{split}
+\end{equation}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
 
@@ -789,7 +834,10 @@ have
 		\begin{equation}
 	V_1 = \left(\begin{array}{cc}-i \cos\left(\frac{\pi - \phi}{4}\right) &i \sin\left( \frac{\pi - \phi}{4}\right)\\\sin\left( \frac{\pi - \phi}{4} \right) &  \cos\left( \frac{\pi - \phi}{4} \right) \end{array}\right).
 	\end{equation}
-	
+
+
+\subsubsection{Two schemes of practical realization}
+
 \begin{scheme}(By using postsellection)
 
 %\begin{figure}[h!]
