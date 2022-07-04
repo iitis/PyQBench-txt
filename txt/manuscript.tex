@@ -599,8 +599,91 @@ subsection~\ref{sec:example_realization}. For such realization, we
 will need the proper input state, (see sec.~\ref{sec:example_discriminator}) 
 and final measurement (see sec.~\ref{sec_example_final_measurement}). 
 
-\subsection{Theoretical bound}\label{sec:example_theoretical_probability}
+\subsection{Theoretical probability}\label{sec:example_theoretical_probability}
+In this section we calculate the theoretical probability of correct discrimination between two von Neumann measurements $\PP_\1$ and $\PP_U$ for $U = H \diag(1, e^{i \phi}) H^\dagger$, where  $\phi \in [0, 2\pi)$. To do that, we will present an auxiliary lemma.   
+\begin{lemma}\label{lemma:min-e-optimal}
+	Let $U = H \diag(1, e^{i \phi}) H^\dagger$, $\phi \in [0, 2\pi)$ and	let 
+	$\Phi_U$ and $\Phi_\Id$ be two unitary channels. The following equation holds 
+	\begin{equation}
+	\min_{E \in \diaguni_2} \|\Phi_{UE} - 
+	\Phi_\Id\|_\diamond = \|\Phi_{U} - 
+	\Phi_\Id\|_\diamond,
+	\end{equation}
+	
+\end{lemma}
+\begin{proof} Recall that the distance between two unitary channels is given by
+	$
+	\| \Phi_U  - \Phi_{\1} \|_\diamond = 2 \sqrt{1-\nu^2},
+	$
+	where $\nu_U = \min_{x \in W(U^\dagger)} |x|  $ for any $U \in \mathcal{U}_d$. 
 
+
+	
+	
+	For $U = H 
+	\left(\begin{array}{cc}1&0\\0&e^{i \phi}\end{array}\right)  H^\dagger$ the readers briefly observe that  $\nu^2 = 1 - \frac{|1 - e^{i \phi} | }{4}$. So, 
+	\begin{equation}
+	\|  \Phi_U  - \Phi_{\1} \|_\diamond = \frac{| 1 - e^{i \phi} |}{2}. 
+	\end{equation} 
+		It implies that it is enough to prove  \begin{equation}
+		\min_{E \in \diaguni_2} \|\Phi_{UE} - 
+		\Phi_\Id\|_\diamond  = \frac{| 1 - e^{i \phi} |}{2}.
+		\end{equation}
+	
+	
+	
+		It implies that we can prove  equivalently  the following condition
+		\begin{equation}
+		\max_{E \in \diaguni_2 } \nu_{UE} = \nu_U
+		\end{equation}
+	It implies that it is enough to prove 
+	\begin{equation}
+	\max_{E \in \diaguni_2 } \nu_E = \nu = \frac{|1 + e^{i \phi} | }{2},
+	\end{equation}
+	where $\nu_E = \min_{x \in W(U^\dagger E)} |x|. $ 
+	
+	We can prove that
+	\begin{equation}
+	\min_{\ket{x} \in \mathbb{C}^2:   \proj{x} = 1} |\bra{x}U^\dagger\ket{x}| = 
+	\min_{\rho \in \Omega_2} |\tr(U^\dagger\rho)|. 
+	\end{equation}
+	For that we obtain \begin{equation}
+	\max_{E \in \diaguni_2 } \nu_{UE}  = \max_{E \in \diaguni_2 }  \min_{\rho \in 
+		\Omega_2} \left| \tr \rho U E  \right|
+	\end{equation}
+	For that, our task is reduce to show that
+	\begin{equation}
+	\forall E \in \diaguni_2 \,\, | \tr \rho U E | \le \nu. 
+	\end{equation}
+	Let us define $E = \left(\begin{array}{cc}E_0&0\\0&E_1\end{array}\right)  $ 
+	and let us take $\rho = 
+	\left(\begin{array}{cc}\frac{1}{2}&0\\0&\frac{1}{2}\end{array}\right) $. 
+	From spectral theorem, let us note $U$ as
+	\begin{equation}
+	U= \lambda_1 \ketbra{x_1}{x_1} + \lambda_2 \ketbra{x_1}{x_2}, 
+	\end{equation}
+	where  for eigenvector $\lambda_1 = e^{i \phi}$ the eigenvector is 
+	of the form $\ket{x_1} = 
+	\left[\begin{array}{c}\frac{1}{\sqrt{2}}\\-\frac{1}{\sqrt{2}}\end{array}\right]$,
+	whereas for  $\lambda_2 = 1$ we have $\ket{x_2} = 
+	\left[\begin{array}{c}\frac{1}{\sqrt{2}}\\\frac{1}{\sqrt{2}}\end{array}\right]$.
+	Then, we have 
+	\begin{equation}
+	\begin{split}
+	& \forall E \in \diaguni_2 \,\,\, | \tr \rho U E | = \frac{1}{2}  \left| \tr 
+	H \diag(1, e^{i\phi}) H^\dagger E \right| =  \\ &
+	\frac{1}{2} \left| \tr\left((  e^{i \phi} \proj{x_1} + 1 \proj{x_2} ) E \right) 
+	\right|  = 
+	\frac{1}{2} \left| e^{i \phi}  \bra{x_1} E \ket{x_1} + \bra{x_2} E \ket{x_2} 
+	\right| = \\& 
+	\frac{1}{2} \left| \frac{E_0 + E_1}{2} + e^{i \phi } \frac{E_0+E_1}{2} \right| 
+	= 
+	\frac{\left| 1+ e^{i \phi } \right|}{2} \left| \frac{E_0 + E_1}{2} \right| \le 
+	\nu, 
+	\end{split}
+	\end{equation}
+	which completes the proof.
+\end{proof}
 \begin{theorem}
 The optimal probability of correct discrimination between von Neumann
 measurements $\PP_U$ and $\PP_{\Id}$ for $U = H \diag(1, e^{i \phi}) H^\dagger$,
@@ -631,71 +714,7 @@ p = \frac{1}{2} + \frac{|1 - e^{i \phi}  |}{4} .
 \end{proof}
 
 \todo[inline]{change proof of proposition into proof of theorem}
-\begin{lemma}\label{lemma:min-e-optimal}
- Let $U = H \diag(1, e^{i \phi}) H^\dagger$, $\phi \in [0, 2\pi)$ and	let 
- $\Phi_U$ and $\Phi_\Id$ be two unitary channels. The following equation holds 
-	\begin{equation}
-	\min_{E \in \diaguni_2} \|\Phi_{UE} - 
-	\Phi_\Id\|_\diamond = \|\Phi_{U} - 
-	\Phi_\Id\|_\diamond,
-	\end{equation}
 
-\end{lemma}
-\begin{proof} We know that
-$
-	\| \Phi_U  - \Phi_{\1} \|_\diamond = 2 \sqrt{1-\nu^2},
-$
-	where $\nu = \min_{x \in W(U^\dagger)} |x|  $. For $U = H 
-	\left(\begin{array}{cc}1&0\\0&e^{i \phi}\end{array}\right)  H^\dagger$ the readers briefly observe that $W(U^\dagger) $ 
-	obtain that $\nu^2 = 1 - \frac{|1 - e^{i \phi} | }{2}$. 
-	The condition $ 	\min_{E \in \diaguni_2} \|\Phi_{UE} - 
-	\Phi_\Id\|_\diamond = \|\Phi_{U} - 
-	\Phi_\Id\|_\diamond $ is equivalent to prove that
-	\begin{equation}
-	\max_{E \in \diaguni_2 } \nu_E = \nu = \frac{|1 + e^{i \phi} | }{2},
-	\end{equation}
-	where $\nu_E = \min_{x \in W(U^\dagger E)} |x|. $ We can prove that
-	\begin{equation}
-	\min_{\ket{x} \in \mathbb{C}^2  \proj{x} = 1} |\bra{x}U^\dagger\ket{x}| = 
-	\min_{\rho \in \Omega_2} |\tr(U^\dagger\rho)|. 
-	\end{equation}
-For that, to calculate $\nu_E$ we obtain \begin{equation}
-	\max_{E \in \diaguni_2 } \nu_E  = \max_{E \in \diaguni_2 }  \min_{\rho \in 
-	\Omega_2} \left| \tr \rho U E  \right|
-\end{equation}
-For that, our task is reduce to show that
-	\begin{equation}
-	\forall E \in \diaguni_2 \,\, | \tr \rho U E | \le \nu. 
-	\end{equation}
-	Let us define $E = \left(\begin{array}{cc}E_0&0\\0&E_1\end{array}\right)  $ 
-	and let us take $\rho = 
-	\left(\begin{array}{cc}\frac{1}{2}&0\\0&\frac{1}{2}\end{array}\right) $. 
-	From spectral theorem, let us note $U$ as
-	\begin{equation}
-	U= \lambda_1 \ketbra{x_1}{x_1} + \lambda_2 \ketbra{x_1}{x_2}, 
-	\end{equation}
-	where  for eigenvector $\lambda_1 = e^{i \phi}$ the eigenvector is 
-	of the form $\ket{x_1} = 
-	\left[\begin{array}{c}\frac{1}{\sqrt{2}}\\-\frac{1}{\sqrt{2}}\end{array}\right]$,
-	 whereas for  $\lambda_2 = 1$ we have $\ket{x_2} = 
-	\left[\begin{array}{c}\frac{1}{\sqrt{2}}\\\frac{1}{\sqrt{2}}\end{array}\right]$.
-	Then, we have 
-\begin{equation}
-\begin{split}
-& \forall E \in \diaguni_2 \,\,\, | \tr \rho U E | = \frac{1}{2}  \left| \tr 
-H \diag(1, e^{i\phi}) H^\dagger E \right| =  \\ &
-\frac{1}{2} \left| \tr\left((  e^{i \phi} \proj{x_1} + 1 \proj{x_2} ) E \right) 
-\right|  = 
-\frac{1}{2} \left| e^{i \phi}  \bra{x_1} E \ket{x_1} + \bra{x_2} E \ket{x_2} 
-\right| = \\& 
-\frac{1}{2} \left| \frac{E_0 + E_1}{2} + e^{i \phi } \frac{E_0+E_1}{2} \right| 
-= 
-\frac{\left| 1+ e^{i \phi } \right|}{2} \left| \frac{E_0 + E_1}{2} \right| \le 
-\nu, 
-	\end{split}
-\end{equation}
-	which completes the proof.
-\end{proof}
 
 
 \subsection{Realization}\label{sec:example_realization}
