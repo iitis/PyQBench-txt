@@ -400,6 +400,118 @@ can be divided into the following steps:
 	\label{fig:scheme}
 \end{figure}
 
+
+
+\subsubsection{Rigetti architecture's limits/ practical solutions}
+
+
+We may encounter numerous obstacles in the implementation process due to the 
+limited architecture of quantum computer. 
+Let us take a closer look at the setup for distinguishing von Neumann 
+measurements (see Fig.~\ref{fig:diamond}). One of the components of such a 
+scheme is to perform the conditional binary measurement. The first limitation 
+is lack to possibility of implementation of the conditional binary measurement. 
+The only possible measurement performed on quantum architectures is measurement 
+in the computational basis. 
+A postselection method provides us with a clever going around the obstacle. The 
+postselection  scheme (see Fig.~\ref{postselection})  can be described as 
+follow. 
+
+
+\begin{enumerate}
+	\item We prepare input state $\ket{\psi_{AB}}$.
+	\item One of two measurements is performed on part A.
+	\item We prepare optimal measurements $V_j$, which are well known by 
+	Holevo--Helstrom theorem and perform them on part $B$.
+	\item We get the output label $i$.
+	\item We include these cases for which $i = j$. Otherwise, we reject them.
+	\item By the use of $V_j$ output, we decide whether the measurement was 
+	performed on part $A$.
+	\item We count the probability of postselection.
+\end{enumerate}
+
+\todo[inline]{PAMIETAJ O DAGGERACH !!!} 
+
+\begin{figure}[h!]
+	\includegraphics[scale=1.5]{onequbit.pdf}
+	\caption{A schematic representation of the setup for distinguishing
+		measurements using postselection.}
+	\label{postselection}
+\end{figure} 
+
+
+The schematic representation of theoretical setup is shown in the following 
+figure. 
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[scale=1.2]{pics/theoretical_scheme}
+	\caption{Theoretical discrimination scheme}
+	\label{fig:theoretical_scheme}
+\end{figure}
+\todo[inline]{konretne przyklady zobaczymy potem... }
+
+
+
+
+
+\subsubsection{Two schemes of practical realization}
+
+\begin{scheme}(By using postsellection)
+	
+	\begin{figure}[h!]
+		\centering 
+		\includegraphics[scale=1.2]{pics/postselection} 
+		
+		\caption{ A schematic representation of the setup for distinguishing
+			measurements using postselection. 
+		}\label{fig:postsellection}
+	\end{figure}
+	\begin{enumerate}
+		\item We prepare input state $\ket{\psi} = \frac{1}{\sqrt{2} } | \Id_2 \rangle 
+		\rangle. $
+		\item We prepare one of two unitary channel $\Phi_{U} $ or $\Phi_{\1}$. 
+		\item We implement unitary $V_0 $ or $ V_1$.
+		\item We prepare the measurement $\Delta$ in standard basis (already exists on 
+		Rigetti architecture) on each qubits.
+		\item We calculate the probability of correct discrimination in the following 
+		way
+		\begin{equation}
+		p = ...
+		\end{equation}
+		%\todo[inline]{grubsza kmina, musze Ci to na zywo opowiedziec xd}
+	\end{enumerate}
+\end{scheme}
+
+
+\begin{scheme}(By using controlled unitary)
+	\begin{figure}[h!]
+		\centering 
+		\includegraphics[scale=1.2]{pics/controlled_unitary} 
+		
+		\caption{ A schematic representation of the setup for distinguishing
+			measurements using controlled unitary gate. 
+		}\label{fig:controlled}
+	\end{figure}
+	\begin{enumerate}
+		\item We prepare input state $\ket{\psi} = \frac{1}{\sqrt{2} } | \Id_2 \rangle 
+		\rangle. $
+		\item We prepare one of two unitary channel $\Phi_{U} $ or $\Phi_{\1}$. 
+		\item We implement controlled unitary $V_0 \oplus V_1$.
+		\item We prepare the measurement $\Delta$ in standard basis (already exist on 
+		Rigetti architecture) on each qubits.
+		\item We calculate the probability of correct discrimination in the following 
+		way
+		\begin{equation}
+		p = \frac{|j=0 \wedge \Phi_{U} | + |j=1 \wedge \Phi_{\1}|}{\text{all 
+				cases}}
+		\end{equation}
+	\end{enumerate}
+\end{scheme}
+
+
+
+
 \subsubsection{Theoretical results}
 
 
@@ -417,7 +529,9 @@ $\UU_d$, while its subgroup of diagonal unitary operators will be denoted by
 $\DD \UU_d$.  We will also need a linear
 mapping transforming $M_{d_1}$ into $M_{d_2}$, which will be denoted \begin{equation}
 \Phi: M_{d_1 } \rightarrow M_{d_2}.
-\end{equation} Finally, we introduce a special subset of all mappings $\Phi$, called quantum channels, which are completely positive
+\end{equation} 
+\todo[inline]{nie mowimy channel} 
+Finally, we introduce a special subset of all mappings $\Phi$, called quantum channels, which are completely positive
 and trace preserving (CPTP).
 Mostly, we will use the unitary channels
 $\Phi_{U}$ which are defined as $\Phi_U(\cdot) = U \cdot U^\dagger$ for  $U \in 
@@ -470,7 +584,7 @@ measurements $\PP_U$ and $\PP_\Id$, $U\in \UU_d$ we obtain that (from Theorem 1 
 \Phi_\Id\|_\diamond,
 \end{equation}
 where $\Phi_U$ is unitary channel and 
-$\diaguni_d$ be the set of diagonal unitary matrices of dimension $d$
+$\diaguni_d$ be the set of diagonal unitary matrices of dimension $d$. 
 
 
 
@@ -537,46 +651,6 @@ distinguishability of unitary channels.
 %\end{minipage} 
 
 
-\subsubsection{Rigetti architecture's limits/ practical solutions}
-\todo[inline]{nie wiem, moze tu o conditional measurement i o sposobach 
-ominiecia tego problemu - postselekcja i kontrolowana unitarka}
-
-We may encounter numerous obstacles in the implementation process due to the 
-limited architecture of quantum computer. 
-Let us take a closer look at the setup for distinguishing von Neumann 
-measurements (see Fig.~\ref{fig:diamond}). One of the components of such a 
-scheme is to perform the conditional binary measurement. The first limitation 
-is lack to possibility of implementation of the conditional binary measurement. 
-The only possible measurement performed on quantum architectures is measurement 
-in the computational basis. 
-A postselection method provides us with a clever going around the obstacle. The 
-postselection  scheme (see Fig.~\ref{postselection})  can be described as 
-follow. 
-
-
-\begin{enumerate}
-	\item We prepare input state $\ket{\psi_{AB}}$.
-	\item One of two measurements is performed on part A.
-	\item We prepare optimal measurements $V_j$, which are well known by 
-	Holevo--Helstrom theorem and perform them on part $B$.
-	\item We get the output label $i$.
-	\item We include these cases for which $i = j$. Otherwise, we reject them.
-	\item By the use of $V_j$ output, we decide whether the measurement was 
-	performed on part $A$.
-	\item We count the probability of postselection.
-\end{enumerate}
-
-\begin{figure}[h!]
-	\includegraphics[scale=1.5]{onequbit.pdf}
-	\caption{A schematic representation of the setup for distinguishing
-		measurements using postselection.}
-	\label{postselection}
-\end{figure} 
-
-
-\subsection{Sample code snippets analysis (optional)}
-\todo[inline]{moze tu kod tej postselekcji  i kontrolowanej unitarki ? }
-\label{}
 
 
 
@@ -981,15 +1055,6 @@ V_1 = \left(\begin{array}{cc}-i \cos\left(\frac{\pi - \phi}{4}\right) &i
 \end{proposition}
 \todo[inline]{add proof of the proposition}
 
-The schematic representation of theoretical setup is shown in the following 
-figure. 
-
-\begin{figure}[h!]
-\centering
-\includegraphics[scale=1.2]{pics/theoretical_scheme}
-\caption{Theoretical discrimination scheme}
-\label{fig:theoretical_scheme}
-\end{figure}
 
 From ~\cite{puchala2018strategies}(Proposition 4) and Lemma~\ref{lemma:rho} we 
 have 
@@ -1061,60 +1126,14 @@ Finally, we obtain the measurement $\mu$ of the form
 	\right) &  \cos\left( \frac{\pi - \phi}{4} \right) \end{array}\right).
 	\end{equation}
 
-
-\subsubsection{Two schemes of practical realization}
-
-\begin{scheme}(By using postsellection)
-
-\begin{figure}[h!]
-\centering 
-\includegraphics[scale=1.2]{pics/postselection} 
-
-\caption{ A schematic representation of the setup for distinguishing
-	measurements using postselection. 
-}\label{fig:postsellection}
-\end{figure}
-\begin{enumerate}
-\item We prepare input state $\ket{\psi} = \frac{1}{\sqrt{2} } | \Id_2 \rangle 
-\rangle. $
-\item We prepare one of two unitary channel $\Phi_{U} $ or $\Phi_{\1}$. 
-\item We implement unitary $V_0 $ or $ V_1$.
-\item We prepare the measurement $\Delta$ in standard basis (already exists on 
-Rigetti architecture) on each qubits.
-\item We calculate the probability of correct discrimination in the following 
-way
-\begin{equation}
-p = ...
-\end{equation}
-%\todo[inline]{grubsza kmina, musze Ci to na zywo opowiedziec xd}
-\end{enumerate}
-\end{scheme}
+\todo[inline]{obwody }
+\todo[inline]{TU WYNIKI Z RIGETTIEGO}
 
 
-\begin{scheme}(By using controlled unitary)
-\begin{figure}[h!]
-\centering 
-\includegraphics[scale=1.2]{pics/controlled_unitary} 
 
-\caption{ A schematic representation of the setup for distinguishing
-	measurements using controlled unitary gate. 
-}\label{fig:controlled}
-\end{figure}
-\begin{enumerate}
-\item We prepare input state $\ket{\psi} = \frac{1}{\sqrt{2} } | \Id_2 \rangle 
-\rangle. $
-\item We prepare one of two unitary channel $\Phi_{U} $ or $\Phi_{\1}$. 
-\item We implement controlled unitary $V_0 \oplus V_1$.
-\item We prepare the measurement $\Delta$ in standard basis (already exist on 
-Rigetti architecture) on each qubits.
-\item We calculate the probability of correct discrimination in the following 
-way
-\begin{equation}
-p = \frac{|j=0 \wedge \Phi_{U} | + |j=1 \wedge \Phi_{\1}|}{\text{all 
-cases}}
-\end{equation}
-\end{enumerate}
-\end{scheme}
+\subsection{Sample code snippets analysis (optional)}
+\todo[inline]{moze tu kod tej postselekcji  i kontrolowanej unitarki ? }
+\label{}
 
 
 
