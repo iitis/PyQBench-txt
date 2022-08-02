@@ -364,36 +364,25 @@ measurements scheme.
 
 
 \subsubsection{Model specification}
-Theoretically, scenario of this set up assume that Alice and Bob have an 
-unknown measurement device, black--box.  Alice has hiden one of the two 
-measurements  in the black box.  The only information which Bob has is that it 
-performs one of such  measurements. 
-The  goal of discrimination of von Neumann measurements  is to determine by Bob 
-whether it is possible to discriminate measurements perfectly, i.e. with 
-probability equals one. If this is not possible, he  would like to know the 
-upper bound of such a probability.  Theoretical results of discrimination of 
-von Neumann measurements is well-known and characterized 
-in~\cite{puchala2018strategies}.    The scheme of von Neumann discrimination is 
+Theoretically, the scenario of this set-up assumes that Alice and Bob have an 
+unknown measurement device, a black--box. Alice has hidden one of the two 
+measurements, say $\SS$ and $\TT$,  in the black box. Bob only has information that it 
+performs one of such measurements. 
+First, they want to tell whether it is possible to discriminate $\SS$ and $\TT$ perfectly, i.e. with probability equal to one. If this is not the case, we would like to
+know the upper bound of such a probability. 
+Theoretical results of discrimination of 
+von Neumann measurements are well-known and characterized 
+in~\cite{puchala2018strategies}.   
+They devised the optimal discrimination strategy between two von Neumann measurements and also calculated the exact probability of their discrimination. 
+
+In this work we will consider the problem of discrimination between the von Neumann measurement in the computational basis  and  the von Neumann measurement in basis $U$, where $U$ is a unitary matrix. 
+This scheme is 
 presented in Fig.~\ref{fig:scheme} and 
 can be divided into the following steps:
 
-\begin{enumerate}
-	\item Alice and Bob share entanglement state $\ket{\psi_{AB}}$.
-	\item Alice performs one of two known measurements on part $A$ of the input 
-	state  $\ket{\psi_{AB}}$.
-	\item Alice  uses
-	the output label $i$ and performs a conditional binary measurement on part 
-	$B$.
-	\item  Bob measures the part $B$ of the input state  $\ket{\psi_{AB}}$ and 
-	makes a decision  basis of the condition binary measurement.
-\end{enumerate}  
 
-
- 
-
-\begin{figure}[h]
+\begin{figure}[h!]
 	\centering 
-	
 	\includegraphics[width=0.9\linewidth]{gates1.pdf} 
 	\caption{A schematic representation of the setup for distinguishing
 		measurements by using entanglement. }
@@ -402,85 +391,88 @@ can be divided into the following steps:
 
 
 
-\subsubsection{Rigetti architecture's limits/ practical solutions}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[scale=1.5]{pics/theoretical_scheme}
+	\caption{Theoretical discrimination scheme}
+	\label{fig:theoretical_scheme}
+\end{figure}
+\todo[inline]{tan powinien byc $\PP_{V_i}$}
+
+\begin{enumerate}\item Alice and Bob share entanglement state $\ket{\psi_{AB}}$.
+	\item Alice performs one of two known measurements,  say $\PP_{\Id}$ and $\PP_{U}$,  on part $A$ of the input 
+	state  $\ket{\psi_{AB}}$.
+	\item Alice  uses
+	the output label $i$ and performs the conditional binary measurement on the part 
+	$B$.
+	\item  Bob measures the part $B$ of the input state  $\ket{\psi_{AB}}$ and 
+	makes a decision based on received label $j$. If $j=0$, he decides that the measurement $\PP_U$ is hidden in the black box. Otherwise, he decides that the measurement $\PP_{\Id}$ was hidden in the black box. 
+\end{enumerate}  
 
 
-We may encounter numerous obstacles in the implementation process due to the 
-limited architecture of quantum computer. 
+\subsubsection{Quantum architecture's limits and practical solutions}
+
+
+
 Let us take a closer look at the setup for distinguishing von Neumann 
-measurements (see Fig.~\ref{fig:diamond}). One of the components of such a 
+measurements (see Fig.~\ref{fig:scheme}). One of the components of such a 
 scheme is to perform the conditional binary measurement. The first limitation 
-is lack to possibility of implementation of the conditional binary measurement. 
-The only possible measurement performed on quantum architectures is measurement 
-in the computational basis. 
-A postselection method provides us with a clever going around the obstacle. The 
-postselection  scheme (see Fig.~\ref{postselection})  can be described as 
-follow. 
+is a lack of possibility of implementing the conditional binary measurement. 
+The only possible measurement performed on quantum architectures is the measurement 
+on a computational basis. 
+Here, we present two possible methods that provide a clever way to cross the obstacle (two schemes of practical realization). 
 
 
+The first way is a postselection scheme which can be described as 
+follow.  The schematic representation of this setup we can see on Fig.~\ref{postselection}.     
+\begin{scheme}(By using postsellection)
+
+
+\todo[inline]{PAMIETAJ O DAGGERACH  no i u nas to bedzie nazwane $\PP_{V^\dagger_j}$!!!} 
+\begin{figure}[h!]
+	\includegraphics[scale=1.5]{onequbit.pdf}
+	\caption{A schematic representation of the setup for distinguishing
+		measurements using postselection.}
+	\label{postselection}
+\end{figure}
+
+
+
+
+\begin{figure}[h!]
+	\centering 
+	\includegraphics[scale=1.2]{pics/postselection} 
+	
+	\caption{ A schematic representation of the setup for distinguishing
+		measurements using postselection. 
+	}\label{fig:postsellection}
+\end{figure} 
 \begin{enumerate}
 	\item We prepare input state $\ket{\psi_{AB}}$.
 	\item One of two measurements is performed on part A.
 	\item We prepare optimal measurements $V_j$, which are well known by 
 	Holevo--Helstrom theorem and perform them on part $B$.
-	\item We get the output label $i$.
+	\item We receive an output label $i$.
 	\item We include these cases for which $i = j$. Otherwise, we reject them.
 	\item By the use of $V_j$ output, we decide whether the measurement was 
 	performed on part $A$.
 	\item We count the probability of postselection.
 \end{enumerate}
 
-\todo[inline]{PAMIETAJ O DAGGERACH !!!} 
-
-\begin{figure}[h!]
-	\includegraphics[scale=1.5]{onequbit.pdf}
-	\caption{A schematic representation of the setup for distinguishing
-		measurements using postselection.}
-	\label{postselection}
-\end{figure} 
-
-
-The schematic representation of theoretical setup is shown in the following 
-figure. 
-
-\begin{figure}[h!]
-	\centering
-	\includegraphics[scale=1.2]{pics/theoretical_scheme}
-	\caption{Theoretical discrimination scheme}
-	\label{fig:theoretical_scheme}
-\end{figure}
-\todo[inline]{konretne przyklady zobaczymy potem... }
-
-
-
-
-
-\subsubsection{Two schemes of practical realization}
-
-\begin{scheme}(By using postsellection)
-	
-	\begin{figure}[h!]
-		\centering 
-		\includegraphics[scale=1.2]{pics/postselection} 
-		
-		\caption{ A schematic representation of the setup for distinguishing
-			measurements using postselection. 
-		}\label{fig:postsellection}
-	\end{figure}
-	\begin{enumerate}
-		\item We prepare input state $\ket{\psi} = \frac{1}{\sqrt{2} } | \Id_2 \rangle 
-		\rangle. $
-		\item We prepare one of two unitary channel $\Phi_{U} $ or $\Phi_{\1}$. 
-		\item We implement unitary $V_0 $ or $ V_1$.
-		\item We prepare the measurement $\Delta$ in standard basis (already exists on 
-		Rigetti architecture) on each qubits.
-		\item We calculate the probability of correct discrimination in the following 
-		way
-		\begin{equation}
-		p = ...
-		\end{equation}
-		%\todo[inline]{grubsza kmina, musze Ci to na zywo opowiedziec xd}
-	\end{enumerate}
+%	\begin{enumerate}
+%		\item We prepare input state $\ket{\psi} = \frac{1}{\sqrt{2} } | \Id_2 \rangle 
+%		\rangle. $
+%		\item We prepare one of two unitary channel $\Phi_{U} $ or $\Phi_{\1}$. 
+%		\item We implement unitary $V_0 $ or $ V_1$.
+%		\item We prepare the measurement $\Delta$ in standard basis (already exists on 
+%		Rigetti architecture) on each qubits.
+%		\item We calculate the probability of correct discrimination in the following 
+%		way
+%		\begin{equation}
+%		p = ...
+%		\end{equation}
+%		%\todo[inline]{grubsza kmina, musze Ci to na zywo opowiedziec xd}
+%	\end{enumerate}
 \end{scheme}
 
 
@@ -512,7 +504,7 @@ figure.
 
 
 
-\subsubsection{Theoretical results}
+\subsubsection{Mathematical preliminaries}
 
 
 
@@ -530,17 +522,17 @@ $\DD \UU_d$.  We will also need a linear
 mapping transforming $M_{d_1}$ into $M_{d_2}$, which will be denoted \begin{equation}
 \Phi: M_{d_1 } \rightarrow M_{d_2}.
 \end{equation} 
-\todo[inline]{nie mowimy channel} 
+
 Finally, we introduce a special subset of all mappings $\Phi$, called quantum channels, which are completely positive
 and trace preserving (CPTP).
-Mostly, we will use the unitary channels
-$\Phi_{U}$ which are defined as $\Phi_U(\cdot) = U \cdot U^\dagger$ for  $U \in 
+A unitary channel
+$\Phi_{U}$ is defined as $\Phi_U(\cdot) = U \cdot U^\dagger$ for  $U \in 
 \UU_d$. A general quantum
 measurement, that is a positive operator valued measure (POVM) $\PP$ is a
 collection of positive semidefinite operators $\{E_1, \ldots, E_m \}$ called
 \emph{effects}, which sum up to identity, \ie $ \, \, \sum_{i=1}^m E_i = \1$. If
 all the effects are rank-one projection operators, then such a measurement is
-called von Neumann measurement. Every von Neumann measurement can be
+called a von Neumann measurement. Every von Neumann measurement can be
 parameterized by a unitary matrix and hence we will use the notation $\PP_{U}$
 for a von Neumann measurement with effects $\{\proj{u_0}, \ldots, \proj{u_{d-1}}\}$,
 where $\ket{u_i}$ is the $i+1$-th column of the unitary matrix $U$. The action of
@@ -559,12 +551,16 @@ channel.
 
 
 
-\subsubsection{Diamond norm}
-Let us now consider linear mappings transforming  square matrices into square 
+\subsubsection{Discrimination of a quantum operations}
+This section defines a norm on the space of linear mappings, known as the diamond norm,
+and establishes some of its properties. 
+Next, we will also explain the precise connection between this
+norm and the task of quantum operations discrimination. 
+
+Let us now consider a  linear mapping transforming  square matrices into square 
 matrices 
-that is \ $\Phi: M_{d_1} \to M_{d_2}$. 
- We define its completely bounded trace
-norm, also known as a diamond norm, as
+that is $\Phi: M_{d_1} \to M_{d_2}$. 
+ We define the diamond norm of a map $\Phi$ as 
 \begin{equation}
 \|\Phi\|_\diamond = \max_{\|X\|_1=1} \| \left(\Phi \otimes \1\right) (X) \|_1.
 \end{equation}
@@ -573,7 +569,7 @@ norm, also known as a diamond norm, as
 The celebrated result by Helstrom~\cite{helstrom1976quantum} gives the optimal  probability of correct discrimination between two quantum operations, $\TT$  and $\SS$, 
 in terms of their distance with the use of the diamond norm
 \begin{equation}
-p =  \frac12 + \frac14 \| \TT - \SS \|_\diamond.
+p_{succ} =  \frac12 + \frac14 \| \TT - \SS \|_\diamond.
 \end{equation}
 
 In case then 
