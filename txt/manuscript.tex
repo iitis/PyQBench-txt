@@ -341,24 +341,11 @@ Section~\ref{sec:sortware-functionalities}.
 In the scope of this Paper, we aim at  exploring ideas revolving around quantum 
 gate model-inspired computing devices, and assess their feasibility to 
 benchmark a modern quantum architectures. The main idea that we have envisioned 
-for this project is  introducing new concepts of algorithms for NISQ devices 
+for this project is  introducing new concepts of benchmarks for NISQ devices 
 benchmarking. This project aims to characterize the computing power and 
 investigate possible practical applications of such devices having access by 
-Amazon Braket.  First of all, we will focus on constraining quantum algorithms 
-being relatively easy to implement on quantum architectures with 
-straightforward, intuitive operational interpretation. Moreover, we need to 
-possess a scalability, that is the ability to adjust to large range of 
-architectures size.  
-These properties will give us major advantage over the existing approaches  of 
-benchmarking. 
+Amazon Braket. 
 
-
-This idea is built upon two specific tasks that are to be achieved within this 
-proposal. 
-The first task is to   desing a benchmark based on discrimination of von 
-Nemaumm measurements scheme. While the second one is to extension  this 
-approach to benchmark on the grounds of certification of von Neumann 
-measurements scheme.
 
 
 
@@ -368,43 +355,43 @@ Theoretically, the scenario of this set-up assumes that Alice and Bob have an
 unknown measurement device, a black--box. Alice has hidden one of the two 
 measurements, say $\SS$ and $\TT$,  in the black box. Bob only has information that it 
 performs one of such measurements. 
-First, they want to tell whether it is possible to discriminate $\SS$ and $\TT$ perfectly, i.e. with probability equal to one. If this is not the case, we would like to
-know the upper bound of such a probability. 
+They want to know the upper bound of the   probability of correct discrimination between $\SS$ and $\TT$ and construct the optimal discrimination strategy between them to achieve the highest possible probability of discrimination. 
 Theoretical results of discrimination of 
 von Neumann measurements are well-known and characterized 
 in~\cite{puchala2018strategies}.   
-They devised the optimal discrimination strategy between two von Neumann measurements and also calculated the exact probability of their discrimination. 
 
-In this work we will consider the problem of discrimination between the von Neumann measurement in the computational basis  and  the von Neumann measurement in basis $U$, where $U$ is a unitary matrix. 
+
+
+In this work we will consider the problem of discrimination between von Neumann measurement in the computational basis  and  the von Neumann measurement in basis $U$, where $U$ is a unitary matrix. 
 This scheme is 
-presented in Fig.~\ref{fig:scheme} and 
+presented in Fig.~\ref{fig:theoretical_scheme} and 
 can be divided into the following steps:
 
 
-\begin{figure}[h!]
-	\centering 
-	\includegraphics[width=0.9\linewidth]{gates1.pdf} 
-	\caption{A schematic representation of the setup for distinguishing
-		measurements by using entanglement. }
-	\label{fig:scheme}
-\end{figure}
+%\begin{figure}[h!]
+%	\centering 
+%	\includegraphics[width=0.9\linewidth]{gates1.pdf} 
+%	\caption{A schematic representation of the setup for distinguishing
+%		measurements by using entanglement. }
+%	\label{fig:scheme}
+%\end{figure}
 
 
 
 \begin{figure}[h!]
 	\centering
-	\includegraphics[scale=1.5]{pics/theoretical_scheme}
+	\includegraphics[scale=1.7]{pics/theoretical_scheme}
 	\caption{Theoretical discrimination scheme}
 	\label{fig:theoretical_scheme}
 \end{figure}
-\todo[inline]{tan powinien byc $\PP_{V_i}$}
+
 
 \begin{enumerate}\item Alice and Bob share entanglement state $\ket{\psi_{AB}}$.
 	\item Alice performs one of two known measurements,  say $\PP_{\Id}$ and $\PP_{U}$,  on part $A$ of the input 
 	state  $\ket{\psi_{AB}}$.
-	\item Alice  uses
-	the output label $i$ and performs the conditional binary measurement on the part 
-	$B$.
+	\item Alice   performs the conditional binary measurement on the part 
+	$B$ based on
+	the output label $i$. 
 	\item  Bob measures the part $B$ of the input state  $\ket{\psi_{AB}}$ and 
 	makes a decision based on received label $j$. If $j=0$, he decides that the measurement $\PP_U$ is hidden in the black box. Otherwise, he decides that the measurement $\PP_{\Id}$ was hidden in the black box. 
 \end{enumerate}  
@@ -415,90 +402,101 @@ can be divided into the following steps:
 
 
 Let us take a closer look at the setup for distinguishing von Neumann 
-measurements (see Fig.~\ref{fig:scheme}). One of the components of such a 
-scheme is to perform the conditional binary measurement. The first limitation 
+measurements (see Fig.~\ref{fig:theoretical_scheme}). One of the components of such a 
+scheme is to perform the conditional binary measurement. The first limitation of NISQ devices 
 is a lack of possibility of implementing the conditional binary measurement. 
 The only possible measurement performed on quantum architectures is the measurement 
 on a computational basis. 
 Here, we present two possible methods that provide a clever way to cross the obstacle (two schemes of practical realization). 
 
 
-The first way is a postselection scheme which can be described as 
-follow.  The schematic representation of this setup we can see on Fig.~\ref{postselection}.     
+The first way is to use a postselection whereas the second method is to apply a controlled unitary. The methods are described above. 
+
 \begin{scheme}(By using postsellection)
 
 
-\todo[inline]{PAMIETAJ O DAGGERACH  no i u nas to bedzie nazwane $\PP_{V^\dagger_j}$!!!} 
-\begin{figure}[h!]
-	\includegraphics[scale=1.5]{onequbit.pdf}
-	\caption{A schematic representation of the setup for distinguishing
-		measurements using postselection.}
-	\label{postselection}
-\end{figure}
+\todo[inline]{wyzej mamy bez daggera, trzeba to ustalic} 
+%\begin{figure}[h!]
+%	\includegraphics[scale=1.5]{onequbit.pdf}
+%	\caption{A schematic representation of the setup for distinguishing
+%		measurements using postselection.}
+%	\label{postselection}
+%\end{figure}
 
 
 
+
+
+
+\begin{enumerate}
+	\item Alice and Bob prepare entanglement state $\ket{\psi_{AB}}$.
+	\item Alice performs one of two quantum channels, $\Phi_{\Id}$ and $\Phi_{U}$,  on part $A$ of the input 
+	state  $\ket{\psi_{AB}}$.
+	\item Alice measures the part $A$ of the input state  $\ket{\psi_{AB}}$ and receives an output label $i$.
+	\item  
+	From Holevo--Helstrom theorem, 
+	 Bob performs the conditional binary measurement $\PP_{V_j^\dagger}$ on the part 	$B$.
+	\item They include these cases for which $i = j$. Otherwise, they reject them.
+	\item
+	Bob measures the part $B$ of the input state  $\ket{\psi_{AB}}$ and 
+	makes a decision based on received label $j$. If $j=0$, he decides that the measurement $\PP_U$ is hidden in the black box. Otherwise, he decides that the measurement $\PP_{\Id}$ was hidden in the black box. 
+\end{enumerate}
+
+
+The schematic representation of this setup we can see on Fig.~\ref{fig:postsellection}.     
 
 \begin{figure}[h!]
 	\centering 
-	\includegraphics[scale=1.2]{pics/postselection} 
+	\includegraphics[scale=1.7]{pics/postselection} 
 	
 	\caption{ A schematic representation of the setup for distinguishing
 		measurements using postselection. 
 	}\label{fig:postsellection}
-\end{figure} 
-\begin{enumerate}
-	\item We prepare input state $\ket{\psi_{AB}}$.
-	\item One of two measurements is performed on part A.
-	\item We prepare optimal measurements $V_j$, which are well known by 
-	Holevo--Helstrom theorem and perform them on part $B$.
-	\item We receive an output label $i$.
-	\item We include these cases for which $i = j$. Otherwise, we reject them.
-	\item By the use of $V_j$ output, we decide whether the measurement was 
-	performed on part $A$.
-	\item We count the probability of postselection.
-\end{enumerate}
+\end{figure}  
 
-%	\begin{enumerate}
-%		\item We prepare input state $\ket{\psi} = \frac{1}{\sqrt{2} } | \Id_2 \rangle 
-%		\rangle. $
-%		\item We prepare one of two unitary channel $\Phi_{U} $ or $\Phi_{\1}$. 
-%		\item We implement unitary $V_0 $ or $ V_1$.
-%		\item We prepare the measurement $\Delta$ in standard basis (already exists on 
-%		Rigetti architecture) on each qubits.
-%		\item We calculate the probability of correct discrimination in the following 
-%		way
-%		\begin{equation}
-%		p = ...
-%		\end{equation}
-%		%\todo[inline]{grubsza kmina, musze Ci to na zywo opowiedziec xd}
-%	\end{enumerate}
+
+PROBABILITY 
+		\begin{equation}
+		p = ...
+		\end{equation}
+		%\todo[inline]{grubsza kmina, musze Ci to na zywo opowiedziec xd}
+
 \end{scheme}
 
 
 \begin{scheme}(By using controlled unitary)
-	\begin{figure}[h!]
-		\centering 
-		\includegraphics[scale=1.2]{pics/controlled_unitary} 
-		
-		\caption{ A schematic representation of the setup for distinguishing
-			measurements using controlled unitary gate. 
-		}\label{fig:controlled}
-	\end{figure}
+	
+
+
 	\begin{enumerate}
-		\item We prepare input state $\ket{\psi} = \frac{1}{\sqrt{2} } | \Id_2 \rangle 
-		\rangle. $
-		\item We prepare one of two unitary channel $\Phi_{U} $ or $\Phi_{\1}$. 
-		\item We implement controlled unitary $V_0 \oplus V_1$.
-		\item We prepare the measurement $\Delta$ in standard basis (already exist on 
-		Rigetti architecture) on each qubits.
-		\item We calculate the probability of correct discrimination in the following 
-		way
-		\begin{equation}
-		p = \frac{|j=0 \wedge \Phi_{U} | + |j=1 \wedge \Phi_{\1}|}{\text{all 
-				cases}}
-		\end{equation}
+			\item Alice and Bob prepare entanglement state $\ket{\psi_{AB}}$.
+%		\item We prepare input state $\ket{\psi} = \frac{1}{\sqrt{2} } | \Id_2 \rangle 
+%		\rangle. $
+		\item Alice performs one of two quantum channels, $\Phi_{\Id}$ and $\Phi_{U}$,  on part $A$ of the input 
+		state  $\ket{\psi_{AB}}$.
+		\item Alice and Bob implement controlled unitary $V_0 \oplus V_1$ obtained from Holevo--Helstrom theorem.	
+		\item Alice and Bob prepare the measurement $\Delta$ in computational basis on theirs systems.
+		\item Bob	makes a decision based on received label $j$. If $j=0$, he decides that the measurement $\PP_U$ is hidden in the black box. Otherwise, he decides that the measurement $\PP_{\Id}$ was hidden in the black box.  
+		
 	\end{enumerate}
+
+\begin{figure}[h!]
+	\centering 
+	\includegraphics[scale=1.5]{pics/controlled_unitary} 
+	
+	\caption{ A schematic representation of the setup for distinguishing
+		measurements using controlled unitary gate. 
+	}\label{fig:controlled}
+\end{figure} 
+
+
+PROBABILITY 
+
+\begin{equation}
+p = \frac{|j=0 \wedge \Phi_{U} | + |j=1 \wedge \Phi_{\1}|}{\text{all 
+		cases}}
+\end{equation}
+
 \end{scheme}
 
 
@@ -522,6 +520,10 @@ $\DD \UU_d$.  We will also need a linear
 mapping transforming $M_{d_1}$ into $M_{d_2}$, which will be denoted \begin{equation}
 \Phi: M_{d_1 } \rightarrow M_{d_2}.
 \end{equation} 
+There
+exists a bijection between introduced linear mappings $\Phi$ and set of matrices $M_{d_1d_2}$,  known as the Choi-
+Jamio{\l}kowski isomorphism. 
+
 
 Finally, we introduce a special subset of all mappings $\Phi$, called quantum channels, which are completely positive
 and trace preserving (CPTP).
@@ -537,33 +539,35 @@ parameterized by a unitary matrix and hence we will use the notation $\PP_{U}$
 for a von Neumann measurement with effects $\{\proj{u_0}, \ldots, \proj{u_{d-1}}\}$,
 where $\ket{u_i}$ is the $i+1$-th column of the unitary matrix $U$. The action of
 quantum measurement $\PP_{U}$ on some state $\rho \in \Omega_d$ can be
-expressed as the action of a quantum channel
+seen as  a measure-and-prepare quantum channel as follows 
 $
 \PP_{U} : \rho \rightarrow \sum_{i=0}^{d-1} \bra{u_i} \rho \ket{u_i} \proj{i}.
-$ Every von Neumann measurement  $\PP_{U}$ can be also rewritten as $\Delta 
+$ It is worth noting that a given  von Neumann measurement  $\PP_{U}$ can be also rewritten as $\Delta 
 \circ \Phi_{(UE)^\dagger}$, where $\Delta$ denotes the completely dephasing 
 channel.  
 
 
-
-
-
-
-
-
-\subsubsection{Discrimination of a quantum operations}
-This section defines a norm on the space of linear mappings, known as the diamond norm,
+\subsubsection{Diamond norm}
+This section defines a special norm on the space of linear mappings, known as the diamond norm,
 and establishes some of its properties. 
-Next, we will also explain the precise connection between this
+Next, we will also explain the precise connection between the diamond
 norm and the task of quantum operations discrimination. 
 
-Let us now consider a  linear mapping transforming  square matrices into square 
+Let us  consider a  linear mapping transforming  square matrices into square 
 matrices 
 that is $\Phi: M_{d_1} \to M_{d_2}$. 
  We define the diamond norm of a map $\Phi$ as 
 \begin{equation}
 \|\Phi\|_\diamond = \max_{\|X\|_1=1} \| \left(\Phi \otimes \1\right) (X) \|_1.
 \end{equation}
+
+
+\begin{equation}
+\| \Phi  \|_\diamond =  \max_{\rho \in \Omega_d} \| \left( \Id \otimes \sqrt{\rho} \right) \mathcal{J}_\Phi  \left( \Id \otimes \sqrt{\rho} \right)  \|_1  \end{equation}
+
+
+\subsubsection{Discrimination of a quantum operations}
+
 
 
 The celebrated result by Helstrom~\cite{helstrom1976quantum} gives the optimal  probability of correct discrimination between two quantum operations, $\TT$  and $\SS$, 
@@ -1201,22 +1205,22 @@ This work was supported by the Foundation for Polish Science (FNP) under grant
 number POIR.04.04.00-00-17C1/18-00.
 
 
-% The Appendices part is started with the command \appendix;
-% appendix sections are then done as normal sections
-% \appendix
+ \section{}
+ \label{}
 
-% \section{}
-% \label{}
+ References:
+ If you have bibdatabase file and want bibtex to generate the
+ bibitems, please use
 
-% References:
-% If you have bibdatabase file and want bibtex to generate the
-% bibitems, please use
-%
-%  \bibliographystyle{elsarticle-num} 
-%  \bibliography{<your bibdatabase>}
+  \bibliographystyle{elsarticle-num} 
+  \bibliography{<your bibdatabase>}
 
-% else use the following coding to input the bibitems directly in the
-% TeX file.
+ else use the following coding to input the bibitems directly in the
+ TeX file.
+ 
+ 
+ \bibliographystyle{ieeetr}
+ \bibliography{rigetti}
 
 \begin{thebibliography}{00}
 
