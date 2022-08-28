@@ -662,13 +662,13 @@ Assume that the unitary matrix $U$ is of the form
 U = H \diag (1, \ee^{\ii \phi}) H^\dagger,
 \end{equation}
 where $H$ is the Hadamard matrix of dimension two and $\phi \in [0, 2 \pi)$.
-In this section we will compare theoretical probability of correct 
-discrimination between these measurements and the realization on real devices.
-The theoretical probability can be calculated using Holevo-Helstrom theorem and 
+In this section we present theoretical probability of correct 
+discrimination between these measurements. Moreover, we create the optimal theoretical strategy of their discriminate. 
+Such a probability can be calculated using Holevo-Helstrom theorem and 
 Theorem 1 from~\cite{puchala2018strategies}. 
 This probability will be calculated in 
 subsection~\ref{sec:example_theoretical_probability}. Later, we will 
-discuss the realization of this scheme on real devices in 
+discuss the realization of this scheme in 
 subsection~\ref{sec:example_realization}. For such realization, we 
 will need the proper input state, (see sec.~\ref{sec:example_discriminator}) 
 and final measurement (see sec.~\ref{sec_example_final_measurement}). 
@@ -802,7 +802,7 @@ measurement in subsection~\ref{sec_example_final_measurement}.
 
 \subsubsection{Discriminator}\label{sec:example_discriminator}
 
-\begin{proposition}
+\begin{proposition}\label{prop-discrim}
 Consider the problem of discrimination between von Neumann measurements $\PP_U$ 
 and $\PP_\1$, $U = H\diag(1, e^{i \phi}) H^\dagger $ and $\phi \in [0, 
 2\pi)$.  The optimal input state has the form
@@ -966,8 +966,8 @@ and $\PP_\1$, $U = H\diag(1, e^{i \phi}) H^\dagger $ and $\phi \in [0,
 	
 	\begin{equation}
 	\begin{split}
-	\| \PP_{U} - \PP_{\Id}  \|_\diamond & =  \max_{\rho \in \Omega_d} \| \left( \Id \otimes \sqrt{\rho} \right) J(\PP_{U} - \PP_{\Id} )  \left( \Id \otimes \sqrt{\rho} \right)  \|_1   \\ & =  \max_{\rho \in \Omega_d} \| \left( \Id \otimes \sqrt{\rho} \right) \sum_{i=0}^{d-1} \proj{i} \otimes \left( \proj{u_i} - \proj{i} \right)^\top  \|_1  \\ & = \max_{\rho \in \Omega_d} \| \sum_{i=0}^{d-1} \proj{i} \otimes \sqrt{\rho}  \left( \proj{u_i} - \proj{i} \right)^\top \sqrt{\rho}  \|_1  \\ & = 
-	 \max_{\rho \in \Omega_d} \| \sum_{i=0}^{d-1}\sqrt{\rho}  \left( \proj{u_i} - \proj{i} \right)^\top \sqrt{\rho}  \|_1
+	\| \PP_{U} - \PP_{\Id}  \|_\diamond & =  \max_{\rho \in \Omega_2} \| \left( \Id \otimes \sqrt{\rho} \right) J(\PP_{U} - \PP_{\Id} )  \left( \Id \otimes \sqrt{\rho} \right)  \|_1   \\ & =  \max_{\rho \in \Omega_2} \| \left( \Id \otimes \sqrt{\rho} \right) \sum_{i=0}^{1} \proj{i} \otimes \left( \proj{u_i} - \proj{i} \right)^\top  \|_1  \\ & = \max_{\rho \in \Omega_2} \| \sum_{i=0}^{1} \proj{i} \otimes \sqrt{\rho}  \left( \proj{u_i} - \proj{i} \right)^\top \sqrt{\rho}  \|_1  \\ & = 
+	 \max_{\rho \in \Omega_2} \| \sum_{i=0}^{1}\sqrt{\rho}  \left( \proj{u_i} - \proj{i} \right)^\top \sqrt{\rho}  \|_1
 	\end{split}
 	\end{equation}
 	We can prove that for all $\alpha, \beta \ge 0 $, and unit vectors $\ket{x}, \ket{y}$ the following equation holds 
@@ -976,28 +976,33 @@ and $\PP_\1$, $U = H\diag(1, e^{i \phi}) H^\dagger $ and $\phi \in [0,
 	\end{equation}
 	By taking $\ket{x} = \frac{\sqrt{\rho} \ket{\bar{u_i}}}{\| \sqrt{\rho} \ket{\bar{u_i}} \|}$ and $ \ket{y} = \frac{\sqrt{\rho} \ket{i}}{\|\sqrt{\rho} \ket{i} \|}$ we obtain 
 	\begin{equation}
-		\| \PP_{U} - \PP_{\Id}  \|_\diamond  = \max_{\rho \in \Omega_d} \sum_{i=0}^{d-1} \sqrt{\left( \bra{u_i} \rho \ket{u_i} + \bra{i} \rho \ket{i }\right)^2 - 4 | \bra{u_i} \rho \ket{i} |^2}.
+		\| \PP_{U} - \PP_{\Id}  \|_\diamond  = \max_{\rho \in \Omega_2} \sum_{i=0}^{1} \sqrt{\left( \bra{u_i} \rho \ket{u_i} + \bra{i} \rho \ket{i }\right)^2 - 4 | \bra{u_i} \rho \ket{i} |^2}.
 	\end{equation}
 	\todo[inline]{dokonczyc}
-	
-	Let us consider  $\rho =   \frac{1}{2}  	\left(\begin{array}{cc}1&0\\0&1\end{array}\right)  $,   we obtain
+	Let us take  $\rho_0 =   \frac{1}{2}  	\left(\begin{array}{cc}1&0\\0&1\end{array}\right)  $,   we obtain
 	\begin{equation}
 	\begin{split}
 	||\mathcal{P}_U - \mathcal{P}_{\1}||_\diamond &= \sum_{i=0}^1  
-	\sqrt{\left(\bra{u_i}\rho\ket{u_i} + \bra{i} \rho \ket{i} \right)^2 - 
-		4|\bra{i}\rho\ket{u_i}|^2} = \\&  \sum_{i=0}^1  \sqrt{4 \bra{i}\rho 
-		\ket{i}^2 - 4 \left| \frac{\lambda_1 \bra{i}\rho_1 \ket{i} + 
-			\lambda_2\bra{i} \rho_2\ket{i}}{2}\right|^2} =\\&  \sum_{i=0}^1  \sqrt{4 
-		\bra{i}\rho \ket{i}^2 - 4 \bra{i} \rho \ket{i}^2\left| \frac{\lambda_1 + 
-			\lambda_2}{2}\right|^2} = \\&  \sum_{i=0}^1 2 \bra{i} \rho \ket{i} \sqrt{1 
-		-\left| \frac{\lambda_1 + \lambda_2}{2}\right|^2 } = \\& 2 \sqrt{1 -\left| 
-		\frac{\lambda_1 + \lambda_2}{2}\right|^2 } = 
-	2 \sqrt{1 -\left| \frac{1+e^{i \phi}}{2}\right|^2 } = |1-e^{i \phi }|. 
+	\sqrt{\left(\bra{u_i}\rho_0\ket{u_i} + \bra{i} \rho_0 \ket{i} \right)^2 - 
+		4|\bra{i}\rho_0\ket{u_i}|^2} = \\& 
+	\sum_{i=0}^1  \sqrt{ \braket{i}{i}^2 -  \left| \bra{i}  U \ket{i }\right|^2} = \\ & 
+	 \sum_{i=0}^1  \sqrt{\braket{i}{i}^2 -  \left| 1 \cdot \bra{i} \proj{u_1} \ket{i} + 
+			e^{i \phi} \cdot\bra{i}  \proj{u_2}\ket{i}\right|^2} =\\&  \sum_{i=0}^1  \sqrt{ 
+		\braket{i}{i}^2 -\braket{i}{i}^2\left| \frac{1 + 
+			e^{i \phi}}{2}\right|^2} = \\&  \sum_{i=0}^1\braket{i}{i} \sqrt{1 
+		-\left| \frac{1+ e^{i \phi}}{2}\right|^2 } = 
+	2 \sqrt{1 -\left| \frac{1+e^{i \phi}}{2}\right|^2 } = \frac{|1-e^{i \phi }|}{2}. 
 	\end{split}
 	\end{equation}
-	From the definition of Choi matrix $J(\Phi)$ of $\Phi$ we have
+	Due to that, we know  
+	that $| \sqrt{\rho}^{\top} \rangle \rangle$ is the discriminator of the problem of discrimination between 
+	$\PP_{\Id} $ and $\PP_U$, where 
+	$ U =  H \diag(1, e^{i \phi}) H^\dagger$ (from definition of diamond norm ).      
+	
+
 	\begin{equation}
-\| (\Id\otimes \sqrt{\rho} ) J(\Phi)  (\Id\otimes \sqrt{\rho} ) \|_1  =  \| (\Phi \otimes \Id) \left(  | \sqrt{\rho}^\top \rangle  \rangle \langle \langle \sqrt{\rho}^\top | \right) \|_1.
+		\| \PP_{U} - \PP_{\Id}  \|_\diamond  =  \| \left( \Id \otimes \sqrt{\rho} \right) J(\PP_{U} - \PP_{\Id} )  \left( \Id \otimes \sqrt{\rho} \right)  \|_1  
+=  \left\| ( (\PP_{U} - \PP_\Id) \otimes \Id) \left(  | \sqrt{\rho}^\top \rangle  \rangle \langle \langle \sqrt{\rho}^\top | \right) \right\|_1.
 	\end{equation}
 	So we obtain that \begin{equation}
 	\ket{\psi_{AB}} =   | \sqrt{\rho}^\top \rangle  \rangle = \frac{1}{\sqrt{2} } | \Id_2 \rangle \rangle, 
@@ -1031,6 +1036,9 @@ for $U = H \diag(1, e^{i \phi}) H^\dagger$, where $\phi \in [0, 2\pi)$.
 
 
 \begin{proposition}
+	Consider the problem of discrimination between von Neumann measurements $\PP_U$ 
+	and $\PP_\1$, $U = H\diag(1, e^{i \phi}) H^\dagger $ and $\phi \in [0, 
+	2\pi)$.  
 The  final measurement has the form
 \begin{equation}
 \begin{split}
@@ -1053,11 +1061,10 @@ V_1 = \left(\begin{array}{cc}-i \cos\left(\frac{\pi - \phi}{4}\right) &i
 &  \cos\left( \frac{\pi - \phi}{4} \right) \end{array}\right).
 \end{equation}
 \end{proposition}
-\todo[inline]{add proof of the proposition}
 
 
-From ~\cite{puchala2018strategies}(Proposition 4) and Lemma~\ref{lemma:rho} we 
-have 
+\begin{proof}
+From Proposition~\ref{prop-discrim} we have the form of discriminator given by
 \begin{equation}
 \ket{\psi} = | \sqrt{\rho}^\top \rangle \rangle = \frac{1}{\sqrt{2}} |\Id_2 
 \rangle \rangle. 
@@ -1065,14 +1072,13 @@ have
 From Holevo-Helstrom theorem  we constrain a measurement $\mu$.  
 Let us define \begin{equation}
 X  = \left( \PP_U \otimes \Id_2 \right)(\proj{\psi}) -  \left( \PP_\Id 
-\otimes \Id_2 \right)(\proj{\psi})
-\end{equation}
-where $\ket{\psi}$ is defined in Remark~\ref{remark:discriminator}. From 
-Hahn-Jordan decomposition let \begin{equation}
+\otimes \Id_2 \right)(\proj{\psi}).
+\end{equation} From 
+We consider the Hahn-Jordan decomposition, let \begin{equation}
 X = P - Q
 \end{equation}
 where $P, Q \ge 0 $. Observe, that $P $ and $Q$ are block-diagonal. 
-Let us define projectors $\Pi_P$ and $\Pi_Q$ onto  $im(P)$ and $im(Q)$, 
+So, let us define projectors $\Pi_P$ and $\Pi_Q$ onto  $\text{im}(P)$ and $\text{im}(Q)$, 
 respectively. Then  $\Pi_P$ and $\Pi_Q$ have the following forms
 \begin{equation}
 \Pi_P = \left(\begin{array}{cc}\proj{x_p}&0\\0&\proj{y_p}\end{array}\right) 
@@ -1083,19 +1089,30 @@ and
 \end{equation}
 Hence, we define $V_0$ such that
 \begin{equation}
-\begin{split}
-V_0 \ket{x_p} = \ket{0} \\ 
-V_0 \ket{x_q} = \ket{1}
-\end{split}
+\begin{cases} V_0 \ket{x_p} = \ket{0} \\ V_0 \ket{x_q} = \ket{1} \end{cases}
 \end{equation}
 and $V_1$ such that
 \begin{equation}
-\begin{split}
+\begin{cases} 
 V_1 \ket{y_p} = \ket{0} \\ 
 V_1 \ket{y_q} = \ket{1}
-\end{split}
+\end{cases} 
 \end{equation}
-The explicit form of $V_0$ and $V_1$ we can see in \texttt{one-qubit.nb}.
+For the discrimination task between $\PP_{U}$ and $\PP_{\Id}$, where $U = H \diag(1, e^{i \phi })H$, the explicit form of $V_0$ and $V_1$ is given by following (see also \texttt{one-qubit.nb}).
+The unitary $V_0$ 
+has the following form
+\begin{equation}
+V_0 = \left(\begin{array}{cc}i \sin\left( \frac{\pi - \phi}{4} \right)&-i 
+\cos\left( \frac{\pi - \phi}{4} \right)\\ \cos\left( \frac{\pi - 
+	\phi}{4}\right)& \sin\left( \frac{\pi - \phi}{4} \right)\end{array}\right),
+\end{equation}
+whereas the unitary  $V_1$  has the form
+\begin{equation}
+V_1 = \left(\begin{array}{cc}-i \cos\left(\frac{\pi - \phi}{4}\right) &i 
+\sin\left( \frac{\pi - \phi}{4}\right)\\\sin\left( \frac{\pi - \phi}{4} 
+\right) &  \cos\left( \frac{\pi - \phi}{4} \right) \end{array}\right).
+\end{equation}
+for all $\phi \in [0,2\pi)$. 
 Finally, we obtain the measurement $\mu$ of the form
 \begin{equation}
 \begin{split}
@@ -1104,31 +1121,18 @@ Finally, we obtain the measurement $\mu$ of the form
 \mu(1) = \proj{0} \otimes V_0 \proj{1} V_0^\dagger +  \proj{1} \otimes V_1 
 \proj{1} V_1^\dagger  
 \end{split}
-\end{equation}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
+\end{equation} 
 
 
 
-\paragraph{Construction of $V_0$ and $V_1$}
-	For each $\phi \in \mathbb{R}$,  the controlled unitary $V_0$ and $V_1$ 
-	have the following form
-	\begin{equation}
-	V_0 = \left(\begin{array}{cc}i \sin\left( \frac{\pi - \phi}{4} \right)&-i 
-	\cos\left( \frac{\pi - \phi}{4} \right)\\ \cos\left( \frac{\pi - 
-	\phi}{4}\right)& \sin\left( \frac{\pi - \phi}{4} \right)\end{array}\right),
-	\end{equation}
-	
-		\begin{equation}
-	V_1 = \left(\begin{array}{cc}-i \cos\left(\frac{\pi - \phi}{4}\right) &i 
-	\sin\left( \frac{\pi - \phi}{4}\right)\\\sin\left( \frac{\pi - \phi}{4} 
-	\right) &  \cos\left( \frac{\pi - \phi}{4} \right) \end{array}\right).
-	\end{equation}
+\end{proof}
 
-\todo[inline]{obwody }
-\todo[inline]{TU WYNIKI Z RIGETTIEGO}
 
+\section{Implementation}
+In this section we will compare theoretical probability of correct 
+discrimination between these measurements and the realization on real devices.
+\todo[inline]{TU WYNIKI PRAKTYTCZNE }
+\todo[inline]{tu rozklad i obwody}	
 
 
 \subsection{Sample code snippets analysis (optional)}
