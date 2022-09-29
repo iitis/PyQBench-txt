@@ -379,7 +379,7 @@ illustrated in Fig.~\ref{fig:theoretical_scheme}.
 
 
 \begin{enumerate}
-	\item Alice and Bob share an entangled state $\ket{\psi_{AB}}$ on registers 
+	\item Alice and Bob share an entangled state $\ket{\psi_{AB}}$ on systems 
 	$A$ and $B$.
 	\item Alice performs one of two known measurements (either $\PP_{\Id}$ or 
 	$\PP_{U}$) on part $A$ of the input state  $\ket{\psi_{AB}}$.
@@ -403,15 +403,16 @@ illustrated in Fig.~\ref{fig:theoretical_scheme}.
 
 
 Let us take a closer look at the setup for distinguishing von Neumann 
-measurements (see Fig.~\ref{fig:theoretical_scheme}). One of the components of such a 
-scheme is to perform the conditional binary measurement. The first limitation of NISQ devices 
-is a lack of possibility of implementing the conditional binary measurement. 
-The only possible measurement performed on quantum architectures is the measurement 
-on a computational basis. 
-Here, we present two possible methods that provide a clever way to cross the obstacle (two schemes of practical realization). 
-
-
-The first way is to use a postselection whereas the second method is to apply a controlled unitary. The methods are described above. 
+measurements (see Fig.~\ref{fig:theoretical_scheme}). One of the components of 
+this scheme is to perform the conditional binary measurement. 
+Unfortunately, current NISQ devices do not allow for performing conditional 
+binary measurements.
+The only possible measurement performed on quantum architectures is the 
+measurement in the computational basis. 
+We  will present two possible methods providing a clever way to cross this 
+obstacle. These will be two schemes of practical realization. 
+The first method consists in using post-selection while the second method 
+consists in applying a controlled unitary. These methods are described below. 
 
 \begin{scheme}(By using postsellection)
 
@@ -430,21 +431,26 @@ The first way is to use a postselection whereas the second method is to apply a 
 
 
 \begin{enumerate}
-	\item Alice and Bob prepare entanglement state $\ket{\psi_{AB}}$.
-	\item Alice performs one of two quantum channels, $\Phi_{\Id}$ and $\Phi_{U}$,  on part $A$ of the input 
-	state  $\ket{\psi_{AB}}$.
-	\item Alice measures the part $A$ of the input state  $\ket{\psi_{AB}}$ and receives an output label $i$.
-	\item  
-	From Holevo--Helstrom theorem, 
-	 Bob performs the conditional binary measurement $\PP_{V_j^\dagger}$ on the part 	$B$.
-	\item They include these cases for which $i = j$. Otherwise, they reject them.
-	\item
-	Bob measures the part $B$ of the input state  $\ket{\psi_{AB}}$ and 
-	makes a decision based on received label $j$. If $j=0$, he decides that the measurement $\PP_U$ is hidden in the black box. Otherwise, he decides that the measurement $\PP_{\Id}$ was hidden in the black box. 
+\item Alice and Bob prepare an entangled state $\ket{\psi_{AB}}$ on systems 
+$A$ and $B$.
+\item Alice performs one of two quantum channels, either $\Phi_{\Id}$ or 
+$\Phi_{U}$,  on part $A$ of the input state  $\ket{\psi_{AB}}$.
+\item Alice measures part $A$ of the input state  $\ket{\psi_{AB}}$ and 
+receives an output label $i$.
+\item  
+From Holevo--Helstrom theorem, Bob performs the conditional binary 
+measurement	$\PP_{V_j^\dagger}$ on part $B$.
+\item They include the cases for which $i = j$.\todo{?} Otherwise, they reject 
+them. 
+\item Bob measures part $B$ of the input state  $\ket{\psi_{AB}}$ and makes a
+decision based on received label $j$. If $j=0$, then he decides that the the
+black box contains $\PP_U$. Otherwise, he decides that the black box contains
+$\PP_{\Id}$.
 \end{enumerate}
 
 
-The schematic representation of this setup we can see on Fig.~\ref{fig:postsellection}.     
+The schematic representation of this setup is depicted in 
+Fig.~\ref{fig:postsellection}.     
 
 \begin{figure}[h!]
 	\centering 
@@ -469,18 +475,24 @@ PROBABILITY
 	
 
 
-	\begin{enumerate}
-			\item Alice and Bob prepare entanglement state $\ket{\psi_{AB}}$.
-%		\item We prepare input state $\ket{\psi} = \frac{1}{\sqrt{2} } | \Id_2 \rangle 
-%		\rangle. $
-		\item Alice performs one of two quantum channels, $\Phi_{\Id}$ and $\Phi_{U}$,  on part $A$ of the input 
-		state  $\ket{\psi_{AB}}$.
-		\item Alice and Bob implement controlled unitary $V_0 \oplus V_1$ obtained from Holevo--Helstrom theorem.	
-		\item Alice and Bob prepare the measurement $\Delta$ in computational basis on theirs systems.
-		\item Bob	makes a decision based on received label $j$. If $j=0$, he decides that the measurement $\PP_U$ is hidden in the black box. Otherwise, he decides that the measurement $\PP_{\Id}$ was hidden in the black box.  
-		
-	\end{enumerate}
+\begin{enumerate}
+\item Alice and Bob prepare an entangled state $\ket{\psi_{AB}}$ on 
+systems $A$ and $B$..
+%\item We prepare input state $\ket{\psi} = \frac{1}{\sqrt{2} } | \Id_2 \rangle 
+%\rangle. $
+\item Alice performs one of two quantum channels, either $\Phi_{\Id}$ or
+$\Phi_{U}$,  on part $A$ of the input state  $\ket{\psi_{AB}}$.
+\item Alice and Bob implement controlled unitary $V_0 \oplus V_1$ obtained from 
+Holevo--Helstrom theorem.	
+\item Alice and Bob prepare the measurement $\Delta$ in computational basis on 
+their systems.
+\item Bob makes a decision based on received label $j$. If $j=0$, then he
+decides that the the black box contains $\PP_U$. Otherwise, he decides that the
+black box contains $\PP_{\Id}$.
+\end{enumerate}
 
+The schematic representation of this setup is depicted in 
+Fig.~\ref{fig:controlled}.     
 \begin{figure}[h!]
 	\centering 
 	\includegraphics[scale=1.5]{pics/controlled_unitary} 
