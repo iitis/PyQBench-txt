@@ -729,7 +729,7 @@ This condition is equivalent to
 	\end{equation}
 	For that, our task is reduce to show that
 	\begin{equation}
-	\forall E \in \diaguni_2 \,\, | \tr \left(\rho U E\right) | \le \nu. 
+	\forall_{E \in \diaguni_2} \,\, | \tr \left(\rho U E\right) | \le \nu. 
 	\end{equation}
 	Let us define $E = \left(\begin{array}{cc}E_0&0\\0&E_1\end{array}\right)  $ 
 	and let us take $\rho = 
@@ -738,7 +738,8 @@ This condition is equivalent to
 	\begin{equation}
 	U= \lambda_1 \ketbra{x_1}{x_1} + \lambda_2 \ketbra{x_1}{x_2}, 
 	\end{equation}
-	where  for eigenvector $\lambda_1 = e^{i \phi}$ the eigenvector is 
+	where  for eigenvalue $\lambda_1 = e^{i \phi}$, the corresponding 
+	eigenvector is 
 	of the form $\ket{x_1} = 
 	\left[\begin{array}{c}\frac{1}{\sqrt{2}}\\-\frac{1}{\sqrt{2}}\end{array}\right]$,
 	whereas for  $\lambda_2 = 1$ we have $\ket{x_2} = 
@@ -773,12 +774,13 @@ p = \frac{1}{2} + \frac{|1 - e^{i \phi}  |}{4} .
 	\begin{equation}
 	p = \frac{1}{2} + \frac{1}{4} \| \PP_{U} - \PP_{\Id} \|_\diamond.
 	\end{equation}
-	Whereas, from Theorem 1 in \cite{puchala2018strategies}, we have 
+	From Theorem 1 in~\cite{puchala2018strategies} we have 
 	\begin{equation}
 	\|\PP_U - \PP_\Id\|_\diamond = \min_{E \in \diaguni_d} \|\Phi_{UE} - 
 	\Phi_\Id\|_\diamond. 
 	\end{equation}
-	From Lemma~\ref{lemma:min-e-optimal} we show that 
+	From Lemma~\ref{lemma:min-e-optimal} we know that for our unitary matrix 
+	$U =  H \diag(1, e^{i \phi}) H^\dagger$ it also holds that
 	\begin{equation}
 		\min_{E \in \diaguni_2} \|\Phi_{UE} - 
 	\Phi_\Id\|_\diamond = \|\Phi_{U} - 
@@ -973,51 +975,79 @@ and $\PP_\1$, $U = H\diag(1, e^{i \phi}) H^\dagger $ and $\phi \in [0,
 %%	\end{split}
 %%	\end{equation
 \begin{proof}
-	
-	\begin{equation}
-	\begin{split}
-	\| \PP_{U} - \PP_{\Id}  \|_\diamond & =  \max_{\rho \in \Omega_2} \| \left( \Id \otimes \sqrt{\rho} \right) J(\PP_{U} - \PP_{\Id} )  \left( \Id \otimes \sqrt{\rho} \right)  \|_1   \\ & =  \max_{\rho \in \Omega_2} \| \left( \Id \otimes \sqrt{\rho} \right) \sum_{i=0}^{1} \proj{i} \otimes \left( \proj{u_i} - \proj{i} \right)^\top  \|_1  \\ & = \max_{\rho \in \Omega_2} \| \sum_{i=0}^{1} \proj{i} \otimes \sqrt{\rho}  \left( \proj{u_i} - \proj{i} \right)^\top \sqrt{\rho}  \|_1  \\ & = 
-	 \max_{\rho \in \Omega_2} \| \sum_{i=0}^{1}\sqrt{\rho}  \left( \proj{u_i} - \proj{i} \right)^\top \sqrt{\rho}  \|_1
-	\end{split}
-	\end{equation}
-	We can prove that for all $\alpha, \beta \ge 0 $, and unit vectors $\ket{x}, \ket{y}$ the following equation holds 
-	\begin{equation}
-	\| \alpha \proj{x} - \beta\proj{y} \|_1 = \sqrt{(\alpha + \beta)^2 - 4\alpha \beta |\braket{x}{y}|^2}.
-	\end{equation}
-	By taking $\ket{x} = \frac{\sqrt{\rho} \ket{\bar{u_i}}}{\| \sqrt{\rho} \ket{\bar{u_i}} \|}$ and $ \ket{y} = \frac{\sqrt{\rho} \ket{i}}{\|\sqrt{\rho} \ket{i} \|}$ we obtain 
-	\begin{equation}
-		\| \PP_{U} - \PP_{\Id}  \|_\diamond  = \max_{\rho \in \Omega_2} \sum_{i=0}^{1} \sqrt{\left( \bra{u_i} \rho \ket{u_i} + \bra{i} \rho \ket{i }\right)^2 - 4 | \bra{u_i} \rho \ket{i} |^2}.
-	\end{equation}
-	\todo[inline]{dokonczyc}
-	Let us take  $\rho_0 =   \frac{1}{2}  	\left(\begin{array}{cc}1&0\\0&1\end{array}\right)  $,   we obtain
-	\begin{equation}
-	\begin{split}
-	||\mathcal{P}_U - \mathcal{P}_{\1}||_\diamond &= \sum_{i=0}^1  
-	\sqrt{\left(\bra{u_i}\rho_0\ket{u_i} + \bra{i} \rho_0 \ket{i} \right)^2 - 
-		4|\bra{i}\rho_0\ket{u_i}|^2} = \\& 
-	\sum_{i=0}^1  \sqrt{ \braket{i}{i}^2 -  \left| \bra{i}  U \ket{i }\right|^2} = \\ & 
-	 \sum_{i=0}^1  \sqrt{\braket{i}{i}^2 -  \left| 1 \cdot \bra{i} \proj{u_1} \ket{i} + 
-			e^{i \phi} \cdot\bra{i}  \proj{u_2}\ket{i}\right|^2} =\\&  \sum_{i=0}^1  \sqrt{ 
-		\braket{i}{i}^2 -\braket{i}{i}^2\left| \frac{1 + 
-			e^{i \phi}}{2}\right|^2} = \\&  \sum_{i=0}^1\braket{i}{i} \sqrt{1 
-		-\left| \frac{1+ e^{i \phi}}{2}\right|^2 } = 
-	2 \sqrt{1 -\left| \frac{1+e^{i \phi}}{2}\right|^2 } = \frac{|1-e^{i \phi }|}{2}. 
-	\end{split}
-	\end{equation}
-	Due to that, we know  
-	that $| \sqrt{\rho}^{\top} \rangle \rangle$ is the discriminator of the problem of discrimination between 
-	$\PP_{\Id} $ and $\PP_U$, where 
-	$ U =  H \diag(1, e^{i \phi}) H^\dagger$ (from definition of diamond norm ).      
-	
 
-	\begin{equation}
-		\| \PP_{U} - \PP_{\Id}  \|_\diamond  =  \| \left( \Id \otimes \sqrt{\rho} \right) J(\PP_{U} - \PP_{\Id} )  \left( \Id \otimes \sqrt{\rho} \right)  \|_1  
-=  \left\| ( (\PP_{U} - \PP_\Id) \otimes \Id) \left(  | \sqrt{\rho}^\top \rangle  \rangle \langle \langle \sqrt{\rho}^\top | \right) \right\|_1.
-	\end{equation}
-	So we obtain that \begin{equation}
-	\ket{\psi_{AB}} =   | \sqrt{\rho}^\top \rangle  \rangle = \frac{1}{\sqrt{2} } | \Id_2 \rangle \rangle, 
-	\end{equation}
-	which completes the proof.
+\begin{equation}
+\begin{split}
+\| \PP_{U} - \PP_{\Id}  \|_\diamond 
+& =  \max_{\rho \in \Omega_2} \left\| \left( \Id \otimes \sqrt{\rho} \right) 
+J(\PP_{U} - \PP_{\Id} )  \left( \Id \otimes \sqrt{\rho} \right)  \right\|_1   
+\\ 
+& =  \max_{\rho \in \Omega_2} \left\| \left( \Id \otimes \sqrt{\rho} \right) 
+\sum_{i=0}^{1} \proj{i} \otimes \left( \proj{u_i} - \proj{i} \right)^\top  
+\right\|_1  \\ 
+& = \max_{\rho \in \Omega_2} \left\| \sum_{i=0}^{1} \proj{i} \otimes 
+\sqrt{\rho}  \left( \proj{u_i} - \proj{i} \right)^\top \sqrt{\rho}  \right\|_1  
+\\ 
+& = \max_{\rho \in \Omega_2} \left\| \sum_{i=0}^{1}\sqrt{\rho}  \left( 
+\proj{u_i} - \proj{i} \right)^\top \sqrt{\rho}  \right\|_1
+\end{split}
+\end{equation}
+One can prove that for all $\alpha, \beta \ge 0 $, and unit vectors $\ket{x}, 
+\ket{y}$ the following equation holds~\cite{watrous} 
+\begin{equation}
+\| \alpha \proj{x} - \beta\proj{y} \|_1 = \sqrt{(\alpha + \beta)^2 - 4\alpha 
+\beta |\braket{x}{y}|^2}.
+\end{equation}
+By taking $\ket{x} = \frac{\sqrt{\rho} \ket{\bar{u_i}}}{\| \sqrt{\rho} 
+\ket{\bar{u_i}} \|}$ and $ \ket{y} = \frac{\sqrt{\rho} \ket{i}}{\|\sqrt{\rho} 
+\ket{i} \|}$ we obtain 
+\begin{equation}
+	\| \PP_{U} - \PP_{\Id}  \|_\diamond  = \max_{\rho \in \Omega_2} 
+	\sum_{i=0}^{1} \sqrt{\left( \bra{u_i} \rho \ket{u_i} + \bra{i} \rho \ket{i 
+	}\right)^2 - 4 | \bra{u_i} \rho \ket{i} |^2}.
+\end{equation}
+\todo[inline]{dokonczyc}
+Let us take  $\rho_0 =   \frac{1}{2}  	
+\left(\begin{array}{cc}1&0\\0&1\end{array}\right)  $,   we obtain
+\begin{equation}
+\begin{split}
+||\mathcal{P}_U - \mathcal{P}_{\1}||_\diamond 
+&= \sum_{i=0}^1  
+\sqrt{\left(\bra{u_i}\rho_0\ket{u_i} + \bra{i} \rho_0 \ket{i} \right)^2 - 
+4|\bra{i}\rho_0\ket{u_i}|^2}  \\
+&= \sum_{i=0}^1  \sqrt{ \braket{i}{i}^2 -  \left| \bra{i}  U \ket{i }\right|^2} 
+\\ 
+&=\sum_{i=0}^1  \sqrt{\braket{i}{i}^2 -  \left| 1 \cdot \bra{i} \proj{u_1} 
+\ket{i} + e^{i \phi} \cdot\bra{i}  \proj{u_2}\ket{i}\right|^2} \\
+&= \sum_{i=0}^1  \sqrt{
+\braket{i}{i}^2 -\braket{i}{i}^2\left| \frac{1 + e^{i \phi}}{2}\right|^2}  \\
+&= \sum_{i=0}^1\braket{i}{i} \sqrt{1 -\left| \frac{1+ e^{i \phi}}{2}\right|^2 } 
+= 2 \sqrt{1 -\left| \frac{1+e^{i \phi}}{2}\right|^2 } \\
+&= \frac{|1-e^{i \phi }|}{2}.
+\end{split}
+\end{equation}
+Due to that, we know  
+that $| \sqrt{\rho}^{\top} \rangle \rangle$ is the discriminator of the problem 
+of discrimination between 
+$\PP_{\Id} $ and $\PP_U$, where 
+$ U =  H \diag(1, e^{i \phi}) H^\dagger$ (from definition of diamond norm 
+).      
+
+
+\begin{equation}
+\begin{split}
+\| \PP_{U} - \PP_{\Id}  \|_\diamond  
+&=  \| \left( \Id \otimes \sqrt{\rho} \right) J(\PP_{U} - \PP_{\Id} )  \left( 
+\Id \otimes \sqrt{\rho} \right) \|_1 \\
+&= \left\| ( (\PP_{U} - \PP_\Id) \otimes \Id) \left(  | \sqrt{\rho}^\top 
+\rangle \rangle \langle \langle \sqrt{\rho}^\top | \right) \right\|_1.
+\end{split}
+\end{equation}
+So we obtain that \begin{equation}
+\ket{\psi_{AB}} =   | \sqrt{\rho}^\top \rangle  \rangle = \frac{1}{\sqrt{2} } | 
+\Id_2 \rangle \rangle, 
+\end{equation}
+which completes the proof.
 \end{proof}
 
 
@@ -1080,11 +1110,13 @@ From Proposition~\ref{prop-discrim} we have the form of discriminator given by
 \rangle \rangle. 
 \end{equation}
 From Holevo-Helstrom theorem  we constrain a measurement $\mu$.  
-Let us define \begin{equation}
+Let us define 
+\begin{equation}
 X  = \left( \PP_U \otimes \Id_2 \right)(\proj{\psi}) -  \left( \PP_\Id 
 \otimes \Id_2 \right)(\proj{\psi}).
-\end{equation} From 
-We consider the Hahn-Jordan decomposition, let \begin{equation}
+\end{equation} 
+We consider the Hahn-Jordan decomposition. Let 
+\begin{equation}
 X = P - Q
 \end{equation}
 where $P, Q \ge 0 $. Observe, that $P $ and $Q$ are block-diagonal. 
@@ -1095,7 +1127,7 @@ respectively. Then  $\Pi_P$ and $\Pi_Q$ have the following forms
 \end{equation}
 and 
 \begin{equation}
-\Pi_Q = \left(\begin{array}{cc}\proj{x_q}&0\\0&\proj{y_q}\end{array}\right) 
+\Pi_Q = \left(\begin{array}{cc}\proj{x_q}&0\\0&\proj{y_q}\end{array}\right). 
 \end{equation}
 Hence, we define $V_0$ such that
 \begin{equation}
@@ -1106,21 +1138,25 @@ and $V_1$ such that
 \begin{cases} 
 V_1 \ket{y_p} = \ket{0} \\ 
 V_1 \ket{y_q} = \ket{1}
-\end{cases} 
+\end{cases}. 
 \end{equation}
-For the discrimination task between $\PP_{U}$ and $\PP_{\Id}$, where $U = H \diag(1, e^{i \phi })H$, the explicit form of $V_0$ and $V_1$ is given by following (see also \texttt{one-qubit.nb}).
-The unitary $V_0$ 
-has the following form
+For the discrimination task between $\PP_{U}$ and $\PP_{\Id}$, where $U = H 
+\diag(1, e^{i \phi })H$, the explicit form of $V_0$ and $V_1$ is given as 
+follows (see also \texttt{one-qubit.nb}).
+The unitary $V_0$ has the form
 \begin{equation}
-V_0 = \left(\begin{array}{cc}i \sin\left( \frac{\pi - \phi}{4} \right)&-i 
+V_0 = \left(
+\begin{array}{cc}i \sin\left( \frac{\pi - \phi}{4} \right)&-i 
 \cos\left( \frac{\pi - \phi}{4} \right)\\ \cos\left( \frac{\pi - 
-	\phi}{4}\right)& \sin\left( \frac{\pi - \phi}{4} \right)\end{array}\right),
+\phi}{4}\right)& \sin\left( \frac{\pi - \phi}{4} \right)
+\end{array}
+\right),
 \end{equation}
 whereas the unitary  $V_1$  has the form
 \begin{equation}
 V_1 = \left(\begin{array}{cc}-i \cos\left(\frac{\pi - \phi}{4}\right) &i 
 \sin\left( \frac{\pi - \phi}{4}\right)\\\sin\left( \frac{\pi - \phi}{4} 
-\right) &  \cos\left( \frac{\pi - \phi}{4} \right) \end{array}\right).
+\right) &  \cos\left( \frac{\pi - \phi}{4} \right) \end{array}\right)
 \end{equation}
 for all $\phi \in [0,2\pi)$. 
 Finally, we obtain the measurement $\mu$ of the form
@@ -1129,7 +1165,7 @@ Finally, we obtain the measurement $\mu$ of the form
 \mu(0) = \proj{0} \otimes V_0 \proj{0} V_0^\dagger +  \proj{1} \otimes V_1 
 \proj{0} V_1^\dagger  \\ 
 \mu(1) = \proj{0} \otimes V_0 \proj{1} V_0^\dagger +  \proj{1} \otimes V_1 
-\proj{1} V_1^\dagger  
+\proj{1} V_1^\dagger.  
 \end{split}
 \end{equation} 
 
