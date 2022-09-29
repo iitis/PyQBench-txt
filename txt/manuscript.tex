@@ -351,21 +351,22 @@ Amazon Braket.
 
 
 \subsubsection{Model specification}
-Theoretically, the scenario of this set-up assumes that Alice and Bob have an 
-unknown measurement device, a black--box. Alice has hidden one of the two 
-measurements, say $\SS$ and $\TT$,  in the black box. Bob only has information that it 
-performs one of such measurements. 
-They want to know the upper bound of the   probability of correct discrimination between $\SS$ and $\TT$ and construct the optimal discrimination strategy between them to achieve the highest possible probability of discrimination. 
-Theoretical results of discrimination of 
-von Neumann measurements are well-known and characterized 
-in~\cite{puchala2018strategies}.   
+The scenario assumes that Alice and Bob have access to an unknown measurement
+device, a black box. Alice has hidden one of the two measurements, either $\SS$
+or $\TT$, in the black box. Bob only has the information that the black box
+performs one of these measurements. They want to know the upper bound on the
+probability of correct discrimination between $\SS$ and $\TT$. They also want to
+construct the optimal discrimination strategy to achieve the highest probability
+of correct discrimination. Theoretical results on discrimination of von Neumann
+measurements are characterized in~\cite{puchala2018strategies}.
 
 
 
-In this work we will consider the problem of discrimination between von Neumann measurement in the computational basis  and  the von Neumann measurement in basis $U$, where $U$ is a unitary matrix. 
-This scheme is 
-presented in Fig.~\ref{fig:theoretical_scheme} and 
-can be divided into the following steps:
+In this work we will consider the problem of discrimination between von Neumann 
+measurement in the computational basis and a von Neumann measurement in basis 
+$U$, where $U$ is a unitary matrix. 
+The scheme of discrimination can be divided into the following steps, which are 
+illustrated in Fig.~\ref{fig:theoretical_scheme}.
 
 
 %\begin{figure}[h!]
@@ -377,6 +378,18 @@ can be divided into the following steps:
 %\end{figure}
 
 
+\begin{enumerate}
+	\item Alice and Bob share an entangled state $\ket{\psi_{AB}}$ on registers 
+	$A$ and $B$.
+	\item Alice performs one of two known measurements (either $\PP_{\Id}$ or 
+	$\PP_{U}$) on part $A$ of the input state  $\ket{\psi_{AB}}$.
+	\item Alice performs the conditional binary measurement on the part 
+	$B$ based on the output label $i$. 
+	\item  Bob measures part $B$ of the input state  $\ket{\psi_{AB}}$ and 
+	makes a decision based on the received label $j$. If $j=0$, then he decides 
+	that the the black box contains $\PP_U$. Otherwise, he decides that the 
+	black box contains $\PP_{\Id}$. 
+\end{enumerate}  
 
 \begin{figure}[h!]
 	\centering
@@ -384,18 +397,6 @@ can be divided into the following steps:
 	\caption{Theoretical discrimination scheme}
 	\label{fig:theoretical_scheme}
 \end{figure}
-
-
-\begin{enumerate}\item Alice and Bob share entanglement state $\ket{\psi_{AB}}$.
-	\item Alice performs one of two known measurements,  say $\PP_{\Id}$ and $\PP_{U}$,  on part $A$ of the input 
-	state  $\ket{\psi_{AB}}$.
-	\item Alice   performs the conditional binary measurement on the part 
-	$B$ based on
-	the output label $i$. 
-	\item  Bob measures the part $B$ of the input state  $\ket{\psi_{AB}}$ and 
-	makes a decision based on received label $j$. If $j=0$, he decides that the measurement $\PP_U$ is hidden in the black box. Otherwise, he decides that the measurement $\PP_{\Id}$ was hidden in the black box. 
-\end{enumerate}  
-
 
 \subsubsection{Quantum architecture's limits and practical solutions}
 
