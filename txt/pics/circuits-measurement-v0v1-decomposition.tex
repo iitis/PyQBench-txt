@@ -1,0 +1,69 @@
+\documentclass[border={28pt 0pt 1pt 0pt} ]{standalone}
+
+%\usepackage{tikz}
+\usepackage{qcircuit}
+
+\newcommand{\Id}{{\rm 1\hspace{-0.9mm}l}}
+\newcommand{\PP}{\mathcal{P}}
+\newcommand{\ket}[1]{\ensuremath{|#1\rangle}}
+\newcommand{\bra}[1]{\ensuremath{\langle#1|}}
+\newcommand{\ketbra}[2]{\ensuremath{\ket{#1}\bra{#2}}}
+\newcommand{\proj}[1]{\ensuremath{\ketbra{#1}{#1}}}
+
+\begin{document}
+
+
+ %%measurement v_0 and v_1 decomposition - generic 
+
+\Qcircuit @C=1em @R=1em  {
+	\lstick{V_0}   &  \gate{rz(-\pi/2)} &\gate{ry(-(\phi + \pi)/2)} &
+	\qw   
+ \\ 
+}   
+
+%
+%\Qcircuit @C=1em @R=1em  {
+%	\lstick{V_1}   &  \gate{rz(-\pi/2)} &\gate{ry(-(\phi + \pi)/2)} & \gate{rx(-\pi)} &
+%	\qw   
+%	\\ 
+%}  
+%
+% measurement v_0 and v_1 decomposition - lucy and ibmq
+%
+%
+%\Qcircuit @C=1em @R=1em  {
+%	\lstick{V_0}   &  \gate{rz(-\pi/2)} &\gate{sx()} & \gate{rz(-(\phi + \pi)/2)} & \gate{sx()} & \gate{x()} &
+%	\qw   
+%	\\ 
+%}
+%
+%
+%\Qcircuit @C=1em @R=1em  {
+%	\lstick{V_1}   &  \gate{rz(-\pi/2)} &\gate{sx()} & \gate{rz(-(\phi + \pi)/2)} & \gate{sx()} & \gate{x()} & \gate{sx()} &
+%	\qw   
+%	\\ 
+%}    
+%
+
+%
+% measurement v_0 and v_1 decomposition - rigetti
+%
+
+%\Qcircuit @C=1em @R=1em  {
+%	\lstick{V_0}   &  \gate{rz(-\pi/2)} &\gate{rx(\pi/2)} & \gate{rz(-(\phi + \pi)/2)} & \gate{rx(-\pi/2)} & 
+%	\qw   
+%	\\ 
+%}
+%
+%
+%
+%\Qcircuit @C=1em @R=1em  {
+%	\lstick{V_1}   &  \gate{rz(\pi/2)} &\gate{rx(\pi/2)} & \gate{rz(-(\phi + \pi)/2)} & \gate{rx(-\pi/2)} & 
+%	\qw   
+%	\\ 
+%}
+%
+%}  
+
+\end{document}
+
