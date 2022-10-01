@@ -351,21 +351,22 @@ Amazon Braket.
 
 
 \subsubsection{Model specification}
-Theoretically, the scenario of this set-up assumes that Alice and Bob have an 
-unknown measurement device, a black--box. Alice has hidden one of the two 
-measurements, say $\SS$ and $\TT$,  in the black box. Bob only has information that it 
-performs one of such measurements. 
-They want to know the upper bound of the   probability of correct discrimination between $\SS$ and $\TT$ and construct the optimal discrimination strategy between them to achieve the highest possible probability of discrimination. 
-Theoretical results of discrimination of 
-von Neumann measurements are well-known and characterized 
-in~\cite{puchala2018strategies}.   
+The scenario assumes that Alice and Bob have access to an unknown measurement
+device, a black box. Alice has hidden one of the two measurements, either $\SS$
+or $\TT$, in the black box. Bob only has the information that the black box
+performs one of these measurements. They want to know the upper bound on the
+probability of correct discrimination between $\SS$ and $\TT$. They also want to
+construct the optimal discrimination strategy to achieve the highest probability
+of correct discrimination. Theoretical results on discrimination of von Neumann
+measurements are characterized in~\cite{puchala2018strategies}.
 
 
 
-In this work we will consider the problem of discrimination between von Neumann measurement in the computational basis  and  the von Neumann measurement in basis $U$, where $U$ is a unitary matrix. 
-This scheme is 
-presented in Fig.~\ref{fig:theoretical_scheme} and 
-can be divided into the following steps:
+In this work we will consider the problem of discrimination between von Neumann 
+measurement in the computational basis and a von Neumann measurement in basis 
+$U$, where $U$ is a unitary matrix. 
+The scheme of discrimination can be divided into the following steps, which are 
+illustrated in Fig.~\ref{fig:theoretical_scheme}.
 
 
 %\begin{figure}[h!]
@@ -377,6 +378,18 @@ can be divided into the following steps:
 %\end{figure}
 
 
+\begin{enumerate}
+	\item Alice and Bob share an entangled state $\ket{\psi_{AB}}$ on systems 
+	$A$ and $B$.
+	\item Alice performs one of two known measurements (either $\PP_{\Id}$ or 
+	$\PP_{U}$) on part $A$ of the input state  $\ket{\psi_{AB}}$.
+	\item Alice performs the conditional binary measurement on the part 
+	$B$ based on the output label $i$. 
+	\item  Bob measures part $B$ of the input state  $\ket{\psi_{AB}}$ and 
+	makes a decision based on the received label $j$. If $j=0$, then he decides 
+	that the the black box contains $\PP_U$. Otherwise, he decides that the 
+	black box contains $\PP_{\Id}$. 
+\end{enumerate}  
 
 \begin{figure}[h!]
 	\centering
@@ -385,32 +398,21 @@ can be divided into the following steps:
 	\label{fig:theoretical_scheme}
 \end{figure}
 
-
-\begin{enumerate}\item Alice and Bob share entanglement state $\ket{\psi_{AB}}$.
-	\item Alice performs one of two known measurements,  say $\PP_{\Id}$ and $\PP_{U}$,  on part $A$ of the input 
-	state  $\ket{\psi_{AB}}$.
-	\item Alice   performs the conditional binary measurement on the part 
-	$B$ based on
-	the output label $i$. 
-	\item  Bob measures the part $B$ of the input state  $\ket{\psi_{AB}}$ and 
-	makes a decision based on received label $j$. If $j=0$, he decides that the measurement $\PP_U$ is hidden in the black box. Otherwise, he decides that the measurement $\PP_{\Id}$ was hidden in the black box. 
-\end{enumerate}  
-
-
 \subsubsection{Quantum architecture's limits and practical solutions}
 
 
 
 Let us take a closer look at the setup for distinguishing von Neumann 
-measurements (see Fig.~\ref{fig:theoretical_scheme}). One of the components of such a 
-scheme is to perform the conditional binary measurement. The first limitation of NISQ devices 
-is a lack of possibility of implementing the conditional binary measurement. 
-The only possible measurement performed on quantum architectures is the measurement 
-on a computational basis. 
-Here, we present two possible methods that provide a clever way to cross the obstacle (two schemes of practical realization). 
-
-
-The first way is to use a postselection whereas the second method is to apply a controlled unitary. The methods are described above. 
+measurements (see Fig.~\ref{fig:theoretical_scheme}). One of the components of 
+this scheme is to perform the conditional binary measurement. 
+Unfortunately, current NISQ devices do not allow for performing conditional 
+binary measurements.
+The only possible measurement performed on quantum architectures is the 
+measurement in the computational basis. 
+We  will present two possible methods providing a clever way to cross this 
+obstacle. These will be two schemes of practical realization. 
+The first method consists in using post-selection while the second method 
+consists in applying a controlled unitary. These methods are described below. 
 
 \begin{scheme}(By using postsellection)
 
@@ -429,21 +431,26 @@ The first way is to use a postselection whereas the second method is to apply a 
 
 
 \begin{enumerate}
-	\item Alice and Bob prepare entanglement state $\ket{\psi_{AB}}$.
-	\item Alice performs one of two quantum channels, $\Phi_{\Id}$ and $\Phi_{U}$,  on part $A$ of the input 
-	state  $\ket{\psi_{AB}}$.
-	\item Alice measures the part $A$ of the input state  $\ket{\psi_{AB}}$ and receives an output label $i$.
-	\item  
-	From Holevo--Helstrom theorem, 
-	 Bob performs the conditional binary measurement $\PP_{V_j^\dagger}$ on the part 	$B$.
-	\item They include these cases for which $i = j$. Otherwise, they reject them.
-	\item
-	Bob measures the part $B$ of the input state  $\ket{\psi_{AB}}$ and 
-	makes a decision based on received label $j$. If $j=0$, he decides that the measurement $\PP_U$ is hidden in the black box. Otherwise, he decides that the measurement $\PP_{\Id}$ was hidden in the black box. 
+\item Alice and Bob prepare an entangled state $\ket{\psi_{AB}}$ on systems 
+$A$ and $B$.
+\item Alice performs one of two quantum channels, either $\Phi_{\Id}$ or 
+$\Phi_{U}$,  on part $A$ of the input state  $\ket{\psi_{AB}}$.
+\item Alice measures part $A$ of the input state  $\ket{\psi_{AB}}$ and 
+receives an output label $i$.
+\item  
+From Holevo--Helstrom theorem, Bob performs the conditional binary 
+measurement	$\PP_{V_j^\dagger}$ on part $B$.
+\item They include the cases for which $i = j$.\todo{?} Otherwise, they reject 
+them. 
+\item Bob measures part $B$ of the input state  $\ket{\psi_{AB}}$ and makes a
+decision based on received label $j$. If $j=0$, then he decides that the the
+black box contains $\PP_U$. Otherwise, he decides that the black box contains
+$\PP_{\Id}$.
 \end{enumerate}
 
 
-The schematic representation of this setup we can see on Fig.~\ref{fig:postsellection}.     
+The schematic representation of this setup is depicted in 
+Fig.~\ref{fig:postsellection}.     
 
 \begin{figure}[h!]
 	\centering 
@@ -468,18 +475,24 @@ PROBABILITY
 	
 
 
-	\begin{enumerate}
-			\item Alice and Bob prepare entanglement state $\ket{\psi_{AB}}$.
-%		\item We prepare input state $\ket{\psi} = \frac{1}{\sqrt{2} } | \Id_2 \rangle 
-%		\rangle. $
-		\item Alice performs one of two quantum channels, $\Phi_{\Id}$ and $\Phi_{U}$,  on part $A$ of the input 
-		state  $\ket{\psi_{AB}}$.
-		\item Alice and Bob implement controlled unitary $V_0 \oplus V_1$ obtained from Holevo--Helstrom theorem.	
-		\item Alice and Bob prepare the measurement $\Delta$ in computational basis on theirs systems.
-		\item Bob	makes a decision based on received label $j$. If $j=0$, he decides that the measurement $\PP_U$ is hidden in the black box. Otherwise, he decides that the measurement $\PP_{\Id}$ was hidden in the black box.  
-		
-	\end{enumerate}
+\begin{enumerate}
+\item Alice and Bob prepare an entangled state $\ket{\psi_{AB}}$ on 
+systems $A$ and $B$..
+%\item We prepare input state $\ket{\psi} = \frac{1}{\sqrt{2} } | \Id_2 \rangle 
+%\rangle. $
+\item Alice performs one of two quantum channels, either $\Phi_{\Id}$ or
+$\Phi_{U}$,  on part $A$ of the input state  $\ket{\psi_{AB}}$.
+\item Alice and Bob implement controlled unitary $V_0 \oplus V_1$ obtained from 
+Holevo--Helstrom theorem.	
+\item Alice and Bob prepare the measurement $\Delta$ in computational basis on 
+their systems.
+\item Bob makes a decision based on received label $j$. If $j=0$, then he
+decides that the the black box contains $\PP_U$. Otherwise, he decides that the
+black box contains $\PP_{\Id}$.
+\end{enumerate}
 
+The schematic representation of this setup is depicted in 
+Fig.~\ref{fig:controlled}.     
 \begin{figure}[h!]
 	\centering 
 	\includegraphics[scale=1.5]{pics/controlled_unitary} 
@@ -507,17 +520,16 @@ p = \frac{|j=0 \wedge \Phi_{U} | + |j=1 \wedge \Phi_{\1}|}{\text{all
 
 
 Let $M_{d_1,d_2}$ be the set of all matrices of dimension $d_1 \times d_2$ over
-the field $\mathbb{C}$. For  simplicity notation, square matrices will be 
-denoted by
-$M_d$.  The subset of $M_d$ consisting of Hermitian matrices of dimension $d$ 
-will  be  denoted  by $\HH_d$,  while  the  set  of  positive semidefinite 
-matrices of dimension $d$ by $\HH_d^+$. The set of quantum states, that is 
-positive semidefinite operators having
-trace equal to one, will be denoted $\Omega_d$.  The subset of $M_d$ consisting of 
-unitary matrices will be denoted by
-$\UU_d$, while its subgroup of diagonal unitary operators will be denoted by
-$\DD \UU_d$.  We will also need a linear
-mapping transforming $M_{d_1}$ into $M_{d_2}$, which will be denoted \begin{equation}
+the field $\mathbb{C}$. For  simplicity, square matrices will be denoted by
+$M_d$.  The subset of $M_d$ consisting of Hermitian matrices of dimension $d$
+will  be  denoted  by $\HH_d$,  while  the  set  of  positive semidefinite
+matrices of dimension $d$ by $\HH_d^+$. The set of quantum states, that is
+positive semidefinite operators having trace equal to one, will be denoted
+$\Omega_d$.  The subset of $M_d$ consisting of unitary matrices will be denoted
+by $\UU_d$, while its subgroup of diagonal unitary operators will be denoted by
+$\DD \UU_d$.  We will also need a linear mapping transforming $M_{d_1}$ into
+$M_{d_2}$, which will be denoted 
+\begin{equation}
 \Phi: M_{d_1 } \rightarrow M_{d_2}.
 \end{equation} 
 There
@@ -548,15 +560,14 @@ channel.
 
 
 \subsubsection{Diamond norm}
-This section defines a special norm on the space of linear mappings, known as the diamond norm,
-and establishes some of its properties. 
-Next, we will also explain the precise connection between the diamond
-norm and the task of quantum operations discrimination. 
+This section defines a special norm on the space of linear mappings, known as 
+the diamond norm, and establishes some of its properties. 
+Next, we will explain the precise connection between the diamond
+norm and the task of quantum operation discrimination. 
 
 Let us  consider a  linear mapping transforming  square matrices into square 
-matrices 
-that is $\Phi: M_{d_1} \to M_{d_2}$. 
- We define the diamond norm of a map $\Phi$ as 
+matrices that is $\Phi: M_{d_1} \to M_{d_2}$. 
+We define the diamond norm of a map $\Phi$ as 
 \begin{equation}
 \|\Phi\|_\diamond = \max_{\|X\|_1=1} \| \left(\Phi \otimes \1\right) (X) \|_1.
 \end{equation}
@@ -576,15 +587,14 @@ in terms of their distance with the use of the diamond norm
 p_{succ} =  \frac12 + \frac14 \| \TT - \SS \|_\diamond.
 \end{equation}
 
-In case then 
-we consider the discrimination setup between two von Neumann 
-measurements $\PP_U$ and $\PP_\Id$, $U\in \UU_d$ we obtain that (from Theorem 1 \cite{puchala2018strategies})
+In the case of discrimination between two von Neumann measurements $\PP_U$ and 
+$\PP_\Id$ we know that (from Theorem 1 \cite{puchala2018strategies})
 \begin{equation}
 \|\PP_U - \PP_\Id\|_\diamond = \min_{E \in \diaguni_d} \|\Phi_{UE} - 
 \Phi_\Id\|_\diamond,
 \end{equation}
-where $\Phi_U$ is unitary channel and 
-$\diaguni_d$ be the set of diagonal unitary matrices of dimension $d$. 
+where $\Phi_U$ is unitary channel and $\diaguni_d$ be the set of diagonal 
+unitary matrices of dimension $d$. 
 
 
 
@@ -663,7 +673,8 @@ U = H \diag (1, \ee^{\ii \phi}) H^\dagger,
 \end{equation}
 where $H$ is the Hadamard matrix of dimension two and $\phi \in [0, 2 \pi)$.
 In this section we present theoretical probability of correct 
-discrimination between these measurements. Moreover, we create the optimal theoretical strategy of their discriminate. 
+discrimination between these measurements. Moreover, we create the optimal 
+theoretical strategy of their discrimination. 
 Such a probability can be calculated using Holevo-Helstrom theorem and 
 Theorem 1 from~\cite{puchala2018strategies}. 
 This probability will be calculated in 
@@ -676,14 +687,13 @@ and final measurement (see sec.~\ref{sec_example_final_measurement}).
 \subsection{Theoretical probability}\label{sec:example_theoretical_probability}
 In this section we calculate the theoretical probability of correct discrimination between two von Neumann measurements $\PP_\1$ and $\PP_U$ for $U = H \diag(1, e^{i \phi}) H^\dagger$, where  $\phi \in [0, 2\pi)$. To do that, we will present an auxiliary lemma.   
 \begin{lemma}\label{lemma:min-e-optimal}
-	Let $U = H \diag(1, e^{i \phi}) H^\dagger$, $\phi \in [0, 2\pi)$ and	let 
-	$\Phi_U$ and $\Phi_\Id$ be two unitary channels. The following equation holds 
-	\begin{equation}
-	\min_{E \in \diaguni_2} \|\Phi_{UE} - 
-	\Phi_\Id\|_\diamond = \|\Phi_{U} - 
-	\Phi_\Id\|_\diamond,
-	\end{equation}
-	
+Let $U = H \diag(1, e^{i \phi}) H^\dagger$, $\phi \in [0, 2\pi)$ and	let 
+$\Phi_U$ and $\Phi_\Id$ be two unitary channels. Then 
+\begin{equation}
+\min_{E \in \diaguni_2} \|\Phi_{UE} - 
+\Phi_\Id\|_\diamond = \|\Phi_{U} - 
+\Phi_\Id\|_\diamond,
+\end{equation}
 \end{lemma}
 \begin{proof} Recall that the distance between two unitary channels is given by
 	$
@@ -719,7 +729,7 @@ This condition is equivalent to
 	\end{equation}
 	For that, our task is reduce to show that
 	\begin{equation}
-	\forall E \in \diaguni_2 \,\, | \tr \left(\rho U E\right) | \le \nu. 
+	\forall_{E \in \diaguni_2} \,\, | \tr \left(\rho U E\right) | \le \nu. 
 	\end{equation}
 	Let us define $E = \left(\begin{array}{cc}E_0&0\\0&E_1\end{array}\right)  $ 
 	and let us take $\rho = 
@@ -728,7 +738,8 @@ This condition is equivalent to
 	\begin{equation}
 	U= \lambda_1 \ketbra{x_1}{x_1} + \lambda_2 \ketbra{x_1}{x_2}, 
 	\end{equation}
-	where  for eigenvector $\lambda_1 = e^{i \phi}$ the eigenvector is 
+	where  for eigenvalue $\lambda_1 = e^{i \phi}$, the corresponding 
+	eigenvector is 
 	of the form $\ket{x_1} = 
 	\left[\begin{array}{c}\frac{1}{\sqrt{2}}\\-\frac{1}{\sqrt{2}}\end{array}\right]$,
 	whereas for  $\lambda_2 = 1$ we have $\ket{x_2} = 
@@ -763,12 +774,13 @@ p = \frac{1}{2} + \frac{|1 - e^{i \phi}  |}{4} .
 	\begin{equation}
 	p = \frac{1}{2} + \frac{1}{4} \| \PP_{U} - \PP_{\Id} \|_\diamond.
 	\end{equation}
-	Whereas, from Theorem 1 in \cite{puchala2018strategies}, we have 
+	From Theorem 1 in~\cite{puchala2018strategies} we have 
 	\begin{equation}
 	\|\PP_U - \PP_\Id\|_\diamond = \min_{E \in \diaguni_d} \|\Phi_{UE} - 
 	\Phi_\Id\|_\diamond. 
 	\end{equation}
-	From Lemma~\ref{lemma:min-e-optimal} we show that 
+	From Lemma~\ref{lemma:min-e-optimal} we know that for our unitary matrix 
+	$U =  H \diag(1, e^{i \phi}) H^\dagger$ it also holds that
 	\begin{equation}
 		\min_{E \in \diaguni_2} \|\Phi_{UE} - 
 	\Phi_\Id\|_\diamond = \|\Phi_{U} - 
@@ -963,51 +975,79 @@ and $\PP_\1$, $U = H\diag(1, e^{i \phi}) H^\dagger $ and $\phi \in [0,
 %%	\end{split}
 %%	\end{equation
 \begin{proof}
-	
-	\begin{equation}
-	\begin{split}
-	\| \PP_{U} - \PP_{\Id}  \|_\diamond & =  \max_{\rho \in \Omega_2} \| \left( \Id \otimes \sqrt{\rho} \right) J(\PP_{U} - \PP_{\Id} )  \left( \Id \otimes \sqrt{\rho} \right)  \|_1   \\ & =  \max_{\rho \in \Omega_2} \| \left( \Id \otimes \sqrt{\rho} \right) \sum_{i=0}^{1} \proj{i} \otimes \left( \proj{u_i} - \proj{i} \right)^\top  \|_1  \\ & = \max_{\rho \in \Omega_2} \| \sum_{i=0}^{1} \proj{i} \otimes \sqrt{\rho}  \left( \proj{u_i} - \proj{i} \right)^\top \sqrt{\rho}  \|_1  \\ & = 
-	 \max_{\rho \in \Omega_2} \| \sum_{i=0}^{1}\sqrt{\rho}  \left( \proj{u_i} - \proj{i} \right)^\top \sqrt{\rho}  \|_1
-	\end{split}
-	\end{equation}
-	We can prove that for all $\alpha, \beta \ge 0 $, and unit vectors $\ket{x}, \ket{y}$ the following equation holds 
-	\begin{equation}
-	\| \alpha \proj{x} - \beta\proj{y} \|_1 = \sqrt{(\alpha + \beta)^2 - 4\alpha \beta |\braket{x}{y}|^2}.
-	\end{equation}
-	By taking $\ket{x} = \frac{\sqrt{\rho} \ket{\bar{u_i}}}{\| \sqrt{\rho} \ket{\bar{u_i}} \|}$ and $ \ket{y} = \frac{\sqrt{\rho} \ket{i}}{\|\sqrt{\rho} \ket{i} \|}$ we obtain 
-	\begin{equation}
-		\| \PP_{U} - \PP_{\Id}  \|_\diamond  = \max_{\rho \in \Omega_2} \sum_{i=0}^{1} \sqrt{\left( \bra{u_i} \rho \ket{u_i} + \bra{i} \rho \ket{i }\right)^2 - 4 | \bra{u_i} \rho \ket{i} |^2}.
-	\end{equation}
-	\todo[inline]{dokonczyc}
-	Let us take  $\rho_0 =   \frac{1}{2}  	\left(\begin{array}{cc}1&0\\0&1\end{array}\right)  $,   we obtain
-	\begin{equation}
-	\begin{split}
-	||\mathcal{P}_U - \mathcal{P}_{\1}||_\diamond &= \sum_{i=0}^1  
-	\sqrt{\left(\bra{u_i}\rho_0\ket{u_i} + \bra{i} \rho_0 \ket{i} \right)^2 - 
-		4|\bra{i}\rho_0\ket{u_i}|^2} = \\& 
-	\sum_{i=0}^1  \sqrt{ \braket{i}{i}^2 -  \left| \bra{i}  U \ket{i }\right|^2} = \\ & 
-	 \sum_{i=0}^1  \sqrt{\braket{i}{i}^2 -  \left| 1 \cdot \bra{i} \proj{u_1} \ket{i} + 
-			e^{i \phi} \cdot\bra{i}  \proj{u_2}\ket{i}\right|^2} =\\&  \sum_{i=0}^1  \sqrt{ 
-		\braket{i}{i}^2 -\braket{i}{i}^2\left| \frac{1 + 
-			e^{i \phi}}{2}\right|^2} = \\&  \sum_{i=0}^1\braket{i}{i} \sqrt{1 
-		-\left| \frac{1+ e^{i \phi}}{2}\right|^2 } = 
-	2 \sqrt{1 -\left| \frac{1+e^{i \phi}}{2}\right|^2 } = \frac{|1-e^{i \phi }|}{2}. 
-	\end{split}
-	\end{equation}
-	Due to that, we know  
-	that $| \sqrt{\rho}^{\top} \rangle \rangle$ is the discriminator of the problem of discrimination between 
-	$\PP_{\Id} $ and $\PP_U$, where 
-	$ U =  H \diag(1, e^{i \phi}) H^\dagger$ (from definition of diamond norm ).      
-	
 
-	\begin{equation}
-		\| \PP_{U} - \PP_{\Id}  \|_\diamond  =  \| \left( \Id \otimes \sqrt{\rho} \right) J(\PP_{U} - \PP_{\Id} )  \left( \Id \otimes \sqrt{\rho} \right)  \|_1  
-=  \left\| ( (\PP_{U} - \PP_\Id) \otimes \Id) \left(  | \sqrt{\rho}^\top \rangle  \rangle \langle \langle \sqrt{\rho}^\top | \right) \right\|_1.
-	\end{equation}
-	So we obtain that \begin{equation}
-	\ket{\psi_{AB}} =   | \sqrt{\rho}^\top \rangle  \rangle = \frac{1}{\sqrt{2} } | \Id_2 \rangle \rangle, 
-	\end{equation}
-	which completes the proof.
+\begin{equation}
+\begin{split}
+\| \PP_{U} - \PP_{\Id}  \|_\diamond 
+& =  \max_{\rho \in \Omega_2} \left\| \left( \Id \otimes \sqrt{\rho} \right) 
+J(\PP_{U} - \PP_{\Id} )  \left( \Id \otimes \sqrt{\rho} \right)  \right\|_1   
+\\ 
+& =  \max_{\rho \in \Omega_2} \left\| \left( \Id \otimes \sqrt{\rho} \right) 
+\sum_{i=0}^{1} \proj{i} \otimes \left( \proj{u_i} - \proj{i} \right)^\top  
+\right\|_1  \\ 
+& = \max_{\rho \in \Omega_2} \left\| \sum_{i=0}^{1} \proj{i} \otimes 
+\sqrt{\rho}  \left( \proj{u_i} - \proj{i} \right)^\top \sqrt{\rho}  \right\|_1  
+\\ 
+& = \max_{\rho \in \Omega_2} \left\| \sum_{i=0}^{1}\sqrt{\rho}  \left( 
+\proj{u_i} - \proj{i} \right)^\top \sqrt{\rho}  \right\|_1
+\end{split}
+\end{equation}
+One can prove that for all $\alpha, \beta \ge 0 $, and unit vectors $\ket{x}, 
+\ket{y}$ the following equation holds~\cite{watrous} 
+\begin{equation}
+\| \alpha \proj{x} - \beta\proj{y} \|_1 = \sqrt{(\alpha + \beta)^2 - 4\alpha 
+\beta |\braket{x}{y}|^2}.
+\end{equation}
+By taking $\ket{x} = \frac{\sqrt{\rho} \ket{\bar{u_i}}}{\| \sqrt{\rho} 
+\ket{\bar{u_i}} \|}$ and $ \ket{y} = \frac{\sqrt{\rho} \ket{i}}{\|\sqrt{\rho} 
+\ket{i} \|}$ we obtain 
+\begin{equation}
+	\| \PP_{U} - \PP_{\Id}  \|_\diamond  = \max_{\rho \in \Omega_2} 
+	\sum_{i=0}^{1} \sqrt{\left( \bra{u_i} \rho \ket{u_i} + \bra{i} \rho \ket{i 
+	}\right)^2 - 4 | \bra{u_i} \rho \ket{i} |^2}.
+\end{equation}
+\todo[inline]{dokonczyc}
+Let us take  $\rho_0 =   \frac{1}{2}  	
+\left(\begin{array}{cc}1&0\\0&1\end{array}\right)  $,   we obtain
+\begin{equation}
+\begin{split}
+||\mathcal{P}_U - \mathcal{P}_{\1}||_\diamond 
+&= \sum_{i=0}^1  
+\sqrt{\left(\bra{u_i}\rho_0\ket{u_i} + \bra{i} \rho_0 \ket{i} \right)^2 - 
+4|\bra{i}\rho_0\ket{u_i}|^2}  \\
+&= \sum_{i=0}^1  \sqrt{ \braket{i}{i}^2 -  \left| \bra{i}  U \ket{i }\right|^2} 
+\\ 
+&=\sum_{i=0}^1  \sqrt{\braket{i}{i}^2 -  \left| 1 \cdot \bra{i} \proj{u_1} 
+\ket{i} + e^{i \phi} \cdot\bra{i}  \proj{u_2}\ket{i}\right|^2} \\
+&= \sum_{i=0}^1  \sqrt{
+\braket{i}{i}^2 -\braket{i}{i}^2\left| \frac{1 + e^{i \phi}}{2}\right|^2}  \\
+&= \sum_{i=0}^1\braket{i}{i} \sqrt{1 -\left| \frac{1+ e^{i \phi}}{2}\right|^2 } 
+= 2 \sqrt{1 -\left| \frac{1+e^{i \phi}}{2}\right|^2 } \\
+&= \frac{|1-e^{i \phi }|}{2}.
+\end{split}
+\end{equation}
+Due to that, we know  
+that $| \sqrt{\rho}^{\top} \rangle \rangle$ is the discriminator of the problem 
+of discrimination between 
+$\PP_{\Id} $ and $\PP_U$, where 
+$ U =  H \diag(1, e^{i \phi}) H^\dagger$ (from definition of diamond norm 
+).      
+
+
+\begin{equation}
+\begin{split}
+\| \PP_{U} - \PP_{\Id}  \|_\diamond  
+&=  \| \left( \Id \otimes \sqrt{\rho} \right) J(\PP_{U} - \PP_{\Id} )  \left( 
+\Id \otimes \sqrt{\rho} \right) \|_1 \\
+&= \left\| ( (\PP_{U} - \PP_\Id) \otimes \Id) \left(  | \sqrt{\rho}^\top 
+\rangle \rangle \langle \langle \sqrt{\rho}^\top | \right) \right\|_1.
+\end{split}
+\end{equation}
+So we obtain that \begin{equation}
+\ket{\psi_{AB}} =   | \sqrt{\rho}^\top \rangle  \rangle = \frac{1}{\sqrt{2} } | 
+\Id_2 \rangle \rangle, 
+\end{equation}
+which completes the proof.
 \end{proof}
 
 
@@ -1070,11 +1110,13 @@ From Proposition~\ref{prop-discrim} we have the form of discriminator given by
 \rangle \rangle. 
 \end{equation}
 From Holevo-Helstrom theorem  we constrain a measurement $\mu$.  
-Let us define \begin{equation}
+Let us define 
+\begin{equation}
 X  = \left( \PP_U \otimes \Id_2 \right)(\proj{\psi}) -  \left( \PP_\Id 
 \otimes \Id_2 \right)(\proj{\psi}).
-\end{equation} From 
-We consider the Hahn-Jordan decomposition, let \begin{equation}
+\end{equation} 
+We consider the Hahn-Jordan decomposition. Let 
+\begin{equation}
 X = P - Q
 \end{equation}
 where $P, Q \ge 0 $. Observe, that $P $ and $Q$ are block-diagonal. 
@@ -1085,7 +1127,7 @@ respectively. Then  $\Pi_P$ and $\Pi_Q$ have the following forms
 \end{equation}
 and 
 \begin{equation}
-\Pi_Q = \left(\begin{array}{cc}\proj{x_q}&0\\0&\proj{y_q}\end{array}\right) 
+\Pi_Q = \left(\begin{array}{cc}\proj{x_q}&0\\0&\proj{y_q}\end{array}\right). 
 \end{equation}
 Hence, we define $V_0$ such that
 \begin{equation}
@@ -1096,21 +1138,25 @@ and $V_1$ such that
 \begin{cases} 
 V_1 \ket{y_p} = \ket{0} \\ 
 V_1 \ket{y_q} = \ket{1}
-\end{cases} 
+\end{cases}. 
 \end{equation}
-For the discrimination task between $\PP_{U}$ and $\PP_{\Id}$, where $U = H \diag(1, e^{i \phi })H$, the explicit form of $V_0$ and $V_1$ is given by following (see also \texttt{one-qubit.nb}).
-The unitary $V_0$ 
-has the following form
+For the discrimination task between $\PP_{U}$ and $\PP_{\Id}$, where $U = H 
+\diag(1, e^{i \phi })H$, the explicit form of $V_0$ and $V_1$ is given as 
+follows (see also \texttt{one-qubit.nb}).
+The unitary $V_0$ has the form
 \begin{equation}
-V_0 = \left(\begin{array}{cc}i \sin\left( \frac{\pi - \phi}{4} \right)&-i 
+V_0 = \left(
+\begin{array}{cc}i \sin\left( \frac{\pi - \phi}{4} \right)&-i 
 \cos\left( \frac{\pi - \phi}{4} \right)\\ \cos\left( \frac{\pi - 
-	\phi}{4}\right)& \sin\left( \frac{\pi - \phi}{4} \right)\end{array}\right),
+\phi}{4}\right)& \sin\left( \frac{\pi - \phi}{4} \right)
+\end{array}
+\right),
 \end{equation}
 whereas the unitary  $V_1$  has the form
 \begin{equation}
 V_1 = \left(\begin{array}{cc}-i \cos\left(\frac{\pi - \phi}{4}\right) &i 
 \sin\left( \frac{\pi - \phi}{4}\right)\\\sin\left( \frac{\pi - \phi}{4} 
-\right) &  \cos\left( \frac{\pi - \phi}{4} \right) \end{array}\right).
+\right) &  \cos\left( \frac{\pi - \phi}{4} \right) \end{array}\right)
 \end{equation}
 for all $\phi \in [0,2\pi)$. 
 Finally, we obtain the measurement $\mu$ of the form
@@ -1119,7 +1165,7 @@ Finally, we obtain the measurement $\mu$ of the form
 \mu(0) = \proj{0} \otimes V_0 \proj{0} V_0^\dagger +  \proj{1} \otimes V_1 
 \proj{0} V_1^\dagger  \\ 
 \mu(1) = \proj{0} \otimes V_0 \proj{1} V_0^\dagger +  \proj{1} \otimes V_1 
-\proj{1} V_1^\dagger  
+\proj{1} V_1^\dagger.  
 \end{split}
 \end{equation} 
 
