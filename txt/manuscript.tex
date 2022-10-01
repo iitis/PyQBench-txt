@@ -352,22 +352,27 @@ Amazon Braket.
 
 \subsubsection{Model specification}
 The scenario assumes that Alice and Bob have access to an unknown measurement
-device, a black box. Alice has hidden one of the two measurements, either $\SS$
-or $\TT$, in the black box. Bob only has the information that the black box
-performs one of these measurements. They want to know the upper bound on the
-probability of correct discrimination between $\SS$ and $\TT$. They also want to
-construct the optimal discrimination strategy to achieve the highest probability
-of correct discrimination. Theoretical results on discrimination of von Neumann
-measurements are characterized in~\cite{puchala2018strategies}.
+device, a black box. Alice has hidden one of the two measurements, either $\PP$
+or $\mathcal{Q}$, in the black box. Bob only has the information that the black box
+performs one of these measurements. They want to determine an upper bound on the
+probability of correct discrimination between $\PP$ and $\mathcal{Q}$. Moreover, they also want to
+construct an optimal discrimination strategy to achieve the highest probability. Theoretical results were characterized in~\cite{puchala2018strategies}.
 
 
 
-In this work we will consider the problem of discrimination between von Neumann 
-measurement in the computational basis and a von Neumann measurement in basis 
+In this work, we will consider the problem of discrimination between von Neumann 
+measurements. One of them on the computational basis, the second one on basis 
 $U$, where $U$ is a unitary matrix. 
 The scheme of discrimination can be divided into the following steps, which are 
 illustrated in Fig.~\ref{fig:theoretical_scheme}.
 
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[scale=1.7]{pics/theoretical_scheme}
+	\caption{Theoretical  scheme of discrimination  between von Neumann measurements $\PP_{U}$ and $\PP_\Id$. }
+	\label{fig:theoretical_scheme}
+\end{figure}
 
 %\begin{figure}[h!]
 %	\centering 
@@ -382,21 +387,16 @@ illustrated in Fig.~\ref{fig:theoretical_scheme}.
 	\item Alice and Bob share an entangled state $\ket{\psi_{AB}}$ on systems 
 	$A$ and $B$.
 	\item Alice performs one of two known measurements (either $\PP_{\Id}$ or 
-	$\PP_{U}$) on part $A$ of the input state  $\ket{\psi_{AB}}$.
-	\item Alice performs the conditional binary measurement on the part 
+	$\PP_{U}$) on part $A$ of the input state  $\ket{\psi_{AB}}$ and measures the system $A$.
+	\item Alice performs the conditional binary measurement $\PP_{V_i}$ on the part 
 	$B$ based on the output label $i$. 
-	\item  Bob measures part $B$ of the input state  $\ket{\psi_{AB}}$ and 
+	\item  Bob measures the system $B$ of the input state  $\ket{\psi_{AB}}$ and 
 	makes a decision based on the received label $j$. If $j=0$, then he decides 
 	that the the black box contains $\PP_U$. Otherwise, he decides that the 
 	black box contains $\PP_{\Id}$. 
 \end{enumerate}  
 
-\begin{figure}[h!]
-	\centering
-	\includegraphics[scale=1.7]{pics/theoretical_scheme}
-	\caption{Theoretical discrimination scheme}
-	\label{fig:theoretical_scheme}
-\end{figure}
+
 
 \subsubsection{Quantum architecture's limits and practical solutions}
 
@@ -404,17 +404,17 @@ illustrated in Fig.~\ref{fig:theoretical_scheme}.
 
 Let us take a closer look at the setup for distinguishing von Neumann 
 measurements (see Fig.~\ref{fig:theoretical_scheme}). One of the components of 
-this scheme is to perform the conditional binary measurement. 
+this scheme is to perform a conditional binary measurement. 
 Unfortunately, current NISQ devices do not allow for performing conditional 
 binary measurements.
 The only possible measurement performed on quantum architectures is the 
 measurement in the computational basis. 
 We  will present two possible methods providing a clever way to cross this 
 obstacle. These will be two schemes of practical realization. 
-The first method consists in using post-selection while the second method 
+The first method consists in using postselection while the second method 
 consists in applying a controlled unitary. These methods are described below. 
 
-\begin{scheme}(By using postsellection)
+\begin{scheme}(Postselection)
 
 
 \todo[inline]{wyzej mamy bez daggera, trzeba to ustalic} 
@@ -438,12 +438,11 @@ $\Phi_{U}$,  on part $A$ of the input state  $\ket{\psi_{AB}}$.
 \item Alice measures part $A$ of the input state  $\ket{\psi_{AB}}$ and 
 receives an output label $i$.
 \item  
-From Holevo--Helstrom theorem, Bob performs the conditional binary 
+Based on Holevo--Helstrom theorem, Bob performs a conditional binary 
 measurement	$\PP_{V_j^\dagger}$ on part $B$.
-\item They include the cases for which $i = j$.\todo{?} Otherwise, they reject 
-them. 
+\item To calculate the probability of correct discrimination, they include just those cases for which $i = j$.
 \item Bob measures part $B$ of the input state  $\ket{\psi_{AB}}$ and makes a
-decision based on received label $j$. If $j=0$, then he decides that the the
+decision based on received label $j$. If $i=j=0$, then he decides that the 
 black box contains $\PP_U$. Otherwise, he decides that the black box contains
 $\PP_{\Id}$.
 \end{enumerate}
@@ -461,12 +460,20 @@ Fig.~\ref{fig:postsellection}.
 	}\label{fig:postsellection}
 \end{figure}  
 
-
-PROBABILITY 
+Due to the fact that the measurement result is nondeterministic, we are forced to consider the following circuits
+in the postselection procedure
+\begin{equation}
+\begin{split}
+(\Phi_{U}, \mathcal{P}_{V_k}, i, j) \\ 
+(\Phi_{\Id}, \mathcal{P}_{V_k}, i, j)
+\end{split}
+\end{equation}
+where $k=\{0,1\}, i=\{0,1\}$ and $ j=\{0,1\}$. 
+The optimal probability of correct discrimination between $\PP_{U} $ and $\PP_\Id$ is as follows.
 		\begin{equation}
-		p = ...
+		p = \frac{\#(\Phi_U, \PP_{V_i},i,0) + \#(\Phi_\Id, \PP_{V_i},i,1)}{\#(\Phi_U, \PP_{V_i},i,j) + \#(\Phi_\Id, \PP_{V_i},i,j)}, 
 		\end{equation}
-		%\todo[inline]{grubsza kmina, musze Ci to na zywo opowiedziec xd}
+where $i=\{0,1\}$ and $ j=\{0,1\}$. 
 
 \end{scheme}
 
@@ -477,9 +484,7 @@ PROBABILITY
 
 \begin{enumerate}
 \item Alice and Bob prepare an entangled state $\ket{\psi_{AB}}$ on 
-systems $A$ and $B$..
-%\item We prepare input state $\ket{\psi} = \frac{1}{\sqrt{2} } | \Id_2 \rangle 
-%\rangle. $
+systems $A$ and $B$.
 \item Alice performs one of two quantum channels, either $\Phi_{\Id}$ or
 $\Phi_{U}$,  on part $A$ of the input state  $\ket{\psi_{AB}}$.
 \item Alice and Bob implement controlled unitary $V_0 \oplus V_1$ obtained from 
@@ -503,13 +508,20 @@ Fig.~\ref{fig:controlled}.
 \end{figure} 
 
 
-PROBABILITY 
-
+Here, we consider the following circuits
+by using controlled unitary
 \begin{equation}
-p = \frac{|j=0 \wedge \Phi_{U} | + |j=1 \wedge \Phi_{\1}|}{\text{all 
-		cases}}
+\begin{split}
+(\Phi_{U}, V_0 \oplus V_1, i, j) \\ 
+(\Phi_{\Id},  V_0 \oplus V_1, i, j)
+\end{split}
 \end{equation}
-
+where $i=\{0,1\}$ and $ j=\{0,1\}$. 
+Then, the optimal probability of correct discrimination between $\PP_{U} $ and $\PP_\Id$ is as follows.
+\begin{equation}
+p = \frac{\#(\Phi_U,V_0 \oplus V_1,i,0) + \#(\Phi_\Id,V_0 \oplus V_1,i,1) }{\#(\Phi_U,V_0 \oplus V_1,i,j) + \#(\Phi_\Id,V_0 \oplus V_1,i,j)}
+\end{equation}
+where $i=\{0,1\}$ and $ j=\{0,1\}$. 
 \end{scheme}
 
 
@@ -539,7 +551,7 @@ Jamio{\l}kowski isomorphism.
 
 Finally, we introduce a special subset of all mappings $\Phi$, called quantum channels, which are completely positive
 and trace preserving (CPTP).
-A unitary channel
+In this work we will consider a special class of quantum channels, called unitary channels. A unitary channel
 $\Phi_{U}$ is defined as $\Phi_U(\cdot) = U \cdot U^\dagger$ for  $U \in 
 \UU_d$. A general quantum
 measurement, that is a positive operator valued measure (POVM) $\PP$ is a
@@ -554,10 +566,7 @@ quantum measurement $\PP_{U}$ on some state $\rho \in \Omega_d$ can be
 seen as  a measure-and-prepare quantum channel as follows 
 $
 \PP_{U} : \rho \rightarrow \sum_{i=0}^{d-1} \bra{u_i} \rho \ket{u_i} \proj{i}.
-$ It is worth noting that a given  von Neumann measurement  $\PP_{U}$ can be also rewritten as $\Delta 
-\circ \Phi_{(UE)^\dagger}$, where $\Delta$ denotes the completely dephasing 
-channel.  
-
+$ 
 
 \subsubsection{Diamond norm}
 This section defines a special norm on the space of linear mappings, known as 
