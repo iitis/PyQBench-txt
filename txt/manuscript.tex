@@ -540,7 +540,12 @@ positive semidefinite operators having trace equal to one, will be denoted
 $\Omega_d$. 
  The subset of $M_d$ consisting of unitary matrices will be denoted
 by $\UU_d$, while its subgroup of diagonal unitary operators will be denoted by
-$\DD \UU_d$.  We will also need a linear mapping transforming $M_{d_1}$ into
+$\DD \UU_d$. 
+	An operator $A = \left( a_{i,j}\right)_{i,j} \in M_d$ is said to be a stochastic matrix if $a_{i,j} \ge 0$   and $\sum_{i} a_{i,j} = 1$.
+Whereas an operator $A = \left( a_{i,j}\right)_{i,j} \in M_d$ is said to be a double stochastic matrix if $A$ is a stochastic matrix and $\sum_{j} a_{i,j} = 1$.
+
+
+ We will also need a linear mapping transforming $M_{d_1}$ into
 $M_{d_2}$, which will be denoted 
 \begin{equation}
 \Phi: M_{d_1 } \rightarrow M_{d_2}.
@@ -702,14 +707,14 @@ $\Phi_U$ and $\Phi_\Id$ be two unitary channels. Then, the following equation ho
 \Phi_\Id\|_\diamond,
 \end{equation}
 \end{lemma}
-\todo[inline]{spr dowod}
+
 \begin{proof} Recall that the distance between two unitary channels is given by
 	$
 	\| \Phi_U  - \Phi_{\1} \|_\diamond = 2 \sqrt{1-\nu^2},
 	$
 	where $\nu = \min_{x \in W(U^\dagger)} |x|  $ for any $U \in \mathcal{U}_d$. 
 	For $U = H 
-	\left(\begin{array}{cc}1&0\\0&e^{i \phi}\end{array}\right)  H^\dagger$ the readers briefly observe that  $\nu^2 = 1 - \frac{|1 - e^{i \phi} |^2 }{4}$. So, 
+	\left(\begin{array}{cc}1&0\\0&e^{i \phi}\end{array}\right)  H^\dagger$ the readers briefly observe that  $\nu^2 = 1 - \frac{|1 - e^{-i \phi} |^2 }{4} = 1 - \frac{|1 - e^{i \phi} |^2 }{4}$. So, 
 	\begin{equation}
 	\|  \Phi_U  - \Phi_{\1} \|_\diamond = | 1 - e^{i \phi} |. 
 	\end{equation} 
@@ -723,48 +728,59 @@ $\Phi_U$ and $\Phi_\Id$ be two unitary channels. Then, the following equation ho
 %		\end{equation}
 This condition is equivalent to 
 	\begin{equation}
-	\max_{E \in \diaguni_2 } \nu_{E} \coloneqq \nu = \frac{|1 + e^{i \phi} | }{2},
+	\max_{E \in \diaguni_2 } \nu_{E} = \frac{|1 + e^{i \phi} | }{2},
 	\end{equation}
 	where $\nu_E = \min_{x \in W(U^\dagger E)} |x|. $ 
-	We can prove that
+	
+%	For simplify notation, let 	$ \nu \coloneqq \max_{E \in \diaguni_2 } \nu_{E} $.
+ The celebrated Hausdorf-T{\o}plitz theorem~\cite{hausdorff, toeplitz} states that
+$W(A)$ of any matrix $A \in M_d$ is a convex set and therefore
+\begin{equation}
+W(A) = \{ \tr(A \rho): \rho \in \Omega_d\}. 
+\end{equation}
+So we obtain that 
 	\begin{equation}
 	\min_{\ket{x} \in \mathbb{C}^2:   \proj{x} = 1} |\bra{x}U^\dagger\ket{x}| = 
 	\min_{\rho \in \Omega_2} |\tr(U^\dagger\rho)|. 
 	\end{equation}
-	So we obtain \begin{equation}
-	\max_{E \in \diaguni_2 } \nu_{E}  = \max_{E \in \diaguni_2 }  \min_{\rho \in 
+	And then we have 
+	 \begin{equation}
+ \max_{E \in \diaguni_2 } \nu_{E}  = \max_{E \in \diaguni_2 }  \min_{\rho \in 
 		\Omega_2} \left| \tr \left( \rho U E \right) \right|
 	\end{equation}
 	For that, our task is reduce to show that
 	\begin{equation}
-	\forall_{E \in \diaguni_2} \,\, | \tr \left(\rho U E\right) | \le \nu. 
+	\forall_{E \in \diaguni_2} \,\, | \tr \left(\rho U E\right) | \le \mu
 	\end{equation}
+	where $\mu \coloneqq \max_{E \in \diaguni_2 } \nu_{E}.$
+	
+	
 	Let us define $E = \left(\begin{array}{cc}E_0&0\\0&E_1\end{array}\right)  $ 
-	and let us take $\rho = 
+	and take $\rho = 
 	\left(\begin{array}{cc}\frac{1}{2}&0\\0&\frac{1}{2}\end{array}\right) $. 
 	From spectral theorem, let us decompose $U$ as
 	\begin{equation}
 	U= \lambda_1 \ketbra{x_1}{x_1} + \lambda_2 \ketbra{x_1}{x_2}, 
 	\end{equation}
-	where  for eigenvalue $\lambda_1 = e^{i \phi}$, the corresponding 
+	where  for eigenvalue $\lambda_1 = 1$, the corresponding 
 	eigenvector is 
-	of the form $\ket{x_1} = 
-	\left[\begin{array}{c}\frac{1}{\sqrt{2}}\\-\frac{1}{\sqrt{2}}\end{array}\right]$,
-	whereas for  $\lambda_2 = 1$ we have $\ket{x_2} = 
-	\left[\begin{array}{c}\frac{1}{\sqrt{2}}\\\frac{1}{\sqrt{2}}\end{array}\right]$.
+	of the form $\ket{x_1} = \left[\begin{array}{c}\frac{1}{\sqrt{2}}\\\frac{1}{\sqrt{2}}\end{array}\right]
+	$,
+	whereas for  $\lambda_2 = e^{i \phi}$ we have $\ket{x_2} = \left[\begin{array}{c}\frac{1}{\sqrt{2}}\\-\frac{1}{\sqrt{2}}\end{array}\right] 
+	$.
 	Then, we have 
 	\begin{equation}
 	\begin{split}
 	& \forall E \in \diaguni_2 \,\,\, | \tr (\rho U E) | = \frac{1}{2}  \left| \tr \left(
 	H \diag(1, e^{i\phi}) H^\dagger E \right) \right| =  \\ &
-	\frac{1}{2} \left| \tr\left((  e^{i \phi} \proj{x_1} + 1 \proj{x_2} ) E \right) 
+	\frac{1}{2} \left| \tr\left((   \proj{x_1} +e^{i \phi}\proj{x_2} ) E \right) 
 	\right|  = 
-	\frac{1}{2} \left| e^{i \phi}  \bra{x_1} E \ket{x_1} + \bra{x_2} E \ket{x_2} 
+	\frac{1}{2} \left|  \bra{x_1} E \ket{x_1} +  e^{i \phi}\bra{x_2} E \ket{x_2} 
 	\right| = \\& 
 	\frac{1}{2} \left| \frac{E_0 + E_1}{2} + e^{i \phi } \frac{E_0+E_1}{2} \right| 
 	= 
 	\frac{\left| 1+ e^{i \phi } \right|}{2} \left| \frac{E_0 + E_1}{2} \right| \le 
-	\nu, 
+	\mu, 
 	\end{split}
 	\end{equation}
 	which completes the proof.
@@ -774,21 +790,21 @@ The optimal probability of correct discrimination between von Neumann
 measurements $\PP_U$ and $\PP_{\Id}$ for $U = H \diag(1, e^{i \phi}) H^\dagger$,
 where $\phi \in [0, 2\pi)$ is given by
 \begin{equation}
-p = \frac{1}{2} + \frac{|1 - e^{i \phi}  |}{4} . 
+p_{\text{succ}}(\PP_{U}, \PP_{\Id}) = \frac{1}{2} + \frac{|1 - e^{i \phi}  |}{4} . 
 \end{equation}
 \end{theorem}
-\todo[inline]{spr dowod}
+
 \begin{proof}
 	From Holevo-Helstrom theorem we obtain
 	\begin{equation}
-	p = \frac{1}{2} + \frac{1}{4} \| \PP_{U} - \PP_{\Id} \|_\diamond.
+p_{\text{succ}}(\PP_{U}, \PP_{\Id}) = \frac{1}{2} + \frac{1}{4} \| \PP_{U} - \PP_{\Id} \|_\diamond.
 	\end{equation}
 	From Theorem 1 in~\cite{puchala2018strategies} we have 
 	\begin{equation}
 	\|\PP_U - \PP_\Id\|_\diamond = \min_{E \in \diaguni_d} \|\Phi_{UE} - 
 	\Phi_\Id\|_\diamond. 
 	\end{equation}
-	From Lemma~\ref{lemma:min-e-optimal} we know that for our unitary matrix 
+	From Lemma~\ref{lemma:min-e-optimal} we know that for 
 	$U =  H \diag(1, e^{i \phi}) H^\dagger$ it also holds that
 	\begin{equation}
 		\min_{E \in \diaguni_2} \|\Phi_{UE} - 
@@ -799,13 +815,13 @@ p = \frac{1}{2} + \frac{|1 - e^{i \phi}  |}{4} .
 	\|\Phi_{U} - 
 	\Phi_\Id\|_\diamond = 2\sqrt{1 - \nu^2} = |1-e^{i   \phi }|. 
 	\end{equation}
-	Finally, we obtain that
-	\begin{equation}
-	\| \PP_{U} - \PP_{\Id} \|_\diamond =  |1-e^{i   \phi }|.
-	\end{equation}
+%	Finally, we obtain that
+%	\begin{equation}
+%	\| \PP_{U} - \PP_{\Id} \|_\diamond =  |1-e^{i   \phi }|.
+%	\end{equation}
 	It implies that
 	\begin{equation}
-	p  = \frac{1}{2} + \frac{|1-e^{i \phi}|}{4},
+	p_{\text{succ}}(\PP_{U}, \PP_{\Id}) = \frac{1}{2} + \frac{|1-e^{i \phi}|}{4},
 	\end{equation} which completes the proof.
 \end{proof}
 
@@ -832,167 +848,28 @@ and $\PP_\1$, $U = H\diag(1, e^{i \phi}) H^\dagger $ and $\phi \in [0,
 \end{equation}
 \end{proposition}
 
-%
-%
-%\begin{theorem}\label{rozrpomiarow}
-%Let us $\mathcal{P}_U, \mathcal{P}_\1$ be two von Neumann measurements,  $U = 
-%H \diag(1, e^{i \phi}) H^\dagger$, $\phi \in [0, 2\pi)$ such that $0 
-%\not\in W(U)$.  If there exists the discriminator $\rho \in \Omega_2$ of the 
-%form $\rho = \frac{1}{2}\rho_1 + \frac{1}{2} \rho_2$ such that
-%	\begin{enumerate}
-%		\item $\rho_1,\rho_2 \in \Omega_2$
-%		\item $\Pi_1 \rho_1 \Pi_1 = \rho_1$,
-%		\item $\Pi_2 \rho_2 \Pi_2 = \rho_2$,
-%		\item  $\mathrm{diag}(\rho_1) = \mathrm{diag}(\rho_2)$,
-%	\end{enumerate}
-%	where $\Pi_1,\Pi_2 $ are the projectors on the subspaces
-%	spanned by the eigenvectors corresponding to $\lambda_1$ and $\lambda_2$ of 
-%	$U$. Then  we have 
-%	\begin{equation}
-%	||\mathcal{P}_U - \mathcal{P}_\Id||_\diamond = 2\sqrt{1- \left|\frac{1+e^{i 
-%	\phi}}{2}\right|^2}.
-%	\end{equation}
-%	%gdzie $\lambda_1, \lambda_n$ jest odpowiednio najmniejszą i największą 
-%	%wartością własną $U\in \mathrm{U}(\XX)$.
-%\end{theorem}
-%\begin{proof} From \ref{th:minE} we have 
-%	\begin{equation}
-%	\begin{split}
-%	||\mathcal{P}_U - \mathcal{P}_{\1}||_\diamond =\min_{E \in \diaguni_2} 
-%	||\mathcal{P}_{UE} - \mathcal{P}_{\1}||_\diamond = \min_{E \in 
-%	\diaguni_2}|| \Delta \left(\Phi_{E^\dagger U^\dagger} - \Phi_{\1} \right) 
-%	||_\diamond \le \\ \le \min_{E \in \diaguni_2} ||\Delta||_\diamond || 
-%	\Phi_{E^\dagger U^\dagger} - \Phi_{\1}  ||_\diamond \le \min_{\diaguni_2}|| 
-%	\Phi_{E^\dagger U^\dagger} - \Phi_{\1} ||_\diamond.
-%	\end{split}
-%	\end{equation}
-%The diamond norm between two unitary channels can be calculated by 
-%	\begin{equation}
-%	\min_{E \in \diaguni_2}||\Phi_{E^\dagger U^\dagger} - \Phi_\1||_\diamond  = 
-%	\min_{E \in \diaguni_2} 2\sqrt{1 - \min_{\rho \in \Omega_2} |\tr(UE \rho 
-%	)|^2}.
-%	\end{equation}
-%Hence,  it is enough to calculate the formula
-%\begin{equation}
-%\begin{split}
-%\min_{E \in \diaguni_2} 2\sqrt{1 - \min_{\rho \in \Omega_2} |\tr(UE \rho )|^2}.
-%\end{split}
-%\end{equation}
-%Recall, let us note $U$ as
-%\begin{equation}
-%U= \lambda_1 \ketbra{x_1}{x_1} + \lambda_2 \ketbra{x_1}{x_2}, 
-%\end{equation}
-%where  for eigenvector $\lambda_1 = e^{i \phi}$ the eigenvector is of 
-%the form $\ket{x_1} = 
-%\left[\begin{array}{c}\frac{1}{\sqrt{2}}\\-\frac{1}{\sqrt{2}}\end{array}\right]$,
-% whereas for  $\lambda_2 = 1$ we have $\ket{x_2} = 
-%\left[\begin{array}{c}\frac{1}{\sqrt{2}}\\\frac{1}{\sqrt{2}}\end{array}\right]$.
-% 
-%Consider two cases:
-%
-%	$1^\circ$ Consider $\phi = \pi$. Then $U$ is of the form
-%	\begin{equation}
-%	U = \left(\begin{array}{cc}0&1\\1&0\end{array}\right).
-%	\end{equation}
-%Then $0 \in W(U)$. 	From Proposition 3 in ~\cite{puchala2018strategies} the 
-%measurements $\mathcal{P}_U, \mathcal{P}_\1$ are perfectly distinguishable if 
-%and only if there exists $\rho \in \Omega_2$ such that
-%	\begin{equation}
-%	\mathrm{diag}\left(U^\dagger \rho\right) = 0.
-%	\end{equation}
-%Hence, for $U $ we have 
-%	\begin{equation}
-%	0 = \mathrm{diag}\left(U^\dagger \rho\right) = \mathrm{diag} 
-%	\left(\left(\begin{array}{cc}0&1\\1&0\end{array}\right)\left(\begin{array}{cc}\rho_{1,1}&\rho_{1,2}\\\rho_{2,1}&\rho_{2,2}\end{array}\right)\right)
-%	 =  \mathrm{diag} 
-%	\left(\begin{array}{cc}\rho_{2,1}&\rho_{2,2}\\\rho_{1,1}&\rho_{1,2}\end{array}\right).
-%	\end{equation}
-% It implies that $\rho_{2,1}=\rho_{1,2} = 0$. Therefore $\rho \in \Omega_2$ for 
-% which $\mathcal{P}_U, \mathcal{P}_\1$  are perfectly distinguishable is of the 
-% form
-%	\begin{equation}
-%	\rho = \left(\begin{array}{cc}\rho_{1,1}&0\\0&\rho_{2,2}\end{array}\right),
-%	\end{equation}
-%	where $\rho_{1,1},\rho_{2,2} \ge 0$ and  $\rho_{1,1}+\rho_{2,2}=1$.
-%
-%	$2^\circ$ Consider  $\phi \not = \pi$. 
-%The spectrum of $U$ is of the form $\sigma(U) = \{e^{i \phi},1\}$. 
-%Hence $0 \not\in W\left(U\right)$.  Let us note $U$ as 
-%	\begin{equation}
-%	U= \lambda_1 \ketbra{x_1}{x_1} + \lambda_2 \ketbra{x_1}{x_2}.
-%	\end{equation}
-%Based on Lemma 5 in~\cite{puchala2018strategies} let us take $\rho_1 = 
-%\ketbra{x_1}{x_1}$ and $\rho_2 = \ketbra{x_2}{x_2}$. Obviously,  $\rho_1,\rho_2 
-%\in \Omega_2$ and satisfies the requirements of theorem. Hence, the 
-%discriminator $\rho \in \Omega_2$ has the form 
-%	\begin{equation}
-%	\rho = \frac{1}{2} \rho_1 + \frac{1}{2}\rho_2 = 
-%	\left(\begin{array}{cc}\frac{1}{2}&0\\0&\frac{1}{2}\end{array}\right)
-%	\end{equation}
-%%and 
-%%	\begin{equation}
-%%	||\mathcal{P}_U - \mathcal{P}_{\1}||_\diamond = 2 \sqrt{1 - \left| \frac{1 
-%%+ e^{\mathbf{i} \phi}}{2}\right|^2 },
-%%	\end{equation}
-%
-%	
-%%	
-%%	$1^\circ$ For $E = \1_\XX$ and $\rho  = \frac{1}{2} \rho_1 + \frac{1}{2} 
-%%\rho_2$ we have 
-%%	\begin{equation}
-%%	\tr \left(U\rho \right) = \frac{1}{2} \lambda_1 \tr\left(\rho_1 \Pi_1 
-%%\right) + \frac{1}{2} \lambda_2 \tr\left(\rho_2\Pi_2 \right) = 
-%%\frac{\lambda_1+\lambda_2}{2}. 
-%%	\end{equation}
-%%	Therefore, we have
-%%	\begin{equation}
-%%	2\sqrt{1 -  |\tr(UE \rho )|^2} =  2 \sqrt{1- 
-%%\left|\frac{\lambda_1+\lambda_2}{2}\right|^2}.
-%%	\end{equation}
-%%	$2^\circ$ Let us consider  $E \in \diaguni_2$ given by $E = \sum_{i=1}^2 
-%%e_i \ketbra{i}{i}$   and $\rho  = \frac{1}{2} \rho_1 + \frac{1}{2} \rho_2$. 
-%%Then we have 
-%%	\begin{equation}
-%%	\begin{split}
-%%	\tr \left(UE\rho \right) &= \frac{1}{2}\lambda_1 \tr \left(\rho_1 \Pi_1 E 
-%%\right) + \frac{1}{2}\lambda_2 \tr \left(\rho_2 \Pi_2 E \right) = \\& = 
-%%\frac{1}{2} \lambda_1 \sum_{i =1}^2 \bra{i}\rho_1 \ket{i} e_i + \frac{1}{2} 
-%%\lambda_2 \sum_{i =1}^2 \bra{i}\rho_2 \ket{i} e_i = \frac{1}{2} 
-%%\left(\lambda_1 
-%%+ \lambda_2\right)\sum_{i=1}^2 \bra{i}\rho_1 \ket{i} e_i.
-%%	\end{split}
-%%	\end{equation} 
-%%So we have 
-%%	\begin{equation}
-%%	\left|\tr\left(UE \rho \right) \right| = 
-%%\left|\frac{\lambda_1+\lambda_2}{2} \right| \cdot \left| \sum_{i=1}^2 
-%%\bra{i}\rho_2 \ket{i} e_i \right| \le \left|\frac{\lambda_1+\lambda_2}{2} 
-%%\right|.
-%%	\end{equation}
-%%	It implies that
-%%	\begin{equation}
-%%	\sqrt{1 - \left|\frac{\lambda_1+\lambda_2}{2}\right|^2} \le \sqrt{1 -  
-%%|\tr(UE \rho)|^2} \le\sqrt{1 - \min_{\rho \in\Omega_2} |\tr(UE \rho )|^2}.
-%%	\end{equation}
-%%	Hence we obtain
-%%	\begin{equation}
-%%	\begin{split}
-%%	||\mathcal{P}_U - \mathcal{P}_{\1}||_\diamond &=  \max_{\rho \in \Omega_2} 
-%%\sum_{i=1}^2  \sqrt{\left(\bra{u_i}\rho\ket{u_i} + \bra{i} \rho \ket{i} 
-%%\right)^2 - 4|\bra{i}\rho\ket{u_i}|^2} \le \\& \le 2 \sqrt{1 
-%%-\left|\frac{\lambda_1+\lambda_2}{2} \right|^2}
-%%	\end{split}
-%%	\end{equation
 \begin{proof}
+Let $U = H\diag(1, e^{i \phi}) H^\dagger, \phi \in [0, 
+2\pi)$ be decomposed as 
+	\begin{equation}
+	U= \lambda_1 \ketbra{x_1}{x_1} + \lambda_2 \ketbra{x_1}{x_2}, 
+	\end{equation}
+	where  for eigenvalue $\lambda_1 = 1$, the corresponding 
+	eigenvector is 
+	of the form $\ket{x_1} = \left[\begin{array}{c}\frac{1}{\sqrt{2}}\\\frac{1}{\sqrt{2}}\end{array}\right]
+	$,
+	whereas for  $\lambda_2 = e^{i \phi}$ we have $\ket{x_2} = \left[\begin{array}{c}\frac{1}{\sqrt{2}}\\-\frac{1}{\sqrt{2}}\end{array}\right] 
+	$.
+	
 For Hermitian-preserving maps \cite{watrous} the diamond norm may be expressed as
 \begin{equation}
 \| \Phi  \|_\diamond =  \max_{\rho \in \Omega_d} \| \left( \Id \otimes \sqrt{\rho} \right) \mathcal{J}(\Phi)  \left( \Id \otimes \sqrt{\rho} \right)  \|_1.  \end{equation}
-Then, we have
+Hence, we obtain
 \begin{equation}
 \begin{split}
 \| \PP_{U} - \PP_{\Id}  \|_\diamond 
 & =  \max_{\rho \in \Omega_2} \left\| \left( \Id \otimes \sqrt{\rho} \right) 
-J(\PP_{U} - \PP_{\Id} )  \left( \Id \otimes \sqrt{\rho} \right)  \right\|_1   
+\mathcal{J}(\PP_{U} - \PP_{\Id} )  \left( \Id \otimes \sqrt{\rho} \right)  \right\|_1   
 \\ 
 & =  \max_{\rho \in \Omega_2} \left\| \left( \Id \otimes \sqrt{\rho} \right) 
 \sum_{i=0}^{1} \proj{i} \otimes \left( \proj{u_i} - \proj{i} \right)^\top  
@@ -1012,13 +889,12 @@ One can prove that for all $\alpha, \beta \ge 0 $, and unit vectors $\ket{x},
 \end{equation}
 By taking $\ket{x} = \frac{\sqrt{\rho} \ket{\bar{u_i}}}{\| \sqrt{\rho} 
 \ket{\bar{u_i}} \|}$ and $ \ket{y} = \frac{\sqrt{\rho} \ket{i}}{\|\sqrt{\rho} 
-\ket{i} \|}$ we obtain 
+\ket{i} \|}$ we have
 \begin{equation}
 	\| \PP_{U} - \PP_{\Id}  \|_\diamond  = \max_{\rho \in \Omega_2} 
 	\sum_{i=0}^{1} \sqrt{\left( \bra{u_i} \rho \ket{u_i} + \bra{i} \rho \ket{i 
 	}\right)^2 - 4 | \bra{u_i} \rho \ket{i} |^2}.
 \end{equation}
-\todo[inline]{dokonczyc}
 Let us take  $\rho_0 =   \frac{1}{2}  	
 \left(\begin{array}{cc}1&0\\0&1\end{array}\right)  $,   we obtain
 \begin{equation}
@@ -1026,42 +902,35 @@ Let us take  $\rho_0 =   \frac{1}{2}
 ||\mathcal{P}_U - \mathcal{P}_{\1}||_\diamond 
 &= \sum_{i=0}^1  
 \sqrt{\left(\bra{u_i}\rho_0\ket{u_i} + \bra{i} \rho_0 \ket{i} \right)^2 - 
-4|\bra{i}\rho_0\ket{u_i}|^2}  \\
-&= \sum_{i=0}^1  \sqrt{ \braket{i}{i}^2 -  \left| \bra{i}  U \ket{i }\right|^2} 
+	4|\bra{i}\rho_0\ket{u_i}|^2}  \\
+&= \sum_{i=0}^1  \sqrt{ 1 -  \left| \bra{i}  U \ket{i }\right|^2} 
 \\ 
-&=\sum_{i=0}^1  \sqrt{\braket{i}{i}^2 -  \left| 1 \cdot \bra{i} \proj{u_1} 
-\ket{i} + e^{i \phi} \cdot\bra{i}  \proj{u_2}\ket{i}\right|^2} \\
-&= \sum_{i=0}^1  \sqrt{
-\braket{i}{i}^2 -\braket{i}{i}^2\left| \frac{1 + e^{i \phi}}{2}\right|^2}  \\
-&= \sum_{i=0}^1\braket{i}{i} \sqrt{1 -\left| \frac{1+ e^{i \phi}}{2}\right|^2 } 
+&=\sum_{i=0}^1  \sqrt{1 -  \left| 1 \cdot \bra{i} \proj{u_1} 
+	\ket{i} + e^{i \phi} \cdot\bra{i}  \proj{u_2}\ket{i}\right|^2} \\
+&= \sum_{i=0}^1 
+ \sqrt{1 -\left| \frac{1+ e^{i \phi}}{2}\right|^2 } 
 = 2 \sqrt{1 -\left| \frac{1+e^{i \phi}}{2}\right|^2 } \\
-&= \frac{|1-e^{i \phi }|}{2}.
+&= |1-e^{i \phi }|.
 \end{split}
 \end{equation}
-Due to that, we know  
-that $| \sqrt{\rho}^{\top} \rangle \rangle$ is the discriminator of the problem 
-of discrimination between 
-$\PP_{\Id} $ and $\PP_U$, where 
-$ U =  H \diag(1, e^{i \phi}) H^\dagger$ (from definition of diamond norm 
-).      
-
-
+Observe that
 \begin{equation}
 \begin{split}
 \| \PP_{U} - \PP_{\Id}  \|_\diamond  
-&=  \| \left( \Id \otimes \sqrt{\rho} \right) J(\PP_{U} - \PP_{\Id} )  \left( 
+&=  \| \left( \Id \otimes \sqrt{\rho} \right) \mathcal{J}(\PP_{U} - \PP_{\Id} )  \left( 
 \Id \otimes \sqrt{\rho} \right) \|_1 \\
 &= \left\| ( (\PP_{U} - \PP_\Id) \otimes \Id) \left(  | \sqrt{\rho}^\top 
 \rangle \rangle \langle \langle \sqrt{\rho}^\top | \right) \right\|_1.
 \end{split}
 \end{equation}
-So we obtain that \begin{equation}
-\ket{\psi_{AB}} \coloneqq  | \sqrt{\rho}^\top \rangle  \rangle 
-\end{equation}
-and hence we have 
-\begin{equation}
-\ket{\psi_{AB}}= \frac{1}{\sqrt{2} } | 
-\Id_2 \rangle \rangle, 
+Due to that, we know  
+that $\left| \sqrt{\rho_0}^{\top} \rangle \right\rangle$ is the discriminator of the problem 
+of discrimination between 
+$\PP_{\Id} $ and $\PP_U$ for 
+$ U =  H \diag(1, e^{i \phi}) H^\dagger$ (from definition of diamond norm 
+).      Hence we obtain that \begin{equation}
+\ket{\psi_{AB}} \coloneqq   | \sqrt{\rho}^\top \rangle \rangle = \frac{1}{\sqrt{2} } | 
+\Id_2 \rangle \rangle,
 \end{equation}
 which completes the proof.
 \end{proof}
@@ -1120,25 +989,24 @@ V_1 = \left(\begin{array}{cc}-i \cos\left(\frac{\pi - \phi}{4}\right) &i
 
 
 \begin{proof}
-	\todo[inline]{spr dowod}
 From Proposition~\ref{prop-discrim} we have the form of discriminator given by
 \begin{equation}
 \ket{\psi} = | \sqrt{\rho}^\top \rangle \rangle = \frac{1}{\sqrt{2}} |\Id_2 
 \rangle \rangle. 
 \end{equation}
-From Holevo-Helstrom theorem  we constrain a measurement $\mu$.  
+From Holevo-Helstrom theorem  we constrain a conditional measurement $\mu$.  
 Let us define 
 \begin{equation}
 X  = \left( \PP_U \otimes \Id_2 \right)(\proj{\psi}) -  \left( \PP_\Id 
 \otimes \Id_2 \right)(\proj{\psi}).
 \end{equation} 
-We consider the Hahn-Jordan decomposition. Let 
+From the Hahn-Jordan decomposition, let us note
 \begin{equation}
 X = P - Q
 \end{equation}
-where $P, Q \ge 0 $. Observe, that $P $ and $Q$ are block-diagonal. 
-So, let us define projectors $\Pi_P$ and $\Pi_Q$ onto  $\text{im}(P)$ and $\text{im}(Q)$, 
-respectively. Then  $\Pi_P$ and $\Pi_Q$ have the following forms
+where $P, Q \ge 0 $. 
+Let us define projectors $\Pi_P$ and $\Pi_Q$ onto  $\text{im}(P)$ and $\text{im}(Q)$, 
+respectively. Observe, that $P $ and $Q$ are block-diagonal.  Then,  $\Pi_P$ and $\Pi_Q$ have the following forms
 \begin{equation}
 \Pi_P = \left(\begin{array}{cc}\proj{x_p}&0\\0&\proj{y_p}\end{array}\right) 
 \end{equation}
@@ -1194,7 +1062,7 @@ Finally, we obtain the measurement $\mu$ of the form
 \section{Implementation}
 In this section we will compare theoretical probability of correct 
 discrimination between these measurements and the realization on real devices.
-\todo[inline]{TU WYNIKI PRAKTYTCZNE }
+\todo[inline]{TU WYNIKI PRAKTYCZNE }
 
 \subsection{Native case}
 
@@ -1206,7 +1074,7 @@ discrimination between these measurements and the realization on real devices.
 
 
 \subsection{Sample code snippets analysis (optional)}
-\todo[inline]{moze tu kod tej postselekcji  i kontrolowanej unitarki ? }
+\todo[inline]{moze tu fragmenty kodu ? }
 \label{}
 
 
@@ -1303,7 +1171,11 @@ optimal single-shot discrimination of quantum measurements." Physical Review A
 \bibitem{helstrom1976quantum} Helstrom, C. W. (1969). "Quantum detection and estimation theory." Journal of Statistical Physics, 1(2), 231-252.
 \bibitem{watrous} Watrous, John (2018). The theory of quantum information. Cambridge university press.
 \bibitem{nr} Lewandowska, Paulina and others. The web resource at \url{https://numericalshadow.org/}. Accessed on 2022-10-02. 
+\bibitem{hausdorff} Hausdorff, Felix. "Der wertvorrat einer bilinearform." Mathematische Zeitschrift 3.1 (1919): 314-316.
+\bibitem{toeplitz} Toeplitz, Otto. "Das algebraische Analogon zu einem Satze von Fejér." Mathematische Zeitschrift 2.1 (1918): 187-197.
 \end{thebibliography}
+
+
 \todo[inline]{Please add the reference to the software repository if DOI for 
 software  is available. }
 
