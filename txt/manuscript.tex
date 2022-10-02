@@ -41,7 +41,7 @@
 \usepackage{float}
 
 \usepackage{todonotes} 
-
+\usepackage{url}
 
 \restylefloat{table}
 
@@ -537,7 +537,8 @@ $M_d$.  The subset of $M_d$ consisting of Hermitian matrices of dimension $d$
 will  be  denoted  by $\HH_d$,  while  the  set  of  positive semidefinite
 matrices of dimension $d$ by $\HH_d^+$. The set of quantum states, that is
 positive semidefinite operators having trace equal to one, will be denoted
-$\Omega_d$.  The subset of $M_d$ consisting of unitary matrices will be denoted
+$\Omega_d$. 
+ The subset of $M_d$ consisting of unitary matrices will be denoted
 by $\UU_d$, while its subgroup of diagonal unitary operators will be denoted by
 $\DD \UU_d$.  We will also need a linear mapping transforming $M_{d_1}$ into
 $M_{d_2}$, which will be denoted 
@@ -547,11 +548,12 @@ $M_{d_2}$, which will be denoted
 There
 exists a bijection between introduced linear mappings $\Phi$ and set of matrices $M_{d_1d_2}$,  known as the Choi-
 Jamio{\l}kowski isomorphism. 
-
-
+For a given linear mapping $\Phi_M$ corresponding  Choi operator $\mathcal{J}(\Phi)$ is explicitly written as 
+\begin{equation}
+\mathcal{J}(\Phi) \coloneqq \sum_{i,j=1}^{d- 1} \Phi(\ketbra{i}{j}) \otimes \ketbra{i}{j}. \end{equation}
 Finally, we introduce a special subset of all mappings $\Phi$, called quantum channels, which are completely positive
 and trace preserving (CPTP).
-In this work we will consider a special class of quantum channels, called unitary channels. A unitary channel
+In this work we will consider a special class of quantum channels, called unitary channels. Let $U \in \UU_d$ be a unitary operator. A unitary channel
 $\Phi_{U}$ is defined as $\Phi_U(\cdot) = U \cdot U^\dagger$ for  $U \in 
 \UU_d$. A general quantum
 measurement, that is a positive operator valued measure (POVM) $\PP$ is a
@@ -568,7 +570,7 @@ $
 \PP_{U} : \rho \rightarrow \sum_{i=0}^{d-1} \bra{u_i} \rho \ket{u_i} \proj{i}.
 $ 
 
-\subsubsection{Diamond norm}
+\subsubsection{Diamond norm and the task of discrimination between quantum operators}
 This section defines a special norm on the space of linear mappings, known as 
 the diamond norm, and establishes some of its properties. 
 Next, we will explain the precise connection between the diamond
@@ -582,20 +584,14 @@ We define the diamond norm of a map $\Phi$ as
 \end{equation}
 
 
-\begin{equation}
-\| \Phi  \|_\diamond =  \max_{\rho \in \Omega_d} \| \left( \Id \otimes \sqrt{\rho} \right) \mathcal{J}_\Phi  \left( \Id \otimes \sqrt{\rho} \right)  \|_1  \end{equation}
-
-
-\subsubsection{Discrimination of a quantum operations}
 
 
 
 The celebrated result by Helstrom~\cite{helstrom1976quantum} gives the optimal  probability of correct discrimination between two quantum operations, $\TT$  and $\SS$, 
 in terms of their distance with the use of the diamond norm
 \begin{equation}
-p_{succ} =  \frac12 + \frac14 \| \TT - \SS \|_\diamond.
+p_{\text{succ}}(\TT, \SS) =  \frac12 + \frac14 \| \TT - \SS \|_\diamond.
 \end{equation}
-
 In the case of discrimination between two von Neumann measurements $\PP_U$ and 
 $\PP_\Id$ we know that (from Theorem 1 \cite{puchala2018strategies})
 \begin{equation}
@@ -610,32 +606,31 @@ unitary matrices of dimension $d$.
 \paragraph{Discrimination of unitary channels}
 
 Before we proceed to presenting our main results, we need to briefly discuss the
-problem of discrimination of unitary channels.  In order to formulate the condition for perfect
-discrimination of unitary channels we introduce the notion of numerical range of
-a matrix $A \in M_d$, denoted by $W(A) =\{\bra{x}A\ket{x}: \ket{x} \in 
+problem of discrimination of unitary channels.  For this purpose, we introduce the notion of numerical range of
+a given matrix $A \in M_d$. The set \begin{equation}
+W(A) =\{\bra{x}A\ket{x}: \ket{x} \in 
 \mathbb{C}^d, \;
-\;\braket{x}{x}=1\}$. The celebrated Hausdorf-T\"oplitz
-theorem states that
-$W(A)$ is a convex set and therefore $W(A) =\{\tr A \sigma : \sigma \in \Omega_d
-\}$. Let us now recall the well-known result for the
+\;\braket{x}{x}=1\}.
+\end{equation}   
+is the numerical range of $A$.
+The detailed properties of the numerical range and its generalizations we can see on the website~\cite{nr}. 
+
+
+
+ Let us now recall the well-known result for the
 distinguishability of unitary channels.
-	Let $U \in \UU_d$ and $\Phi_U: \rho \mapsto U \rho U^\dagger$ be a unitary 
+	Let $U \in \UU_d$ and $\Phi_U$ be a unitary 
 	channel. 
-	Then 
+	Then, the following equation holds
 	\begin{equation}
 	\| \Phi_U  - \Phi_{\1} \|_\diamond = 2 \sqrt{1-\nu^2},
 	\end{equation}
-	where $\nu = \min_{x \in W(U^\dagger)} |x|  $. 
-
-%\begin{proposition}
- Let $U = H \diag(1, e^{i \phi}) H^\dagger$, $\phi \in [0, 2\pi)$ and	let 
- $\Phi_U$ and $\Phi_\Id$ be two unitary channels. The following equation holds 
+	where $\nu = \min_{x \in W(U^\dagger)} |x|  $. And hence the optimal probability to discriminate two unitary channel is given by 
 	\begin{equation}
-	\min_{E \in \diaguni_2} \|\Phi_{UE} - 
-	\Phi_\Id\|_\diamond = \|\Phi_{U} - 
-	\Phi_\Id\|_\diamond
+	p_{\text{succ}}(\Phi_U, \Phi_\Id) = \frac{1}{2} + \frac{1}{2} \sqrt{1-\nu^2}.
 	\end{equation}
-%\end{proposition}
+
+
 
 
 %In the general case, the diamond norm of a Hermiticity-preserving maps $\Phi$ 
@@ -673,20 +668,22 @@ distinguishability of unitary channels.
 
 
 
-\section{Illustrative Examples}
+\section{Illustrative Example}
 
 Let us focus on single-qubit von Neumann measurements $\PP_\1$ and $\PP_U$.
 Assume that the unitary matrix $U$ is of the form 
 \begin{equation}
-U = H \diag (1, \ee^{\ii \phi}) H^\dagger,
+U = H 
+\left(\begin{array}{cc}1&0\\0&e^{i \phi}\end{array}\right)  H^\dagger
 \end{equation}
+%\begin{equation}
+%U = H \diag (1, \ee^{\ii \phi}) H^\dagger,
+%\end{equation}
 where $H$ is the Hadamard matrix of dimension two and $\phi \in [0, 2 \pi)$.
 In this section we present theoretical probability of correct 
 discrimination between these measurements. Moreover, we create the optimal 
 theoretical strategy of their discrimination. 
-Such a probability can be calculated using Holevo-Helstrom theorem and 
-Theorem 1 from~\cite{puchala2018strategies}. 
-This probability will be calculated in 
+The otimal probability will be calculated in 
 subsection~\ref{sec:example_theoretical_probability}. Later, we will 
 discuss the realization of this scheme in 
 subsection~\ref{sec:example_realization}. For such realization, we 
@@ -694,16 +691,18 @@ will need the proper input state, (see sec.~\ref{sec:example_discriminator})
 and final measurement (see sec.~\ref{sec_example_final_measurement}). 
 
 \subsection{Theoretical probability}\label{sec:example_theoretical_probability}
-In this section we calculate the theoretical probability of correct discrimination between two von Neumann measurements $\PP_\1$ and $\PP_U$ for $U = H \diag(1, e^{i \phi}) H^\dagger$, where  $\phi \in [0, 2\pi)$. To do that, we will present an auxiliary lemma.   
+
+In this section we calculate the theoretical probability of correct discrimination between two von Neumann measurements $\PP_\1$ and $\PP_U$ for $U = H \diag(1, e^{i \phi}) H^\dagger$, where  $\phi \in [0, 2\pi)$.  To do that, we will present an auxiliary lemma.   
 \begin{lemma}\label{lemma:min-e-optimal}
 Let $U = H \diag(1, e^{i \phi}) H^\dagger$, $\phi \in [0, 2\pi)$ and	let 
-$\Phi_U$ and $\Phi_\Id$ be two unitary channels. Then 
+$\Phi_U$ and $\Phi_\Id$ be two unitary channels. Then, the following equation holds 
 \begin{equation}
 \min_{E \in \diaguni_2} \|\Phi_{UE} - 
 \Phi_\Id\|_\diamond = \|\Phi_{U} - 
 \Phi_\Id\|_\diamond,
 \end{equation}
 \end{lemma}
+\todo[inline]{spr dowod}
 \begin{proof} Recall that the distance between two unitary channels is given by
 	$
 	\| \Phi_U  - \Phi_{\1} \|_\diamond = 2 \sqrt{1-\nu^2},
@@ -778,6 +777,7 @@ where $\phi \in [0, 2\pi)$ is given by
 p = \frac{1}{2} + \frac{|1 - e^{i \phi}  |}{4} . 
 \end{equation}
 \end{theorem}
+\todo[inline]{spr dowod}
 \begin{proof}
 	From Holevo-Helstrom theorem we obtain
 	\begin{equation}
@@ -984,7 +984,10 @@ and $\PP_\1$, $U = H\diag(1, e^{i \phi}) H^\dagger $ and $\phi \in [0,
 %%	\end{split}
 %%	\end{equation
 \begin{proof}
-
+For Hermitian-preserving maps \cite{watrous} the diamond norm may be expressed as
+\begin{equation}
+\| \Phi  \|_\diamond =  \max_{\rho \in \Omega_d} \| \left( \Id \otimes \sqrt{\rho} \right) \mathcal{J}(\Phi)  \left( \Id \otimes \sqrt{\rho} \right)  \|_1.  \end{equation}
+Then, we have
 \begin{equation}
 \begin{split}
 \| \PP_{U} - \PP_{\Id}  \|_\diamond 
@@ -1053,7 +1056,11 @@ $ U =  H \diag(1, e^{i \phi}) H^\dagger$ (from definition of diamond norm
 \end{split}
 \end{equation}
 So we obtain that \begin{equation}
-\ket{\psi_{AB}} =   | \sqrt{\rho}^\top \rangle  \rangle = \frac{1}{\sqrt{2} } | 
+\ket{\psi_{AB}} \coloneqq  | \sqrt{\rho}^\top \rangle  \rangle 
+\end{equation}
+and hence we have 
+\begin{equation}
+\ket{\psi_{AB}}= \frac{1}{\sqrt{2} } | 
 \Id_2 \rangle \rangle, 
 \end{equation}
 which completes the proof.
@@ -1078,8 +1085,8 @@ which completes the proof.
 %\end{remark}
 
 
-\subsubsection{Final measurement}\label{sec_example_final_measurement}
-In this subsection we will derive exact form of the final measurement in the
+\subsubsection{Conditional measurement}\label{sec_example_final_measurement}
+In this subsection we will derive exact form of the conditional measurement in the
 problem of discrimination of von Neumann measurements $\PP_U$ and $\PP_{\Id}$
 for $U = H \diag(1, e^{i \phi}) H^\dagger$, where $\phi \in [0, 2\pi)$.
 
@@ -1088,7 +1095,7 @@ for $U = H \diag(1, e^{i \phi}) H^\dagger$, where $\phi \in [0, 2\pi)$.
 	Consider the problem of discrimination between von Neumann measurements $\PP_U$ 
 	and $\PP_\1$, $U = H\diag(1, e^{i \phi}) H^\dagger $ and $\phi \in [0, 
 	2\pi)$.  
-The  final measurement has the form
+The  conditioned measurement has the form
 \begin{equation}
 \begin{split}
 \mu(0) = \proj{0} \otimes V_0 \proj{0} V_0^\dagger +  \proj{1} \otimes V_1 
@@ -1113,6 +1120,7 @@ V_1 = \left(\begin{array}{cc}-i \cos\left(\frac{\pi - \phi}{4}\right) &i
 
 
 \begin{proof}
+	\todo[inline]{spr dowod}
 From Proposition~\ref{prop-discrim} we have the form of discriminator given by
 \begin{equation}
 \ket{\psi} = | \sqrt{\rho}^\top \rangle \rangle = \frac{1}{\sqrt{2}} |\Id_2 
@@ -1187,7 +1195,14 @@ Finally, we obtain the measurement $\mu$ of the form
 In this section we will compare theoretical probability of correct 
 discrimination between these measurements and the realization on real devices.
 \todo[inline]{TU WYNIKI PRAKTYTCZNE }
-\todo[inline]{tu rozklad i obwody}	
+
+\subsection{Native case}
+
+\subsection{IBMQ}
+
+\subsection{Lucy}
+
+\subsection{Rigetti}
 
 
 \subsection{Sample code snippets analysis (optional)}
@@ -1264,22 +1279,7 @@ This work was supported by the Foundation for Polish Science (FNP) under grant
 number POIR.04.04.00-00-17C1/18-00.
 
 
- \section{}
- \label{}
-
- References:
- If you have bibdatabase file and want bibtex to generate the
- bibitems, please use
-
-  \bibliographystyle{elsarticle-num} 
-  \bibliography{<your bibdatabase>}
-
- else use the following coding to input the bibitems directly in the
- TeX file.
  
- 
- \bibliographystyle{ieeetr}
- \bibliography{rigetti}
 
 \begin{thebibliography}{00}
 
@@ -1300,6 +1300,9 @@ Quantum Information 5.1 (2019): 1-9.
 \bibitem{puchala2018strategies} Puchała, Zbigniew, et al. "Strategies for 
 optimal single-shot discrimination of quantum measurements." Physical Review A 
 98.4 (2018): 042103.
+\bibitem{helstrom1976quantum} Helstrom, C. W. (1969). "Quantum detection and estimation theory." Journal of Statistical Physics, 1(2), 231-252.
+\bibitem{watrous} Watrous, John (2018). The theory of quantum information. Cambridge university press.
+\bibitem{nr} Lewandowska, Paulina and others. The web resource at \url{https://numericalshadow.org/}. Accessed on 2022-10-02. 
 \end{thebibliography}
 \todo[inline]{Please add the reference to the software repository if DOI for 
 software  is available. }
