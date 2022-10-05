@@ -1,0 +1,11 @@
+\documentclass[border=2px]{standalone}
+
+\usepackage[braket, qm]{qcircuit}
+\usepackage{graphicx}
+
+\begin{document}
+\scalebox{1.0}{
+\Qcircuit @C=1.0em @R=0.2em @!R { \\
+	 	\nghost{{q} :  } & \lstick{{q} :  } & \gate{\mathrm{R_Z}\,(\mathrm{\frac{\pi}{2}})} & \gate{\mathrm{\sqrt{X}}} & \gate{\mathrm{R_Z}\,(\mathrm{0.5*\phi\,-\,\frac{\pi}{2}})} & \gate{\mathrm{X}} & \gate{\mathrm{\sqrt{X}}} & \qw & \qw\\
+\\ }}
+\end{document}
