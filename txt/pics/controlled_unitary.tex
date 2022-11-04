@@ -13,8 +13,8 @@
 \begin{document}
 
 \Qcircuit @C=2em @R=1em  {
-\lstick{} & \gate{\Phi_U / \Phi_\Id} & 
-\multigate{1}{\proj{0}\otimes V_0 + \proj{1} \otimes V_1} & 
+\lstick{} & \gate{\Phi_{U^\dagger} / \Phi_\Id} & 
+\multigate{1}{\proj{0}\otimes V_0^\dagger + \proj{1} \otimes V_1^\dagger} & 
 \gate{\Delta}  &  \measure{\mathrm{i}}[0]   \cw  
 \\
 \lstick{} & \qw & \ghost{\proj{0}\otimes V_0 + \proj{1} \otimes V_1} &
