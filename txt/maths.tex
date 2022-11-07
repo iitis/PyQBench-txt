@@ -71,6 +71,7 @@
 \newcommand{\DD}{\mathcal{D}}
 \newcommand{\TT}{\mathcal{T}}
 \newcommand{\PP}{\mathcal{P}}
+\newcommand{\QQ}{\mathcal{Q}}
 \renewcommand{\SS}{\mathcal{S}}
 \newcommand{\UU}{\mathcal{U}}
 \newcommand{\HH}{\mathcal{H}}
@@ -96,49 +97,50 @@
 
 
 
+\subsubsection{Motivation}
 
-\subsubsection{Model specification}
-The scenario of measurements discrimination assumes that we have access to an unknown measurement
-device. One of the two measurements, either $\PP$
-or $\mathcal{Q}$,  was used during an experiment. The only information we have that one of these measurements was 
-performed. We want to determine an upper bound on the
-probability of correct discrimination between $\PP$ and $\mathcal{Q}$. Moreover, we also want to
-construct an optimal discrimination strategy to achieve the highest possible probability. 
+Suppose we have access to a device performing one of the predefined von Neumann
+measurements\footnote{In PyQBench, we restrict ourselves to discriminating von Neumann measurements.
+This is because, unlike other measurement types, they can be implemented on actual hardware.
+},  $\PP$ or $\QQ$. While the $\PP$ and $\QQ$ are known, it is not known which of them is
+performed when the device executes. Based on the measurement outcome, you have to guess which
+measurement was performed (but you can perform arbitrary unitary operations before and after the
+measurement). What is the highest probability of making a correct guess? And what do you have to do
+to achieve it? And, most importantly, why would we want to do this?
 
-Discriminating between von Neumann measurements is valuable from the applications viewpoint. That is because, unlike other types of measurements, they can be implemented on current hardware.
-So
-here, we will consider the discrimination task between two von Neumann measurements, one of them on the computational basis, whereas the second one on basis 
-$U$, where $U$ is a unitary matrix. 
-Theoretical scenario was characterized in~\cite{puchala2018strategies}.
-Such a scheme can be best described into the following steps 
-and illustrated in
-Fig.~\ref{fig:theoretical_scheme}.
+Suppose that you know a strategy that, for an ideal device, would yield a probability
+$p_{\text{succ}}$ of successfully discriminating between two measurements. Will the probability be
+the same on an actual physical device? For current, Noisy Intermediate Scale Quantum devices
+(NISQs), the answer is: certainly not. However, the error rate that you make when guessing can be
+used as a benchmarking metric. PyQBench helps you in organizing such discrimination experiments for
+a single qubit system\footnote{As we will soon see, the optimal discrimination strategy requires
+the usage of an additional auxiliary qubit.}, executing them on real hardware or simulators, and
+computing discrimination probabilities based on the measured bitstrings.
 
+\subsubsection{Discrimination scheme}
+
+Without loss of generality, we consider discrimination between a measurement in the computational
+Z-basis ($\PP_\Id$), and an alternative measurement performed in the basis $U$
+($\PP_U$)\footnote{Explaining why we can consider only Z-basis and alternative measurement is beyond
+the scope of this technical documentation. See \cite{puchala2018strategies} if you are interested in
+the explanation.}. In PyQBench, we operate only on two-level systems, but the discrimination scheme,
+described in detail in \cite{puchala2018strategies}, makes no assumptions about the dimensionality.
+
+In general, the discrimination scheme, presented in Fig.\ref{fig:theoretical_scheme}, requires a
+second system of the same dimensionality as the measured one. First, the joint system is prepared in
+some state $\ket{\psi_0}$. Then, the unknown measurement is performed on the first part of the
+system. Based on its outcome $i$, another measurement $\mathcal{P}_{V_i}$ is performed to obtain an
+outcome $j$. Finally, if $j=0$ we guess that the performed measurement is $\mathcal{P}_U$, otherwise
+we guess that it was $\mathcal{P}_\Id$.
 
 \begin{figure}[h!]
 	\centering
-$  $	\includegraphics[scale=1.7]{pics/theoretical_scheme}
+	\includegraphics[scale=1.7]{pics/theoretical_scheme}
 	\caption{Theoretical  scheme of discrimination  between von Neumann measurements $\PP_{U}$ and $\PP_\Id$. }
 	\label{fig:theoretical_scheme}
 \end{figure}
 
-
-
-\begin{enumerate}
-	\item We initialize the discriminator $\ket{\psi_{0}}$ on bipartite  system.
-	\item We perform one of two known measurements (either $\PP_{\Id}$ or 
-	$\PP_{U}$) on first part of the input state  $\ket{\psi_{0}}$, that means $\left(\PP \otimes \Id \right) (\proj{\psi_0})$.  
-	\item We measure the  first system and obtain a label $i$. 
-	\item We perform the conditional binary  (optimal) measurement $\PP_{V_i}$ on the second part based on the output label $i$. 
-	\item  We measure the second  system of the input state  $\ket{\psi_{0}}$ and 
-	make a decision based on the received label $j$. If $j=0$, then we decide 
-	that the $\PP_U$ occurs. Otherwise, we decide that $\PP_{\Id}$ occurs. 
-\end{enumerate}  
-
-
-
 \subsubsection{Quantum architecture's limits and practical solutions}
-
 
 
 Let us take a closer look at the setup for distinguishing von Neumann 
