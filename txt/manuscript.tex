@@ -482,9 +482,11 @@ where $i=\{0,1\}$ and $ j=\{0,1\}$.
 
 Let $M_{d_1,d_2}$ be the set of all matrices of dimension $d_1 \times d_2$ over
 the field $\mathbb{C}$. For  simplicity, square matrices will be denoted by
-$M_d$.  The subset of $M_d$ consisting of Hermitian matrices of dimension $d$
-will  be  denoted  by $\HH_d$,  while  the  set  of  positive semidefinite
-matrices of dimension $d$ by $\HH_d^+$. The set of quantum states, that is
+$M_d$.  
+%The subset of $M_d$ consisting of Hermitian matrices of dimension $d$
+%will  be  denoted  by $\HH_d$,  while  the  set  of  positive semidefinite
+%matrices of dimension $d$ by $\HH_d^+$. 
+The set of quantum states, that is
 positive semidefinite operators having trace equal to one, will be denoted
 $\Omega_d$. 
  The subset of $M_d$ consisting of unitary matrices will be denoted
@@ -1143,10 +1145,8 @@ In this Appendix we present proofs of Proposition~\ref{prop-discrim} and Proposi
 	Observe that
 	\begin{equation}
 	\begin{split}
-	\| \PP_{U} - \PP_{\Id}  \|_\diamond  
-	&=  \| \left( \Id \otimes \sqrt{\rho} \right) \mathcal{J}(\PP_{U} - \PP_{\Id} )  \left( 
-	\Id \otimes \sqrt{\rho} \right) \|_1 \\
-	&= \left\| ( (\PP_{U} - \PP_\Id) \otimes \Id) \left(  | \sqrt{\rho}^\top 
+ \| \left( \Id \otimes \sqrt{\rho} \right) \mathcal{J}(\PP_{U} - \PP_{\Id} )  \left( 
+	\Id \otimes \sqrt{\rho} \right) \|_1 = \left\| ( (\PP_{U} - \PP_\Id) \otimes \Id) \left(  | \sqrt{\rho}^\top 
 	\rangle \rangle \langle \langle \sqrt{\rho}^\top | \right) \right\|_1.
 	\end{split}
 	\end{equation}
@@ -1155,7 +1155,7 @@ In this Appendix we present proofs of Proposition~\ref{prop-discrim} and Proposi
 	of discrimination between 
 	$\PP_{\Id} $ and $\PP_U$ for 
 	$ U =  H \diag(1, e^{i \phi}) H^\dagger$ (from definition of diamond norm).      Hence, we obtain that \begin{equation}
-	\ket{\psi_{AB}} \coloneqq   | \sqrt{\rho}^\top \rangle \rangle = \frac{1}{\sqrt{2} } | 
+	\ket{\psi_{0}} \coloneqq   | \sqrt{\rho_0}^\top \rangle \rangle = \frac{1}{\sqrt{2} } | 
 	\Id_2 \rangle \rangle,
 	\end{equation}
 	which completes the proof.
@@ -1166,14 +1166,14 @@ In this Appendix we present proofs of Proposition~\ref{prop-discrim} and Proposi
 \begin{proof}[Proof of Proposition~\ref{prop:optimal-measurement}]
 	From Proposition~\ref{prop-discrim} we obtain the exact form of discriminator given by
 	\begin{equation}
-	\ket{\psi} = | \sqrt{\rho}^\top \rangle \rangle = \frac{1}{\sqrt{2}} |\Id_2 
+	\ket{\psi_0} = | \sqrt{\rho_0}^\top \rangle \rangle = \frac{1}{\sqrt{2}} |\Id_2 
 	\rangle \rangle. 
 	\end{equation}
 	From Holevo-Helstrom theorem  we constrain a conditional measurement $\mu$.  
 	Let us define 
 	\begin{equation}
-	X  = \left( \PP_U \otimes \Id_2 \right)(\proj{\psi}) -  \left( \PP_\Id 
-	\otimes \Id_2 \right)(\proj{\psi}).
+	X  = \left( \PP_U \otimes \Id_2 \right)(\proj{\psi_0}) -  \left( \PP_\Id 
+	\otimes \Id_2 \right)(\proj{\psi_0}).
 	\end{equation} 
 	From the Hahn-Jordan decomposition, let us note
 	\begin{equation}
