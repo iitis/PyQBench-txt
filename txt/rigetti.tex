@@ -464,25 +464,7 @@ $\PP_U$
 and $\PP_{\Id}$ for $U = H_2 \diag(1, e^{i \phi}) H_2^\dagger$, 
 	where $\phi \in [0, 2\pi)$. The schematic representation of theoretical 
 	setup is shown in Fig.~\ref{fig:theoretical}. 
-\begin{figure}[h!]
-	\centering 
-	\includegraphics[width=0.75\linewidth, angle=-90]{rys-theoretical.jpg} 
-	
-	\caption{ A schematic representation of the setup for distinguishing
-		measurements using entangled states. One of two known measurements 
-		$\mathcal{P}_U$
-		or $\PP_\Id$ is performed on part $A$ of the input state $\ket{\psi}$. 
-		We use
-		the output label $i$ and perform a conditional binary measurement
-		$\mathcal{P}_{V_i}$ on part $B$. By the use of its output we formulate 
-		our guess, 
-		that is we decide  
-		weather
-		the measurement performed on part $A$ was $\mathcal{P}_U$ or 
-		$\PP_\Id$. In out approach, if  $ j = 0$ we decide  $\PP_U$, if
-		$j = 1$ we decide $\PP_{\Id}$. 
-	}\label{fig:theoretical}
-\end{figure} 
+
 From ~\cite{puchala2018strategies}(Proposition 4) and Lemma~\ref{lemma:rho} we 
 have 
 	\begin{equation}
@@ -552,14 +534,6 @@ of controlled unitary gate.
 \newpage
 \begin{scheme}(By using postsellection)
 
-\begin{figure}[h!]
-	\centering 
-	\includegraphics[width=0.75\linewidth, angle=-90]{rys-postsellection.jpg} 
-	
-	\caption{ A schematic representation of the setup for distinguishing
-		measurements using postselection. 
-	}\label{fig:postsellection}
-\end{figure}
 \begin{enumerate}
 \item We prepare input state $\ket{\psi} = \frac{1}{\sqrt{2} } | \Id_2 \rangle 
 \rangle. $
@@ -579,14 +553,7 @@ p = ...
 
 \newpage
 \begin{scheme}(By using controlled unitary)
-\begin{figure}[h!]
-	\centering 
-	\includegraphics[width=0.75\linewidth, angle=-90]{rys-controlled.jpg} 
-	
-	\caption{ A schematic representation of the setup for distinguishing
-		measurements using controlled unitary gate. 
-	}\label{fig:controlled}
-\end{figure}
+
 \begin{enumerate}
 \item We prepare input state $\ket{\psi} = \frac{1}{\sqrt{2} } | \Id_2 \rangle 
 \rangle. $
@@ -604,6 +571,11 @@ cases}}
 \end{scheme}
 
 
+
+PyQBench to biblioteka języka Python oraz narzędzie wiersza polecenia służące do testowania bramkowych komputerów kwantowych na podstawie ich zdolności do rozróżniania pomiędzy dwoma pomiarami von Neumanna w różnych bazach. Narzędzie wiersza polecenia pozwala na uruchomienie benchmarków wykorzystujących rozróżnianie między pomiarem w bazie obliczeniowej a pomiarem w bazie definiowanej przez sparametryzowaną rodzinę Fouriera. Użytkownik może wybierać, czy eksperyment zostanie przeprowadzony przy pomocy postselekcji czy alternatywnej metody “sumy prostej”, oraz kontrolować różne aspekty przeprowadzanego eksperymentu, takie jak liczba próbek używanych w samplowaniu, indeksy kubitów, zakresy kąta dla sparametryzowanej rodziny Fouriera. Jeżeli użytkownik chce użyć pomiaru w innej bazie, może wykorzystać PyQBench jako bibliotekę. Ten tryb użycia wymaga większego nakładu pracy, ale pozwala na rozszerzenie parametrów eksperymentu.  Warto wspomnieć, że w przypadku backendów udostępniających informacje o kalibracji kubitów, PyQBench wspiera mitygację błędów metodą matrix-free measurement mitigation. 
+ Jednym z testowanych komputerów kwantowych był IBMQ, na którym wykonywane zostały eksperymenty na podstawie benchmarku rozróżniania pomiarów von Neumanna. 
+Obecnie opracowujemy zebrane wyniki.
+Biblioteka PyQBench będzie otwartym oprogramowaniem (ang. open source). Niebawem również zostanie wysłany artykuł do publikacji w czasopiśmie.  
 \section*{Acknowledgments}
 
 
