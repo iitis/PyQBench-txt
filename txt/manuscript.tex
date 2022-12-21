@@ -49,6 +49,7 @@
 \newcommand{\diaguni}{\ensuremath{\mathcal{DU}}}
 \newcommand{\diag}{\mathrm{diag}}
 \newcommand{\tr}{\mathrm{tr}}
+\newcommand{\textapprox}{\raisebox{0.5ex}{\texttildelow}}
 \journal{SoftwareX}
 
 
@@ -114,28 +115,35 @@ Python programming
 \textbf{Nr.} & \textbf{Code metadata description} & \textbf{Please fill in this 
 column} \\
 \hline
-C1 & Current code version & For example v42 \\
+C1 & Current code version & 0.1.0 \\
 \hline
-C2 & Permanent link to code/repository used for this code version & For 
-example: $https://github.com/mozart/mozart2$ \\
+C2 & Permanent link to code/repository used for this code version & \url{https://github.com/iitis/PyQBench} \\
 \hline
 C3 & Code Ocean compute capsule & For example: 
 $https://codeocean.com/2017/07/30/neurospeech-colon-an-open-source-software-for-parkinson-apos-s-speech-analysis/code$\\
 \hline
-C4 & Legal Code License   & List one of the approved licenses \\
+C4 & Legal Code License & Apache License 2.0\\
 \hline
-C5 & Code versioning system used & For example svn, git, mercurial, etc. put 
-none if none \\
+C5 & Code versioning system used & git \\
 \hline
-C6 & Software code languages, tools, and services used & For example C++, 
-python, r, MPI, OpenCL, etc. \\
+C6 & Software code languages, tools, and services used & Python, Qiskit, AWS Braket \\
 \hline
-C7 & Compilation requirements, operating environments \& dependencies & \\
+C7 & Compilation requirements, operating environments \& dependencies & 
+\texttt{Python >= 3.8}\newline
+\texttt{amazon-braket-sdk \textapprox= 1.33.0}\newline
+\texttt{numpy \textapprox= 1.14.5}\newline
+\texttt{scipy \textapprox= 1.7.3}\newline
+\texttt{pandas \textapprox= 1.5.0}\newline
+\texttt{pydantic \textapprox= 1.9.0}\newline
+\texttt{qiskit \textapprox= 0.39.0}\newline
+\texttt{mthree \textapprox= 1.1.0}\newline
+\texttt{tqdm \textapprox= 4.64.1}\newline
+\texttt{pyyaml \textapprox= 6.0}\\
 \hline
 C8 & If available Link to developer documentation/manual & For example: 
 $http://mozart.github.io/documentation/$ \\
 \hline
-C9 & Support email for questions & \\
+C9 & Support email for questions & \url{dexter2206@gmail.com}\\
 \hline
 \end{tabular}
 \caption{Code metadata (mandatory)}
