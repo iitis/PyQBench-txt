@@ -103,8 +103,7 @@ Python programming
 
 \end{frontmatter}
 
-\section*{Required Metadata}
-\label{}
+
 
 \section*{Current code version}
 \label{}
@@ -119,8 +118,7 @@ C1 & Current code version & 0.1.0 \\
 \hline
 C2 & Permanent link to code/repository used for this code version & \url{https://github.com/iitis/PyQBench} \\
 \hline
-C3 & Code Ocean compute capsule & For example: 
-$https://codeocean.com/2017/07/30/neurospeech-colon-an-open-source-software-for-parkinson-apos-s-speech-analysis/code$\\
+C3 & Code Ocean compute capsule & ?????????\\
 \hline
 C4 & Legal Code License & Apache License 2.0\\
 \hline
@@ -140,8 +138,7 @@ C7 & Compilation requirements, operating environments \& dependencies &
 \texttt{tqdm \textapprox= 4.64.1}\newline
 \texttt{pyyaml \textapprox= 6.0}\\
 \hline
-C8 & If available Link to developer documentation/manual & For example: 
-$http://mozart.github.io/documentation/$ \\
+C8 & If available Link to developer documentation/manual & ?????\\
 \hline
 C9 & Support email for questions & \url{dexter2206@gmail.com}\\
 \hline
@@ -155,30 +152,42 @@ C9 & Support email for questions & \url{dexter2206@gmail.com}\\
 
 %% main text
 
-The permanent link to code/repository or the zip archive should include the 
-following requirements: 
-
-README.txt and LICENSE.txt.
-
-Source code in a src/ directory, not the root of the repository.
-
-Tag corresponding with the version of the software that is reviewed.
-
-Documentation in the repository in a docs/ directory, and/or READMEs, as 
-appropriate.
+%The permanent link to code/repository or the zip archive should include the 
+%following requirements: 
+%
+%README.txt and LICENSE.txt.
+%
+%Source code in a src/ directory, not the root of the repository.
+%
+%Tag corresponding with the version of the software that is reviewed.
+%
+%Documentation in the repository in a docs/ directory, and/or READMEs, as 
+%appropriate.
 
 
 
 
 \section{Motivation and significance}
 
+
+\todo[inline]{In particular, we compile circuits to standard gate sets of the vendor using compiler RECZNEGO?, and we perform experiments across different qubit subsets.}
+
+
+
+
+quantum volume - '' has become the de-facto standard benchmark to quantify the capability of Noisy Intermediate-Scale Quantum (NISQ) devices '' \cite{pelofske2022volume}
+
+
+
+
+
 Noisy intermediate-scale quantum
 (NISQ)~\cite{preskill} devices are currently storming the market. We
 have a selection of readily available quantum computers based on different
 architectures. Historically, the first widely introduced quantum computing
-architecture is D-Wave's quantum annealer~\cite{}. 
+architecture is D-Wave's quantum annealer. 
 
-https://quantumcomputingreport.com/scorecards/qubit-technology/
+
 
 Additional approaches to quantum computing are currently in development. For 
 instance we have Ionq's computer based on ion traps and Xanadu's optical 
@@ -761,6 +770,9 @@ Now we present the circuits for the generic case.
 
 \section{Impact }
 
+This software has two main contributions. 
+
+
 
 \textbf{This is the main section of the article and the reviewers weight the 
 description here appropriately}
@@ -783,29 +795,30 @@ led to the creation of spin-off companies (if so).
 \section{Conclusions}
 \label{}
 
-Set out the conclusion of this original software publication.
+In this study, we develop  a Python library PyQBench, an innovative open-source framework for benchmarking 
+gate-based quantum computers. 
 
+
+%%%%%%%%%%%%%% 
+PyQBench can benchmark NISQ devices by verifying their capability of
+discriminating between two von Neumann measurements. PyQBench offers a simplified, ready-to-use,
+command line interface (CLI) for running benchmarks using a predefined parametrized Fourier
+family of measurements. For more advanced scenarios, PyQBench offers a way of employing user-defined
+measurements instead of predefined ones.
 \section{Conflict of Interest}
-Please select the appropriate text:
-
-Potential conflict of interest exists:
-We wish to draw the attention of the Editor to the following facts, which may 
-be considered as potential conflicts of interest, and to significant financial 
-contributions to this work. The nature of potential conflict of interest is 
-described below: [Describe conflict of interest]
-
-No conflict of interest exists:
-We wish to confirm that there are no known conflicts of interest associated 
-with this publication and there has been no significant financial support for 
-this work that could have influenced its outcome.
+No conflict of interest exists: We wish to confirm that there are no known
+conflicts of interest associated with this publication and there has been no
+significant financial support for this work that could have influenced its out-
+come.
 
 
 \section*{Acknowledgements}
 
-This work was supported by the Foundation for Polish Science (FNP) under grant
-number POIR.04.04.00-00-17C1/18-00.
 
-
+This work is  supported by
+the project “Near-term quantum computers Challenges, optimal implementations and applications” under Grant Number POIR.04.04.00-00-17C1/18-00, which is carried out within the Team-Net programme of the Foundation for Polish Science co-financed by the European Union under the European Regional Development Fund. 
+PL is also a holder of European Union scholarship through the European Social Fund, 
+grant InterPOWER (POWR.03.05.00-00-Z305). 
  
 
 \begin{thebibliography}{00}
@@ -832,6 +845,8 @@ optimal single-shot discrimination of quantum measurements." Physical Review A
 \bibitem{nr} Lewandowska, Paulina and others. The web resource at \url{https://numericalshadow.org/}. Accessed on 2022-10-02. 
 \bibitem{hausdorff} Hausdorff, Felix. "Der wertvorrat einer bilinearform." Mathematische Zeitschrift 3.1 (1919): 314-316.
 \bibitem{toeplitz} Toeplitz, Otto. "Das algebraische Analogon zu einem Satze von Fejér." Mathematische Zeitschrift 2.1 (1918): 187-197.
+
+\bibitem{pelofske2022volume} Pelofske, E., B{\"a}rtschi, A., Eidenbenz, S. (2022). Quantum volume in practice: What users can expect from NISQ devices. arXiv preprint arXiv:2203.03816.
 \end{thebibliography}
 
 

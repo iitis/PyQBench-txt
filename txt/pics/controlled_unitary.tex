@@ -14,12 +14,12 @@
 
 \Qcircuit @C=2em @R=1em  {
 \lstick{} & \gate{\Phi_{U^\dagger} / \Phi_\Id} & 
-\multigate{1}{\proj{0}\otimes \Phi_{V_0^\dagger} + \proj{1} \otimes \Phi_{V_1^\dagger}} & 
+\multigate{1}{ \Phi_{V_0^\dagger} \oplus \Phi_{V_1^\dagger}} & 
 \gate{\Delta}  &  \measure{\mathrm{i}}[0]   \cw  
 \\
-\lstick{} & \qw & \ghost{\proj{0}\otimes \Phi_{V_0^\dagger} + \proj{1} \otimes \Phi_{V_1^\dagger}} &
+\lstick{} & \qw & \ghost{ \Phi_{V_0^\dagger} \oplus \Phi_{V_1^\dagger}} &
 \gate{\Delta}  &  \measure{\mathrm{j}}[0] \cw
-\inputgrouph{1}{2}{1.4em}{\ket{\psi_{AB}}}{1.5em}  \\ 
+\inputgrouph{1}{2}{1.4em}{\ket{\psi_{0}}}{1.5em}  \\ 
 }
 
 
