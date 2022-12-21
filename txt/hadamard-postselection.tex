@@ -1,0 +1,36 @@
+\documentclass[border=2px]{standalone}
+
+\usepackage[braket, qm]{qcircuit}
+\usepackage{graphicx}
+
+\begin{document}
+%\scalebox{1.0}{
+%\Qcircuit @C=1.0em @R=0.2em @!R { \\
+%	 	\nghost{{q}_{0} :  } & \lstick{{q}_{0} :  } &  \gate{\mathrm{H}} & \ctrl{1}   &  \gate{\mathrm{H}} &  \qw & \meter \\
+%	 	\nghost{{q}_{1} :  } & \lstick{{q}_{1} :  } & \qw & \targ &  \gate{\mathrm{R_Y}\,(\frac{-3\mathrm{\pi}}{4})} & \qw  & \meter\\
+%\\ }}
+
+
+%\scalebox{1.0}{
+%	\Qcircuit @C=1.0em @R=0.2em @!R { \\
+%		\nghost{{q}_{0} :  } & \lstick{{q}_{0} :  } &  \gate{\mathrm{H}} & \ctrl{1}   &  \qw &  \qw & \meter \\
+%		\nghost{{q}_{1} :  } & \lstick{{q}_{1} :  } & \qw & \targ &  \gate{\mathrm{R_Y}\,(\frac{-3\mathrm{\pi}}{4})} & \qw  & \meter\\
+%		\\ }} 
+%	
+%	
+%	\scalebox{1.0}{
+%		\Qcircuit @C=1.0em @R=0.2em @!R { \\
+%			\nghost{{q}_{0} :  } & \lstick{{q}_{0} :  } &  \gate{\mathrm{H}} & \ctrl{1}   &  \gate{\mathrm{H}} &  \qw & \meter \\
+%			\nghost{{q}_{1} :  } & \lstick{{q}_{1} :  } & \qw & \targ &  \gate{\mathrm{R_Y}\,(\frac{-3\mathrm{\pi}}{4})} & \gate{\mathrm{X}}  & \meter\\
+%			\\ }}
+%	
+	
+	\scalebox{1.0}{
+		\Qcircuit @C=1.0em @R=0.2em @!R { \\
+			\nghost{{q}_{0} :  } & \lstick{{q}_{0} :  } &  \gate{\mathrm{H}} & \ctrl{1}   &  \qw &  \qw & \meter \\
+			\nghost{{q}_{1} :  } & \lstick{{q}_{1} :  } & \qw & \targ &  \gate{\mathrm{R_Y}\,(\frac{-3\mathrm{\pi}}{4})} &  \gate{\mathrm{X}}  & \meter\\
+			\\ }}  
+		
+		
+	
+\end{document}
