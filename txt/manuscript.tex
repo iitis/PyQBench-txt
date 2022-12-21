@@ -740,102 +740,19 @@ Now we present the circuits for the generic case.
 \caption{Circuit representing controlled $V_0$ and $V_1$ the generic case.}
 \end{figure}
 
-
-
-\subsection{IBMQ and Lucy}
-
-\subsection{IBMQ}
- basis gates = ["cx", "i", "rz", "sx", "x"]
-\begin{figure}[h!]
-\centering
-\includegraphics[scale=1.2]{pics/circuit-qiskit/state_preparation-ibmq}
-\caption{Circuit representing state preparation for IBMQ.}
-\end{figure}
-\begin{figure}[h!]
-\centering
-\includegraphics[scale=1.2]{pics/circuit-qiskit/u_dag-ibmq}
-\caption{Circuit representing $U^\dagger$ for IBMQ.}
-\end{figure}
-\begin{figure}[h!]
-\centering
-\includegraphics[scale=1.2]{pics/circuit-qiskit/v0_dag-ibmq}
-\caption{Circuit representing $V_0^\dagger$ for IBMQ.}
-\end{figure}
-\begin{figure}[h!]
-\centering
-\includegraphics[scale=1.2]{pics/circuit-qiskit/controlled_v0_v1_dag-ibmq}
-\caption{Circuit representing controlled $V_0$ and $V_1$ for IBMQ.}
-\end{figure}
-
 \subsection{Lucy}
  basis gates  =["ecr", "i", "rz", "sx", "x"] 
-\begin{figure}[h!]
-\centering
-\includegraphics[scale=1.2]{pics/circuit-qiskit/state_preparation-lucy}
-\caption{Circuit representing state preparation for Lucy.}
-\end{figure}
-\begin{figure}[h!]
-\centering
-\includegraphics[scale=1.2]{pics/circuit-qiskit/u_dag-lucy}
-\caption{Circuit representing $U^\dagger$ for Lucy.}
-\end{figure}
-\begin{figure}[h!]
-\centering
-\includegraphics[scale=1.2]{pics/circuit-qiskit/v0_dag-lucy}
-\caption{Circuit representing $V_0^\dagger$ for Lucy.}
-\end{figure}
-\begin{figure}[h!]
-\centering
-\includegraphics[scale=1.2]{pics/circuit-qiskit/controlled_v0_v1_dag-lucy}
-\caption{Circuit representing controlled $V_0$ and $V_1$ for Lucy.}
-\end{figure}
 
 
 \subsection{Rigetti}
  basis gates = ["cz", "rx", "rz"]
-\begin{figure}[h!]
-\centering
-\includegraphics[scale=1.2]{pics/circuit-qiskit/state_preparation-rigetti}
-\caption{Circuit representing state preparation for Rigetti.}
-\end{figure}
-\begin{figure}[h!]
-\centering
-\includegraphics[scale=1.2]{pics/circuit-qiskit/u_dag-rigetti}
-\caption{Circuit representing $U^\dagger$ for Rigetti.}
-\end{figure}
-\begin{figure}[h!]
-\centering
-\includegraphics[scale=1.2]{pics/circuit-qiskit/v0_dag-rigetti}
-\caption{Circuit representing $V_0^\dagger$ for Rigetti.}
-\end{figure}
-\begin{figure}[h!]
-\centering
-\includegraphics[scale=0.8]{pics/circuit-qiskit/controlled_v0_v1_dag-rigetti}
-\caption{Circuit representing controlled $V_0$ and $V_1$ for Rigetti.}
-\end{figure}
+
 
 
 \subsection{Sample code snippets analysis (optional)}
 \todo[inline]{moze tu fragmenty kodu ? }
 \label{}
 
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%Let us consider one-qubit von Neumann measurements $\PP_U$ and $\PP_\Id$. In 
-%this simplest case,  we consider two von Neumann measurements $\PP_\1$ and 
-%$\PP_U$ for $U = H diag(0,\ee^{\ii \phi}) H$, where $H_d$--Hadamard matrix 
-%of dimension $d$, $0 \le \phi < 2\pi$.    By theoretical results, the expected 
-%probability $p_{success}$ of correct distinction between two measurements 
-%$\PP_\1$ and $\PP_U$  is given by
-%\begin{equation}
-%p_{success} = \frac{1}{2} + \frac{1}{4} ||\PP_U - \PP_\1 ||_\diamond = 
-%\frac{1}{2} + \frac{|1-\ee^{\ii \phi}|}{4}
-%\end{equation}
-%by the assumption the discriminator is on the form $\ket{\psi} = 
-%\frac{1}{\sqrt{2}} ( \ket{00} +  \ket{11} )$. 
-%(tu wyniki z rigettiego...)
 
 
 
