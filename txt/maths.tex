@@ -287,48 +287,41 @@ where $N_{\text{total}}$ is the number of trials.
 
 
 
-\subsubsection{Mathematical preliminaries}
+\subsubsection{Optimal discrimination scheme}
 
-%
-%
-% The action of
-%quantum measurement $\PP_{U}$ on some state $\rho \in \Omega_d$ can be
-%seen as  a measure-and-prepare quantum channel as follows
-%$
-%\PP_{U} : \rho \rightarrow \sum_{i=0}^{d-1} \bra{u_i} \rho \ket{u_i} \proj{i}.
-%$
-
-\subsubsection{Diamond norm and the task of discrimination between quantum operators}
-This section defines a special norm on the space of linear mappings, known as
-the diamond norm, and establishes some of its properties.
-Next, we will explain the precise connection between the diamond
-norm and the task of quantum operation discrimination.
-
-
-We define the diamond norm of a map $\Phi$ as
-\begin{equation}
-\|\Phi\|_\diamond = \max_{\| \ket{\psi}\|_1=1} \| \left(\Phi \otimes \1\right) (\proj{\psi}) \|_1.
-\end{equation}
-The quantum state $\ket{\psi}$ which maximizes the diamond norm we will call as discriminator.
 
 The celebrated result by Helstrom~\cite{helstrom1976quantum} gives the optimal  probability of correct discrimination between two quantum measurements, $\PP$  and $\mathcal{Q}$,
 in terms of their distance with the use of the diamond norm
 \begin{equation}
-p_{\text{succ}}(\PP, \mathcal{Q}) =  \frac12 + \frac14 \| \PP - \mathcal{Q} \|_\diamond.
+p_{\text{succ}}(\PP, \mathcal{Q}) =  \frac12 + \frac14 \| \PP - \mathcal{Q} \|_\diamond, 
 \end{equation}
+where 
+\begin{equation}
+\|\PP\|_\diamond = \max_{\| \ket{\psi}\|_1=1} \| \left(\PP \otimes \1\right) (\proj{\psi}) \|_1.
+\end{equation}
+The quantum state $\ket{\psi}$ which maximizes the diamond norm is called as discriminator.
 
-\subsubsection{Example of computing optimal measurements and discriminator}
+Furthermore,  thanks to the proof of the Holevo-Helstrom theorem, it is possible to construct the necessary components  ($\ket{\psi_0}$, $V_0$, $V_1$) to create the optimal discrimination strategy. 
+
+ 
+
+
+\subsubsection{Discrimination scheme for parameterized Fourier family}
 
 So far, we only discussed how the discrimination is performed using two different
-schemes, assuming, that all needed components ($V_0$, $V_1$,$\ket{\psi_0}$) are known.
-In this section, we will show how all the necessary ingredients look like for
-von Neumann measurements defined by the parametrized Fourier family:
+schemes, assuming that all needed components ($\ket{\psi_0}$, $V_0$, $V_1$) are known. While the determination of $V_0$ and $V_1$ is a simple task provided the discriminator $\ket{\psi_{0}}$ is known, it turns out, 
+sad to say, determining the analytical form of the discriminator $\ket{\psi_{0}}$
+is, in general, NP-hard problem. 
+We have found the analytical solution of the discrimination scheme for a particular class of von Neumann measurements.  
+
+
+Here,  we will show how all the necessary ingredients look like for
+von Neumann measurements defined by the parameterized Fourier family:
 
 \begin{equation}
 	U = H
-	\left(\begin{array}{cc}1&0\\0&e^{i \phi}\end{array}\right)  H^\dagger
+	\left(\begin{array}{cc}1&0\\0&e^{i \phi}\end{array}\right)  H^\dagger, 
 \end{equation}
-
 where $H$ is the Hadamard matrix of dimension two and $\phi \in [0, 2 \pi)$.
 
 \begin{theorem}
@@ -346,14 +339,14 @@ p_{\text{succ}}(\PP_{U}, \PP_{\Id}) = \frac{1}{2} + \frac{|1 - e^{i \phi}  |}{4}
 \end{equation}
 \end{proposition}
 
-\subsubsection{Conditional binary measurement/Optimal measurement}\label{sec_example_final_measurement}
+
 
 \begin{proposition}
 The  optimal measurement has the following form
 \begin{equation}
 \begin{split}
 \mu(0) = \proj{0} \otimes V_0 \proj{0} V_0^\dagger +  \proj{1} \otimes V_1
-\proj{0} V_1^\dagger  \\
+\proj{0} V_1^\dagger,   \\
 \mu(1) = \proj{0} \otimes V_0 \proj{1} V_0^\dagger +  \proj{1} \otimes V_1
 \proj{1} V_1^\dagger,
 \end{split}
