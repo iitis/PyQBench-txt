@@ -204,8 +204,8 @@ We now need to count the experiments (among the valid ones) resulting in success
 If we have chosen $\PP_U$, then we guess correctly iff $j=0$. Similarly, for
 $P_\Id$, we guess correctly iff $j=1$. If we define
 \begin{eqnarray}
-	N_{\PP_U} &= \#\{(\mathcal{Q}, k, i, j): \mathcal{Q} = \PP_U, k = i, j = 0\} \\
-	N_{\PP_\Id} &= \#\{(\mathcal{Q}, k, i, j): \mathcal{Q} = \PP_\Id, k = i, j = 1\}
+	N_{\PP_U} &= \#\{(\mathcal{Q}, k, i, j): \mathcal{Q} = \PP_U, k = i, j = 0\}, \\
+	N_{\PP_\Id} &= \#\{(\mathcal{Q}, k, i, j): \mathcal{Q} = \PP_\Id, k = i, j = 1\},
 \end{eqnarray}
 then the empirical success probability can be computed as
 
@@ -215,17 +215,20 @@ p_{\text{succ}}(\PP_{U}, \PP_{\Id}) = \frac{N_{\PP_U} + N_{\PP_\Id}}{N_{\text{to
 
 \end{scheme}
 
-\begin{scheme}(By using controlled unitary)
+\begin{scheme}(By using direct sum)
 
 
 
 \begin{enumerate}
 \item We prepare the discriminator $\ket{\psi_{0}}$ on bipartite
 system.
-\item We perform one of two quantum channels, either $\Phi_{\Id}$ or
-$\Phi_{U^\dagger}$,  on  the first part of the input state  $\ket{\psi_{0}}$, that means $\left(\Phi \otimes \Id\right)(\proj{\psi_0})$.
-\item Based on Holevo--Helstrom theorem, we perform a conditional binary measurement $\PP_{V_j}$, and hence, we implement the direct sum of quantum channels $\Phi_{V_0^\dagger} \oplus \Phi_{V_1^\dagger}$. Observe that   $\Phi_{V_0^\dagger} \oplus \Phi_{V_1^\dagger} = \proj{0} \otimes \Phi_{V_0^\dagger}  + \proj{1} \otimes \Phi_{V_1^\dagger}.  $
-\item We measure all systems in computational basis $\Delta$.
+%\item We perform one of two quantum channels, either $\Phi_{\Id}$ or
+%$\Phi_{U^\dagger}$,  on  the first part of the input state  $\ket{\psi_{0}}$, that means $\left(\Phi \otimes \Id\right)(\proj{\psi_0})$.
+\item We apply one of unitary,   either $U^\dagger$ or
+$\Id$, on  the first system. 
+%\item Based on Holevo--Helstrom theorem, we perform a conditional binary measurement $\PP_{V_j}$, and hence, we implement the direct sum of quantum channels $\Phi_{V_0^\dagger} \oplus \Phi_{V_1^\dagger}$. Observe that   $\Phi_{V_0^\dagger} \oplus \Phi_{V_1^\dagger} = \proj{0} \otimes \Phi_{V_0^\dagger}  + \proj{1} \otimes \Phi_{V_1^\dagger}.  $
+\item We apply direct sum $V_0^\dagger \oplus V_1^\dagger$ on the whole systems. 
+\item We measure both  systems in computational basis $\Delta$.
 \item We make a decision based on received label $j$ on the second system. If $j=0$, then we
 decide that $\PP_U$ occurs. Otherwise, we decide that $\PP_{\Id}$ occurs.
 \end{enumerate}
@@ -241,45 +244,22 @@ Fig.~\ref{fig:controlled}.
 	}\label{fig:controlled}
 \end{figure}
 
-
-Here, we consider the following circuits
-by using controlled unitary
+In this scheme, the experiment can be characterized by a pair $(\mathcal{Q}, i,j)$, where $\mathcal{Q} = \{ \PP_{U}, \PP_{\Id} \}$. The number of successful trials for $U$ and $\Id$, respectively, can be written  as 
+\begin{eqnarray}
+N_{\PP_U} &= \#\{(\mathcal{Q},  i, j): \mathcal{Q} = \PP_U, j = 0\}, \\
+N_{\PP_\Id} &= \#\{(\mathcal{Q},  i, j): \mathcal{Q} = \PP_\Id, j = 1\}. 
+\end{eqnarray}
+Then, the probability of correct discrimination between $\PP_{U} $ and $\PP_\Id$ is given by
 \begin{equation}
-\begin{split}
-(\Phi_{U^\dagger}, \Phi_{V_0^\dagger} \oplus \Phi_{V_1^\dagger}, i, j) \\
-(\Phi_{\Id},  \Phi_{V_0^\dagger} \oplus \Phi_{V_1^\dagger}, i, j)
-\end{split}
+p_{\text{succ}} = \frac{N_{\PP_{U}} + N_{\PP_{\Id}}}{N_{\text{total}}},
 \end{equation}
-where $i=\{0,1\}$ and $ j=\{0,1\}$.
-Then, the optimal probability of correct discrimination between $\PP_{U} $ and $\PP_\Id$ is as follows.
-\begin{equation}
-p = \frac{\#(\Phi_{U^\dagger},\Phi_{V_0^\dagger} \oplus \Phi_{V_1^\dagger},i,0) + \#(\Phi_\Id,\Phi_{V_0^\dagger} \oplus \Phi_{V_1^\dagger},i,1) }{\#(\Phi_{U^\dagger},\Phi_{V_0^\dagger} \oplus \Phi_{V_1^\dagger},i,j) + \#(\Phi_\Id,\Phi_{V_0^\dagger} \oplus \Phi_{V_1^\dagger},i,j)}
-\end{equation}
-where $i=\{0,1\}$ and $ j=\{0,1\}$.
+where $N_{\text{total}}$ is the number of trials. 
 \end{scheme}
 
 
 
 
 \subsubsection{Mathematical preliminaries}
-
-
-In this and the following sections we will denote complex Euclidean spaces $\mathbb{C}^d$ with $\XX, \mathcal{Y}$ etc. When needed the dimension of a space $\XX$ will be denoted $\dim(\XX)$. The set of matrices transforming vectors from $\XX$ to $\mathcal{Y}$ will be denoted $\mathrm{L}(\XX, \mathcal{Y})$.
- We will also need a linear mapping transforming $\mathrm{L}(\XX)$ into
-$\mathrm{L}(\mathcal{Y})$, which will be denoted
-\begin{equation}
-\Phi: \mathrm{L}(\XX) \rightarrow \mathrm{L}(\mathcal{Y}).
-\end{equation}
-There
-exists a bijection between introduced linear mappings $\Phi$ and set of matrices $\mathrm{L}(\mathcal{Y} \otimes \mathcal{X})$,  known as the Choi-
-Jamio{\l}kowski isomorphism.
-For a given linear mapping $\Phi$ the corresponding  Choi operator $J(\Phi)$ is explicitly written as
-\begin{equation}
-J(\Phi) \coloneqq \sum_{i,j=0}^{d- 1} \Phi(\ketbra{i}{j}) \otimes \ketbra{i}{j}. \end{equation}
-Finally, we introduce a special subset of all mappings $\Phi$, called quantum channels, which are completely positive
-and trace preserving (CPTP).
-We will consider a special class of quantum channels, called unitary channels. A unitary channel
-$\Phi_{U}$ is defined as $\Phi_U(\cdot) = U \cdot U^\dagger$ for  and unitary $U$.
 
 
 
