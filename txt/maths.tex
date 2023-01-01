@@ -118,6 +118,34 @@ a single qubit system\footnote{As we will soon see, the optimal discrimination s
 the usage of an additional auxiliary qubit.}, executing them on real hardware or simulators, and
 computing discrimination probabilities based on the measured bitstrings.
 
+\subsubsection{Notation and some preliminaries}
+
+
+Recall that a general quantum
+measurement, that is a positive operator valued measure (POVM) $\PP$ is a
+collection of positive semidefinite operators $\{E_1, \ldots, E_m \}$ called
+\emph{effects}, which sum up to identity, \ie $ \, \, \sum_{i=1}^m E_i = \1$.
+In PyQBench, we are interested only in von Neumann measurements, i.e. measurements
+for which all the effects are rank-one projectors. Every such measurement can be
+parameterized by a unitary matrix $U$ which the effects $\{\proj{u_0}, \ldots, \proj{u_{d-1}}\}$,
+are created by taking $\ket{u_i}$ as  $i+1$-th column of the unitary matrix $U$.
+We will denote von Neumann measurements described by the matrix $U$ by $\PP_{U}$.
+
+Typically, NISQ devices can only perform measurements in computational $Z$-basis.
+To perform an arbitrary von Neumann measurement $\PP_{U}$, one has to first apply $U^\dagger$
+to the measured system and then follow with $Z$-basis measurement. Hence, the following two
+circuits are equivalent.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[scale=1.7]{pics/vonneuman}
+	\caption{Decomposition of von Neumann measurement}
+	\label{fig:vonnneuman}
+\end{figure}
+
+Note that the decomposition above is basically a change of basis in which the measurement
+is performed.
+
 \subsubsection{Discrimination scheme}
 
 Without loss of generality, we consider discrimination between a measurement in the computational
@@ -225,11 +253,11 @@ system.
 %\item We perform one of two quantum channels, either $\Phi_{\Id}$ or
 %$\Phi_{U^\dagger}$,  on  the first part of the input state  $\ket{\psi_{0}}$, that means $\left(\Phi \otimes \Id\right)(\proj{\psi_0})$.
 \item We apply one of unitary,   either $U^\dagger$ or
-$\Id$, on  the first system. 
+$\Id$, on the first system.
 %\item Based on Holevo--Helstrom theorem, we perform a conditional binary measurement $\PP_{V_j}$, and hence, we implement the direct sum of quantum channels $\Phi_{V_0^\dagger} \oplus \Phi_{V_1^\dagger}$. Observe that   $\Phi_{V_0^\dagger} \oplus \Phi_{V_1^\dagger} = \proj{0} \otimes \Phi_{V_0^\dagger}  + \proj{1} \otimes \Phi_{V_1^\dagger}.  $
-\item We apply direct sum $V_0^\dagger \oplus V_1^\dagger$ on the whole systems. 
-\item We measure both  systems in computational basis $\Delta$.
-\item We make a decision based on received label $j$ on the second system. If $j=0$, then we
+\item We apply direct sum $V_0^\dagger \oplus V_1^\dagger$ on the whole systems.
+\item We measure both systems in computational basis $\Delta$.
+\item We make a decision based on the received label $j$ on the second system. If $j=0$, then we
 decide that $\PP_U$ occurs. Otherwise, we decide that $\PP_{\Id}$ occurs.
 \end{enumerate}
 
@@ -244,16 +272,16 @@ Fig.~\ref{fig:controlled}.
 	}\label{fig:controlled}
 \end{figure}
 
-In this scheme, the experiment can be characterized by a pair $(\mathcal{Q}, i,j)$, where $\mathcal{Q} = \{ \PP_{U}, \PP_{\Id} \}$. The number of successful trials for $U$ and $\Id$, respectively, can be written  as 
+In this scheme, the experiment can be characterized by a pair $(\mathcal{Q}, i,j)$, where $\mathcal{Q} = \{ \PP_{U}, \PP_{\Id} \}$. The number of successful trials for $U$ and $\Id$, respectively, can be written  as
 \begin{eqnarray}
 N_{\PP_U} &= \#\{(\mathcal{Q},  i, j): \mathcal{Q} = \PP_U, j = 0\}, \\
-N_{\PP_\Id} &= \#\{(\mathcal{Q},  i, j): \mathcal{Q} = \PP_\Id, j = 1\}. 
+N_{\PP_\Id} &= \#\{(\mathcal{Q},  i, j): \mathcal{Q} = \PP_\Id, j = 1\}.
 \end{eqnarray}
 Then, the probability of correct discrimination between $\PP_{U} $ and $\PP_\Id$ is given by
 \begin{equation}
 p_{\text{succ}} = \frac{N_{\PP_{U}} + N_{\PP_{\Id}}}{N_{\text{total}}},
 \end{equation}
-where $N_{\text{total}}$ is the number of trials. 
+where $N_{\text{total}}$ is the number of trials.
 \end{scheme}
 
 
@@ -261,17 +289,6 @@ where $N_{\text{total}}$ is the number of trials.
 
 \subsubsection{Mathematical preliminaries}
 
-
-
-A general quantum
-measurement, that is a positive operator valued measure (POVM) $\PP$ is a
-collection of positive semidefinite operators $\{E_1, \ldots, E_m \}$ called
-\emph{effects}, which sum up to identity, \ie $ \, \, \sum_{i=1}^m E_i = \1$. If
-all the effects are rank-one projection operators, then such a measurement is
-called a von Neumann measurement. Every von Neumann measurement can be
-parameterized by a unitary matrix $U$ which the effects $\{\proj{u_0}, \ldots, \proj{u_{d-1}}\}$,
-ale creating by taking $\ket{u_i}$ as  $i+1$-th column of the unitary matrix $U$.
-Hence, we will use the notation $\PP_{U}$.
 %
 %
 % The action of
@@ -300,28 +317,20 @@ in terms of their distance with the use of the diamond norm
 p_{\text{succ}}(\PP, \mathcal{Q}) =  \frac12 + \frac14 \| \PP - \mathcal{Q} \|_\diamond.
 \end{equation}
 
+\subsubsection{Example of computing optimal measurements and discriminator}
 
+So far, we only discussed how the discrimination is performed using two different
+schemes, assuming, that all needed components ($V_0$, $V_1$,$\ket{\psi_0}$) are known.
+In this section, we will show how all the necessary ingredients look like for
+von Neumann measurements defined by the parametrized Fourier family:
 
-
-
-
-
-
-
-\section{Illustrative Example}
-
-Let us focus on single-qubit von Neumann measurements $\PP_\1$ and $\PP_U$.
-Assume that the unitary matrix $U$ is of the form
 \begin{equation}
-U = H
-\left(\begin{array}{cc}1&0\\0&e^{i \phi}\end{array}\right)  H^\dagger
+	U = H
+	\left(\begin{array}{cc}1&0\\0&e^{i \phi}\end{array}\right)  H^\dagger
 \end{equation}
-%\begin{equation}
-%U = H \diag (1, \ee^{\ii \phi}) H^\dagger,
-%\end{equation}
+
 where $H$ is the Hadamard matrix of dimension two and $\phi \in [0, 2 \pi)$.
 
-\subsubsection{Probability}\label{sec:example_probability}
 \begin{theorem}
 The optimal probability of correct discrimination between von Neumann
 measurements $\PP_U$ and $\PP_{\Id}$ is given by
@@ -330,14 +339,6 @@ p_{\text{succ}}(\PP_{U}, \PP_{\Id}) = \frac{1}{2} + \frac{|1 - e^{i \phi}  |}{4}
 \end{equation}
 \end{theorem}
 
-
-
-
-
-
-
-\subsubsection{Discriminator}\label{sec:example_discriminator}
-
 \begin{proposition}\label{prop-discrim}
  The optimal input state has the form
 \begin{equation}
@@ -345,13 +346,7 @@ p_{\text{succ}}(\PP_{U}, \PP_{\Id}) = \frac{1}{2} + \frac{|1 - e^{i \phi}  |}{4}
 \end{equation}
 \end{proposition}
 
-
-
-%
-
 \subsubsection{Conditional binary measurement/Optimal measurement}\label{sec_example_final_measurement}
-
-
 
 \begin{proposition}
 The  optimal measurement has the following form
