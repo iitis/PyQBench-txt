@@ -225,7 +225,7 @@ $(\mathcal{Q}, k, i, j)$, where $\mathcal{Q} \in \{\PP_U, \PP_\Id\}$ denotes the
 We discard all the experiments for which $k \ne i$. Hence, the total number of valid experiments is
 
 \begin{equation}
-	N_\text{total} = \#\{(\QQ, k, i, j): k = i \}
+	N_\text{total} = \#\{(\QQ, k, i, j): k = i \}. 
 \end{equation}
 
 We now need to count the experiments (among the valid ones) resulting in successful discrimination.
@@ -300,16 +300,13 @@ where
 \|\PP\|_\diamond = \max_{\| \ket{\psi}\|_1=1} \| \left(\PP \otimes \1\right) (\proj{\psi}) \|_1.
 \end{equation}
 The quantum state $\ket{\psi}$ which maximizes the diamond norm is called as discriminator.
-
 Furthermore,  thanks to the proof of the Holevo-Helstrom theorem, it is possible to construct the necessary components  ($\ket{\psi_0}$, $V_0$, $V_1$) to create the optimal discrimination strategy. 
 
  
-
-
 \subsubsection{Discrimination scheme for parameterized Fourier family}
 
 So far, we only discussed how the discrimination is performed using two different
-schemes, assuming that all needed components ($\ket{\psi_0}$, $V_0$, $V_1$) are known. While the determination of $V_0$ and $V_1$ is a simple task provided the discriminator $\ket{\psi_{0}}$ is known, it turns out, 
+schemes, assuming that all needed components ($\ket{\psi_0}$, $V_0$, $V_1$) are known. It turned out that the determination of $V_0$ and $V_1$ is a simple task while the discriminator $\ket{\psi_{0}}$ is known. However, 
 sad to say, determining the analytical form of the discriminator $\ket{\psi_{0}}$
 is, in general, NP-hard problem. 
 We have found the analytical solution of the discrimination scheme for a particular class of von Neumann measurements.  
@@ -323,35 +320,11 @@ von Neumann measurements defined by the parameterized Fourier family:
 	\left(\begin{array}{cc}1&0\\0&e^{i \phi}\end{array}\right)  H^\dagger, 
 \end{equation}
 where $H$ is the Hadamard matrix of dimension two and $\phi \in [0, 2 \pi)$.
-
-\begin{theorem}
-The optimal probability of correct discrimination between von Neumann
-measurements $\PP_U$ and $\PP_{\Id}$ is given by
+In this case, the optimal input state is Bell state of the form
 \begin{equation}
-p_{\text{succ}}(\PP_{U}, \PP_{\Id}) = \frac{1}{2} + \frac{|1 - e^{i \phi}  |}{4} .
+\ket{\psi_{0}} = \frac{1}{\sqrt{2}} \ket{00} + \ket{11}.
 \end{equation}
-\end{theorem}
-
-\begin{proposition}\label{prop-discrim}
- The optimal input state has the form
-\begin{equation}
-\ket{\psi_{0}} = \frac{1}{\sqrt{2}} |\Id_2 \rangle \rangle.
-\end{equation}
-\end{proposition}
-
-
-
-\begin{proposition}
-The  optimal measurement has the following form
-\begin{equation}
-\begin{split}
-\mu(0) = \proj{0} \otimes V_0 \proj{0} V_0^\dagger +  \proj{1} \otimes V_1
-\proj{0} V_1^\dagger,   \\
-\mu(1) = \proj{0} \otimes V_0 \proj{1} V_0^\dagger +  \proj{1} \otimes V_1
-\proj{1} V_1^\dagger,
-\end{split}
-\end{equation}
-where for each $\phi \in \mathbb{R}$ and  the unitaries $V_0$,  $V_1$
+And, for a given angle  $\phi \in  [0, 2 \pi)$,   the unitaries $V_0$,  $V_1$
 have the following form
 \begin{equation}
 V_0 = \left(\begin{array}{cc}i \sin\left( \frac{\pi - \phi}{4} \right)&-i
@@ -363,11 +336,13 @@ V_1 = \left(\begin{array}{cc}-i \cos\left(\frac{\pi - \phi}{4}\right) &i
 \sin\left( \frac{\pi - \phi}{4}\right)\\\sin\left( \frac{\pi - \phi}{4} \right)
 &  \cos\left( \frac{\pi - \phi}{4} \right) \end{array}\right).
 \end{equation}
-\end{proposition}
-
-
-
-
+Finally, we have also calculated the theoretical probability of correct discrimination between von Neumann
+measurements $\PP_U$ and $\PP_{\Id}$ is given by
+\begin{equation}
+	p_{\text{succ}}(\PP_{U}, \PP_{\Id}) = \frac{1}{2} + \frac{|1 - e^{i \phi}  |}{4} .
+\end{equation}
+More details and proofs of the construction's validity   we can find in the article \cite{}. 
+ 
 
 \begin{thebibliography}{00}
 
