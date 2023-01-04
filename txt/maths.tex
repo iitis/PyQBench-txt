@@ -147,7 +147,7 @@ Current NISQ devices are unable to perform conditional measurements, which is th
 obstacle to implementing our scheme on real hardware. Luckily, we can overcome it by
 cleverly adjusting our scheme so that it only uses components available on current devices.
 We have two possible choices here: using a postselection or a direct sum
-$V_0^\dagger\oplus V_1^\dagger$.
+$\Phi_{V_0^\dagger}\oplus \Phi_{V_1^\dagger}$.
 
 \begin{scheme}(By using postselection)
 
@@ -204,8 +204,8 @@ We now need to count the experiments (among the valid ones) resulting in success
 If we have chosen $\PP_U$, then we guess correctly iff $j=0$. Similarly, for
 $P_\Id$, we guess correctly iff $j=1$. If we define
 \begin{eqnarray}
-	N_{\PP_U} &= \#\{(\mathcal{Q}, k, i, j): \mathcal{Q} = \PP_U, k = i, j = 0\} \\
-	N_{\PP_\Id} &= \#\{(\mathcal{Q}, k, i, j): \mathcal{Q} = \PP_\Id, k = i, j = 1\}
+	N_{\PP_U} &= \#\{(\mathcal{Q}, k, i, j): \mathcal{Q} = \PP_U, k = i, j = 0\}, \\
+	N_{\PP_\Id} &= \#\{(\mathcal{Q}, k, i, j): \mathcal{Q} = \PP_\Id, k = i, j = 1\},
 \end{eqnarray}
 then the empirical success probability can be computed as
 
@@ -378,7 +378,7 @@ The  optimal measurement has the following form
 \begin{equation}
 \begin{split}
 \mu(0) = \proj{0} \otimes V_0 \proj{0} V_0^\dagger +  \proj{1} \otimes V_1
-\proj{0} V_1^\dagger  \\
+\proj{0} V_1^\dagger,  \\
 \mu(1) = \proj{0} \otimes V_0 \proj{1} V_0^\dagger +  \proj{1} \otimes V_1
 \proj{1} V_1^\dagger,
 \end{split}
