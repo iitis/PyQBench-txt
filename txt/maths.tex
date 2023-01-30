@@ -191,6 +191,23 @@ measurement $\PP_U, \PP_\Id$ to be discriminated and each choice of $k \in \{0, 
 	}\label{fig:postselection}
 \end{figure}
 
+
+
+
+\begin{enumerate}
+	\item We prepare the discriminator $\ket{\psi_{0}}$ on bipartite
+	system.
+	%\item We perform one of two quantum channels, either $\Phi_{\Id}$ or
+	%$\Phi_{U^\dagger}$,  on  the first part of the input state  $\ket{\psi_{0}}$, that means $\left(\Phi \otimes \Id\right)(\proj{\psi_0})$.
+	\item We apply one of unitary,   either $U^\dagger$ or
+	$\Id$, on the first system.
+	%\item Based on Holevo--Helstrom theorem, we perform a conditional binary measurement $\PP_{V_j}$, and hence, we implement the direct sum of quantum channels $\Phi_{V_0^\dagger} \oplus \Phi_{V_1^\dagger}$. Observe that   $\Phi_{V_0^\dagger} \oplus \Phi_{V_1^\dagger} = \proj{0} \otimes \Phi_{V_0^\dagger}  + \proj{1} \otimes \Phi_{V_1^\dagger}.  $
+	\item We apply one of unitary  $V_0^\dagger $ or $V_1^\dagger$ on the second system.
+	\item We measure both systems in computational basis $\Delta$.
+	\item We make a decision based on the received label $i$  and $j$. The details about the method of probability calculation is described below.
+\end{enumerate} 
+
+
 But now our experiment does not match the previously described scheme, right?
 Yes, unless we discard all the outcomes for which $i\ne k$ (hence the name \emph{postselection},
 we are selecting valid outcomes after the experiment is performed).

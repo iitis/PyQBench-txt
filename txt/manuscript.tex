@@ -1,4 +1,4 @@
-\documentclass[preprint,12pt, a4paper]{elsarticle}
+\documentclass[preprint,12pt, a4paper, dvipsnames]{elsarticle}
 
 \usepackage{amssymb}
 
@@ -6,12 +6,73 @@
 \usepackage{mathtools}
 
 \usepackage{lineno}
+\usepackage{listings}
 
 \usepackage{float}
 
 \usepackage{todonotes} 
 \usepackage{url}
 
+\usepackage{xcolor}
+
+\usepackage{caption}
+\usepackage{subcaption}
+
+\definecolor{codegreen}{rgb}{0.25,0.93,0.31}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+%
+%\lstdefinestyle{mystyle}{
+%	backgroundcolor=\color{backcolour},   
+%	commentstyle=\color{codegreen},
+%	keywordstyle=\color{magenta},
+%	numberstyle=\tiny\color{codegray},
+%	stringstyle=\color{codepurple},
+%	basicstyle=\ttfamily\footnotesize,
+%	breakatwhitespace=false,         
+%	breaklines=true,                 
+%	captionpos=b,                    
+%	keepspaces=true,                 
+%	numbers=left,                    
+%	numbersep=5pt,                  
+%	showspaces=false,                
+%	showstringspaces=false,
+%	showtabs=false,                  
+%	tabsize=2
+%}
+%
+%\lstset{style=mystyle} 
+\lstset{frame=tb,
+	language=Python,
+	aboveskip=3mm,
+	belowskip=3mm,
+	showstringspaces=false,
+	columns=flexible,
+	basicstyle={\small\ttfamily},
+	numberstyle=\color{blue},
+	keywordstyle=\color{blue},
+	commentstyle=\color{PineGreen},
+	stringstyle=\color{ForestGreen},
+	breaklines=true,
+	breakatwhitespace=true,
+	tabsize=3,
+	escapeinside={@}{@},
+	literate=
+	{0}{{{\color{red}0}}}1
+	{1}{{{\color{red}1}}}1
+	{2}{{{\color{red}2}}}1
+	{3}{{{\color{red}3}}}1
+	{4}{{{\color{red}4}}}1
+	{5}{{{\color{red}5}}}1
+	{6}{{{\color{red}6}}}1
+	{7}{{{\color{red}7}}}1
+	{8}{{{\color{red}8}}}1
+	{9}{{{\color{red}9}}}1
+    {v0}{{{\color{black}v0}}}1 %% we can not style only numeric literals
+    {v1}{{{\color{black}v1}}}1
+}
 \restylefloat{table}
 
 \newcommand{\eg}{{\emph{e.g.\/}}}
@@ -40,6 +101,7 @@
 \newcommand{\DD}{\mathcal{D}}
 \newcommand{\TT}{\mathcal{T}}
 \newcommand{\PP}{\mathcal{P}}
+\newcommand{\QQ}{\mathcal{Q}}
 \renewcommand{\SS}{\mathcal{S}}
 \newcommand{\UU}{\mathcal{U}}
 \newcommand{\HH}{\mathcal{H}}
@@ -118,7 +180,7 @@ C1 & Current code version & 0.1.0 \\
 \hline
 C2 & Permanent link to code/repository used for this code version & \url{https://github.com/iitis/PyQBench} \\
 \hline
-C3 & Code Ocean compute capsule & ?????????\\
+C3 & Code Ocean compute capsule & \todo[inline]{???}\\
 \hline
 C4 & Legal Code License & Apache License 2.0\\
 \hline
@@ -136,9 +198,9 @@ C7 & Compilation requirements, operating environments \& dependencies &
 \texttt{qiskit \textapprox= 0.39.0}\newline
 \texttt{mthree \textapprox= 1.1.0}\newline
 \texttt{tqdm \textapprox= 4.64.1}\newline
-\texttt{pyyaml \textapprox= 6.0}\\
-\hline
-C8 & If available Link to developer documentation/manual & ?????\\
+\texttt{pyyaml \textapprox= 6.0} \todo[inline]{everything???}\\
+\hline 
+C8 & If available Link to developer documentation/manual & \todo[inline]{???}\\
 \hline
 C9 & Support email for questions & \url{dexter2206@gmail.com}\\
 \hline
@@ -277,57 +339,79 @@ architecture...
 	Introduce related work in literature (cite or list algorithms used, other 
 	software etc.). - inne oprogramowania i algorytmy }
 
+!!!!!!!
 
 
-\section{Software description}
-\label{}
-\todo[inline]{Describe the software in as much as is necessary to establish a 
-vocabulary needed to explain its impact. }
-
-We will first give a general overview of the structure of the code in 
-Section~\ref{sec:sortware-architecture} and then provide additional details on 
-the functionality of benchmark's schemes  in 
-Section~\ref{sec:sortware-functionalities}.
-
-\subsection{Software Architecture}\label{sec:sortware-architecture}
-\label{}
-\todo[inline]{
-	Give a short overview of the overall software architecture; provide a 
-	pictorial component overview or similar (if possible). If necessary provide 
-	implementation details.}
 
 
-\subsection{Software Functionalities}\label{sec:sortware-functionalities}
-\todo[inline]{Present the major functionalities of the software.}
+Suppose we have access to a device performing one of the predefined von Neumann
+measurements, $\PP$ or $\QQ$. In PyQBench, we restrict ourselves to discriminating von Neumann measurements.
+This is because, unlike other measurement types, they can be implemented on actual hardware. While the $\PP$ and $\QQ$ are known, it is not known which of them is
+performed when the device executes. Based on the measurement outcome, you have to guess which
+measurement was performed (but you can perform arbitrary unitary operations before and after the
+measurement). What is the highest probability of making a correct guess? And what do you have to do
+to achieve it? And, most importantly, why would we want to do this?
 
-In the scope of this Paper, we aim at  exploring ideas revolving around quantum 
-gate model-inspired computing devices, and assess their feasibility to 
-benchmark a modern quantum architectures. The main idea that we have envisioned 
-for this project is  introducing new concepts of benchmarks for NISQ devices 
-benchmarking. This project aims to characterize the computing power and 
-investigate possible practical applications of such devices having access by 
-Amazon Braket. 
+Suppose that you know a strategy that, for an ideal device, would yield a probability
+$p_{\text{succ}}$ of successfully discriminating between two measurements. Will the probability be
+the same on an actual physical device? For current, Noisy Intermediate Scale Quantum devices
+(NISQs), the answer is: certainly not. However, the error rate that you make when guessing can be
+used as a benchmarking metric. PyQBench helps you in organizing such discrimination experiments for
+a single qubit system, executing them on real hardware or simulators, and
+computing discrimination probabilities based on the measured bitstrings. 
 
 
 
 
 
-\subsubsection{Model specification}
-The scenario assumes that Alice and Bob have access to an unknown measurement
-device, a black box. Alice has hidden one of the two measurements, either $\PP$
-or $\mathcal{Q}$, in the black box. Bob only has the information that the black box
-performs one of these measurements. They want to determine an upper bound on the
-probability of correct discrimination between $\PP$ and $\mathcal{Q}$. Moreover, they also want to
-construct an optimal discrimination strategy to achieve the highest probability. Theoretical results were characterized in~\cite{puchala2018strategies}.
 
 
+\section{Preliminaries and discrimination scheme approach}
+This section is divided into two parts.
+In Section~\ref{sec:maths}, we introduce the necessary notation and preliminaries needed to understand the concept of PyQBench. Next, in Section~\ref{sec:discrimination-scheme}, 
+we will present a general overview of the discrimination scheme in theoretical terms. We will also mention NISQ devices' limitations and possible practical solutions in the implementation process. 
 
-In this work, we will consider the problem of discrimination between von Neumann 
-measurements. One of them on the computational basis, the second one on basis 
-$U$, where $U$ is a unitary matrix. 
-The scheme of discrimination can be divided into the following steps, which are 
-illustrated in Fig.~\ref{fig:theoretical_scheme}.
+\subsection{Mathematical preliminaries}\label{sec:maths}
+Recall that a general quantum
+measurement, that is a positive operator valued measure (POVM) $\PP$ is a
+collection of positive semidefinite operators $\{E_1, \ldots, E_m \}$ called
+\emph{effects}, which sum up to identity, \ie $ \, \, \sum_{i=1}^m E_i = \1$.
+In PyQBench, we are interested only in von Neumann measurements, i.e. measurements
+for which all the effects are rank-one projectors. Every such measurement can be
+parameterized by a unitary matrix $U$ which the effects $\{\proj{u_0}, \ldots, \proj{u_{d-1}}\}$,
+are created by taking $\ket{u_i}$ as  $i+1$-th column of the unitary matrix $U$.
+We will denote von Neumann measurements described by the matrix $U$ by $\PP_{U}$.
 
+Typically, NISQ devices can only perform measurements in computational $Z$-basis.
+To perform an arbitrary von Neumann measurement $\PP_{U}$, one has to first apply $U^\dagger$
+to the measured system and then follow with $Z$-basis measurement. Hence, the following two
+circuits are equivalent.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[scale=1.7]{pics/vonneuman}
+	\caption{Decomposition of von Neumann measurement}
+	\label{fig:vonnneuman}
+\end{figure}
+
+Note that the decomposition above is basically a change of basis in which the measurement
+is performed.
+
+\subsection{Discrimination scheme}\label{sec:discrimination-scheme}
+
+Without loss of generality, we consider discrimination between a measurement in the computational
+Z-basis ($\PP_\Id$), and an alternative measurement performed in the basis $U$
+($\PP_U$)\footnote{Explaining why we can consider only Z-basis and alternative measurement is beyond
+	the scope of this technical documentation. See \cite{puchala2018strategies} if you are interested in
+	the explanation.}. In PyQBench, we operate only on two-level systems, but the discrimination scheme,
+described in detail in \cite{puchala2018strategies}, makes no assumptions about the dimensionality.
+
+In general, the discrimination scheme, presented in Fig.\ref{fig:theoretical_scheme}, requires a
+second system of the same dimensionality as the measured one. First, the joint system is prepared in
+some state $\ket{\psi_0}$. Then, the unknown measurement is performed on the first part of the
+system. Based on its outcome $i$, another measurement $\mathcal{P}_{V_i}$ is performed to obtain an
+outcome $j$. Finally, if $j=0$ we guess that the performed measurement is $\mathcal{P}_U$, otherwise
+we guess that it was $\mathcal{P}_\Id$.
 
 \begin{figure}[h!]
 	\centering
@@ -336,431 +420,473 @@ illustrated in Fig.~\ref{fig:theoretical_scheme}.
 	\label{fig:theoretical_scheme}
 \end{figure}
 
-%\begin{figure}[h!]
-%	\centering 
-%	\includegraphics[width=0.9\linewidth]{gates1.pdf} 
-%	\caption{A schematic representation of the setup for distinguishing
-%		measurements by using entanglement. }
-%	\label{fig:scheme}
-%\end{figure}
+\subsubsection{Limitations of NISQ devices and practical discrimination schemes}
 
+Current NISQ devices are unable to perform conditional measurements, which is the biggest
+obstacle to implementing our scheme on real hardware. Luckily, we can overcome it by
+cleverly adjusting our scheme so that it only uses components available on current devices.
+We have two possible choices here: using a postselection or a direct sum
+$V_0^\dagger\oplus V_1^\dagger$.
 
-\begin{enumerate}
-	\item Alice and Bob share an entangled state $\ket{\psi_{0}}$ (discriminator) on systems 
-	$A$ and $B$.
-	\item Alice performs one of two known measurements (either $\PP_{\Id}$ or 
-	$\PP_{U}$) on part $A$ of the input state  $\ket{\psi_{0}}$ and measures the system $A$.
-	\item Alice performs the conditional binary measurement $\PP_{V_i}$ on the part 
-	$B$ based on the output label $i$. 
-	\item  Bob measures the system $B$ of the input state  $\ket{\psi_{0}}$ and 
-	makes a decision based on the received label $j$. If $j=0$, then he decides 
-	that the the black box contains $\PP_U$. Otherwise, he decides that the 
-	black box contains $\PP_{\Id}$. 
-\end{enumerate}  
-
-
-
-\subsubsection{Quantum architecture's limits and practical solutions}
-
-
-
-Let us take a closer look at the setup for distinguishing von Neumann 
-measurements (see Fig.~\ref{fig:theoretical_scheme}). One of the components of 
-this scheme is to perform a conditional binary measurement. 
-Unfortunately, current NISQ devices do not allow for performing conditional 
-binary measurements.
-The only possible measurement performed on quantum architectures is the 
-measurement in the computational basis. 
-We  will present two possible methods providing a clever way to cross this 
-obstacle. These will be two schemes of practical realization. 
-The first method consists in using postselection while the second method 
-consists in applying a controlled unitary. These methods are described below. 
-
-\begin{scheme}(Postselection)
-
-
-
-%\begin{figure}[h!]
-%	\includegraphics[scale=1.5]{onequbit.pdf}
-%	\caption{A schematic representation of the setup for distinguishing
-%		measurements using postselection.}
-%	\label{postselection}
-%\end{figure}
-
-
-
-
-
-
-\begin{enumerate}
-\item Alice and Bob prepare an entangled state $\ket{\psi_{0}}$ (discriminator) on systems 
-$A$ and $B$.
-\item Alice performs one of two quantum channels, either $\Phi_{\Id}$ or 
-$\Phi_{U^\dagger}$,  on part $A$ of the input state  $\ket{\psi_{0}}$.
-\item Alice measures part $A$ of the input state  $\ket{\psi_{0}}$ and 
-receives an output label $i$.
-\item  
-Based on Holevo--Helstrom theorem, Bob performs a conditional binary 
-measurement	$\PP_{V_j}$ and implements the unitary channel 	$\Phi_{V_j^\dagger}$ on part $B$.
-\item To calculate the probability of correct discrimination, they include just those cases for which $i = j$.
-\item Bob measures part $B$ of the input state  $\ket{\psi_{0}}$ and makes a
-decision based on received label $j$. If $i=j=0$, then he decides that the 
-black box contains $\PP_U$. Otherwise, he decides that the black box contains
-$\PP_{\Id}$.
-\end{enumerate}
-
-
-The schematic representation of this setup is depicted in 
-Fig.~\ref{fig:postsellection}.     
-
-\begin{figure}[h!]
-	\centering 
-	\includegraphics[scale=1.7]{pics/postselection} 
+\begin{scheme}(By using postselection)
 	
-	\caption{ A schematic representation of the setup for distinguishing
-		measurements using postselection. 
-	}\label{fig:postsellection}
-\end{figure}  
-
-Due to the fact that the measurement result is nondeterministic, we are forced to consider the following circuits
-in the postselection procedure
-\begin{equation}
-\begin{split}
-(\Phi_{U^\dagger}, \Phi_{V_k^\dagger}, i, j) \\ 
-(\Phi_{\Id}, \Phi_{V_k^\dagger}, i, j)
-\end{split}
-\end{equation}
-where $k=\{0,1\}, i=\{0,1\}$ and $ j=\{0,1\}$. 
-The optimal probability of correct discrimination between $\PP_{U} $ and $\PP_\Id$ is as follows.
-		\begin{equation}
-		p = \frac{\#(\Phi_{U^\dagger}, \Phi_{V_i^\dagger},i,0) + \#(\Phi_\Id, \Phi_{V_i^\dagger},i,1)}{\#(\Phi_{U^\dagger}, \Phi_{V_i^\dagger},i,j) + \#(\Phi_\Id, \Phi_{V_i^\dagger},i,j)}, 
-		\end{equation}
-where $i=\{0,1\}$ and $ j=\{0,1\}$. 
-
+	The first idea is very simple. Instead of performing a conditional measurement, for each
+	measurement $\PP_U, \PP_\Id$ to be discriminated and each choice of $k \in \{0, 1\}$ we run circuit presented in Fig. \ref{fig:postselection}.
+	
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[scale=1.7]{pics/postselection_no_channels}
+		
+		\caption{
+			Postselection scheme of discrimination between von Neumann measurements $\PP_{U}$ and $\PP_\Id$.
+		}\label{fig:postselection}
+	\end{figure}
+	
+	But now our experiment does not match the previously described scheme, right?
+	Yes, unless we discard all the outcomes for which $i\ne k$ (hence the name \emph{postselection},
+	we are selecting valid outcomes after the experiment is performed).
+	
+	% \begin{scheme}(Postselection)
+	
+	% %\begin{figure}[h!]
+	% %	\includegraphics[scale=1.5]{onequbit.pdf}
+	% %	\caption{A schematic representation of the setup for distinguishing
+	% %		measurements using postselection.}
+	% %	\label{postselection}
+	% %\end{figure}
+	
+	% \begin{enumerate}
+	% \item We prepare  the discriminator $\ket{\psi_{0}}$ on bipartite system.
+	% \item We perform one of two quantum channels, either $\Phi_{\Id}$ or
+	% $\Phi_{U^\dagger}$,  on  the first part of the input state  $\ket{\psi_{0}}$, that means $\left( \Phi \otimes \Id\right)(\proj{\psi_0})$.
+	% \item We measure the first part of the input state  $\ket{\psi_{0}}$ and
+	% receive an output label $i$.
+	% \item
+	% Based on Holevo--Helstrom theorem, we perform a conditional binary
+	% measurement	$\PP_{V_j}$ and hence, we implement the quantum channel $\Phi_{V_j^\dagger}$ on the second part.
+	% \item To calculate the probability of correct discrimination, we include just those cases for which $i = j$.
+	% \item We measure the second part of the input state  $\ket{\psi_{0}}$ and make a
+	% decision based on received label $j$. If $i=j=0$, then we decide that
+	% $\PP_U$ occurs.  If $i=j=1$, we decide that
+	% $\PP_{\Id}$ occurs.
+	% \end{enumerate}
+	
+	More precisely, our experiments can be grouped into classes identified by tuples of the form
+	$(\mathcal{Q}, k, i, j)$, where $\mathcal{Q} \in \{\PP_U, \PP_\Id\}$ denotes the chosen measurement.
+	We discard all the experiments for which $k \ne i$. Hence, the total number of valid experiments is
+	
+	\begin{equation}
+	N_\text{total} = \#\{(\QQ, k, i, j): k = i \}. 
+	\end{equation}
+	
+	We now need to count the experiments (among the valid ones) resulting in successful discrimination.
+	If we have chosen $\PP_U$, then we guess correctly iff $j=0$. Similarly, for
+	$P_\Id$, we guess correctly iff $j=1$. If we define
+	\begin{eqnarray}
+	N_{\PP_U} &= \#\{(\mathcal{Q}, k, i, j): \mathcal{Q} = \PP_U, k = i, j = 0\}, \\
+	N_{\PP_\Id} &= \#\{(\mathcal{Q}, k, i, j): \mathcal{Q} = \PP_\Id, k = i, j = 1\},
+	\end{eqnarray}
+	then the empirical success probability can be computed as
+	
+	\begin{equation}
+	p_{\text{succ}}(\PP_{U}, \PP_{\Id}) = \frac{N_{\PP_U} + N_{\PP_\Id}}{N_{\text{total}}}.
+	\end{equation}
+	
 \end{scheme}
 
-
-\begin{scheme}(By using controlled unitary)
+\begin{scheme}(By using direct sum)
 	
-
-
-\begin{enumerate}
-\item Alice and Bob prepare an entangled state $\ket{\psi_{0}}$ on 
-systems $A$ and $B$.
-\item Alice performs one of two quantum channels, either $\Phi_{\Id}$ or
-$\Phi_{U^\dagger}$,  on part $A$ of the input state  $\ket{\psi_{0}}$.
-\item Alice and Bob implement  direct sum of unitary channels $\Phi_{V_0^\dagger} \oplus \Phi_{V_1^\dagger}$ obtained from 
-Holevo--Helstrom theorem.	
-\item Alice and Bob prepare the measurement $\Delta$ in computational basis on 
-their systems.
-\item Bob makes a decision based on received label $j$. If $j=0$, then he
-decides that the the black box contains $\PP_U$. Otherwise, he decides that the
-black box contains $\PP_{\Id}$.
-\end{enumerate}
-
-The schematic representation of this setup is depicted in 
-Fig.~\ref{fig:controlled}.     
-\begin{figure}[h!]
-	\centering 
-	\includegraphics[scale=1.5]{pics/controlled_unitary} 
 	
-	\caption{ A schematic representation of the setup for distinguishing
-		measurements using controlled unitary gate. 
-	}\label{fig:controlled}
-\end{figure} 
-
-
-Here, we consider the following circuits
-by using controlled unitary
-\begin{equation}
-\begin{split}
-(\Phi_{U^\dagger}, \Phi_{V_0^\dagger} \oplus \Phi_{V_1^\dagger}, i, j) \\ 
-(\Phi_{\Id},  \Phi_{V_0^\dagger} \oplus \Phi_{V_1^\dagger}, i, j)
-\end{split}
-\end{equation}
-where $i=\{0,1\}$ and $ j=\{0,1\}$. 
-Then, the optimal probability of correct discrimination between $\PP_{U} $ and $\PP_\Id$ is as follows.
-\begin{equation}
-p = \frac{\#(\Phi_{U^\dagger},\Phi_{V_0^\dagger} \oplus \Phi_{V_1^\dagger},i,0) + \#(\Phi_\Id,\Phi_{V_0^\dagger} \oplus \Phi_{V_1^\dagger},i,1) }{\#(\Phi_{U^\dagger},\Phi_{V_0^\dagger} \oplus \Phi_{V_1^\dagger},i,j) + \#(\Phi_\Id,\Phi_{V_0^\dagger} \oplus \Phi_{V_1^\dagger},i,j)}
-\end{equation}
-where $i=\{0,1\}$ and $ j=\{0,1\}$. 
+	
+	\begin{enumerate}
+		\item We prepare the discriminator $\ket{\psi_{0}}$ on bipartite
+		system.
+		%\item We perform one of two quantum channels, either $\Phi_{\Id}$ or
+		%$\Phi_{U^\dagger}$,  on  the first part of the input state  $\ket{\psi_{0}}$, that means $\left(\Phi \otimes \Id\right)(\proj{\psi_0})$.
+		\item We apply one of unitary,   either $U^\dagger$ or
+		$\Id$, on the first system.
+		%\item Based on Holevo--Helstrom theorem, we perform a conditional binary measurement $\PP_{V_j}$, and hence, we implement the direct sum of quantum channels $\Phi_{V_0^\dagger} \oplus \Phi_{V_1^\dagger}$. Observe that   $\Phi_{V_0^\dagger} \oplus \Phi_{V_1^\dagger} = \proj{0} \otimes \Phi_{V_0^\dagger}  + \proj{1} \otimes \Phi_{V_1^\dagger}.  $
+		\item We apply direct sum $V_0^\dagger \oplus V_1^\dagger$ on the whole systems.
+		\item We measure both systems in computational basis $\Delta$.
+		\item We make a decision based on the received label $j$ on the second system. If $j=0$, then we
+		decide that $\PP_U$ occurs. Otherwise, we decide that $\PP_{\Id}$ occurs.
+	\end{enumerate}
+	
+	The schematic representation of this setup is depicted in
+	Fig.~\ref{fig:controlled}.
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[scale=1.5]{pics/controlled_unitary}
+		
+		\caption{ A schematic representation of the setup for distinguishing
+			measurements using controlled unitary gate.
+		}\label{fig:controlled}
+	\end{figure}
+	
+	In this scheme, the experiment can be characterized by a pair $(\mathcal{Q}, i,j)$, where $\mathcal{Q} = \{ \PP_{U}, \PP_{\Id} \}$. The number of successful trials for $U$ and $\Id$, respectively, can be written  as
+	\begin{eqnarray}
+	N_{\PP_U} &= \#\{(\mathcal{Q},  i, j): \mathcal{Q} = \PP_U, j = 0\}, \\
+	N_{\PP_\Id} &= \#\{(\mathcal{Q},  i, j): \mathcal{Q} = \PP_\Id, j = 1\}.
+	\end{eqnarray}
+	Then, the probability of correct discrimination between $\PP_{U} $ and $\PP_\Id$ is given by
+	\begin{equation}
+	p_{\text{succ}} = \frac{N_{\PP_{U}} + N_{\PP_{\Id}}}{N_{\text{total}}},
+	\end{equation}
+	where $N_{\text{total}}$ is the number of trials.
 \end{scheme}
 
 
 
 
-\subsubsection{Mathematical preliminaries}
+\subsubsection{Optimal discrimination scheme}
 
 
-
-Let $M_{d_1,d_2}$ be the set of all matrices of dimension $d_1 \times d_2$ over
-the field $\mathbb{C}$. For  simplicity, square matrices will be denoted by
-$M_d$.  
-%The subset of $M_d$ consisting of Hermitian matrices of dimension $d$
-%will  be  denoted  by $\HH_d$,  while  the  set  of  positive semidefinite
-%matrices of dimension $d$ by $\HH_d^+$. 
-The set of quantum states, that is
-positive semidefinite operators having trace equal to one, will be denoted
-$\Omega_d$. 
- The subset of $M_d$ consisting of unitary matrices will be denoted
-by $\UU_d$, while its subgroup of diagonal unitary operators will be denoted by
-$\DD \UU_d$. 
-	An operator $A = \left( a_{i,j}\right)_{i,j} \in M_d$ is said to be a stochastic matrix if $a_{i,j} \ge 0$   and $\sum_{i} a_{i,j} = 1$, whereas an operator $A = \left( a_{i,j}\right)_{i,j} \in M_d$ is said to be a double stochastic matrix if $A$ is a stochastic matrix and $\sum_{j} a_{i,j} = 1$.
-
-
- We will also need a linear mapping transforming $M_{d_1}$ into
-$M_{d_2}$, which will be denoted 
-\begin{equation}
-\Phi: M_{d_1 } \rightarrow M_{d_2}.
-\end{equation} 
-There
-exists a bijection between the set of linear mappings $\Phi$ and the set of matrices $M_{d_1d_2}$,  known as the Choi-Jamio{\l}kowski isomorphism. 
-For a given linear mapping $\Phi$ the corresponding Choi operator $\mathcal{J}(\Phi)$ is explicitly written as 
-\begin{equation}
-\mathcal{J}(\Phi) \coloneqq \sum_{i,j=0}^{d- 1} \Phi(\ketbra{i}{j}) \otimes \ketbra{i}{j}. \end{equation}
-We introduce a special subset of all mappings $\Phi$, called quantum channels, which are completely positive
-and trace preserving (CPTP).
-In this work we will consider a special class of quantum channels, called unitary channels.  A 
-channel
-$\Phi_{U}$ is said to be a unitary channel if it has the following form $\Phi_U(\cdot) = U \cdot U^\dagger$ for  $U \in 
-\UU_d$.
-
-
-
-Finally, we define a quantum
-measurement, that is a positive operator valued measure (POVM) denoted by $\PP, \mathcal{Q}$ etc. This is a 
-collection of positive semidefinite operators $\{E_1, \ldots, E_m \}$ called
-effects, which sum up to identity, \ie $ \, \, \sum_{i=1}^m E_i = \1$. If
-all effects are rank-one projection operators, then such a measurement is
-called a von Neumann measurement. 
-Every von Neumann measurement can be
-parameterized by a unitary matrix $U$ with effects $\{\proj{u_0}, \ldots, \proj{u_{d-1}}\}$,
-where $\ket{u_i}$ is the $i$-th column of the unitary matrix $U$.  Hence we will use the notation $\PP_{U}$.  The action of
-quantum measurement $\PP_{U}$ on some state $\rho \in \Omega_d$ can be
-seen as  a measure-and-prepare quantum channel as follows 
-$
-\PP_{U} : \rho \rightarrow \sum_{i=0}^{d-1} \bra{u_i} \rho \ket{u_i} \proj{i}.
-$ Moreover, observe that each von Neumann measuement $\PP_{U}$ can be written as compostion of a unitary channel $\Phi_{U^\dagger}$ and the maximally dephasing channel $\Delta$, that means $\PP_{U} = \Delta \circ \Phi_{U^\dagger}$. 
-
-\subsubsection{Diamond norm and the task of discrimination between quantum operators}
-This section defines a special norm on the space of linear mappings, known as 
-the diamond norm, and establishes some of its properties. 
-Next, we will explain the precise connection between the diamond
-norm and the task of quantum operation discrimination. 
-
-Let us  consider a  linear mapping transforming  square matrices into square 
-matrices that is $\Phi: M_{d_1} \to M_{d_2}$. 
-We define the diamond norm of a map $\Phi$ as 
-\begin{equation}
-\|\Phi\|_\diamond = \max_{\|X\|_1=1} \| \left(\Phi \otimes \1\right) (X) \|_1.
-\end{equation}
-The celebrated result by Helstrom~\cite{helstrom1976quantum} gives the optimal  probability of correct discrimination between two quantum operations, $\Psi$  and $\Phi$, 
+The celebrated result by Helstrom~\cite{helstrom1976quantum} gives the optimal  probability of correct discrimination between two quantum measurements, $\PP$  and $\mathcal{Q}$,
 in terms of their distance with the use of the diamond norm
 \begin{equation}
-p_{\text{succ}}(\Psi, \Phi) =  \frac12 + \frac14 \| \Psi - \Phi \|_\diamond.
+p_{\text{succ}}(\PP, \mathcal{Q}) =  \frac12 + \frac14 \| \PP - \mathcal{Q} \|_\diamond, 
 \end{equation}
-from Theorem 1 in \cite{puchala2018strategies}, the distance between two von Neumann measurements $\PP_U$ and 
-$\PP_\Id$ is given by
+where 
 \begin{equation}
-\|\PP_U - \PP_\Id\|_\diamond = \min_{E \in \diaguni_d} \|\Phi_{UE} - 
-\Phi_\Id\|_\diamond,
+\|\PP\|_\diamond = \max_{\| \ket{\psi}\|_1=1} \| \left(\PP \otimes \1\right) (\proj{\psi}) \|_1.
 \end{equation}
-where $\Phi_U$ is unitary channel and $\diaguni_d$ be the set of diagonal 
-unitary matrices of dimension $d$. 
+The quantum state $\ket{\psi}$ which maximizes the diamond norm is called as discriminator.
+Furthermore,  thanks to the proof of the Holevo-Helstrom theorem, it is possible to construct the necessary components  ($\ket{\psi_0}$, $V_0$, $V_1$) to create the optimal discrimination strategy. 
+
+ 
+ 
+ \section{Software description}
+ \label{}
+ This section is divided into two parts.
+ In Section~\ref{sec:sortware-functionalities} we present the details of PyQBench functionality. Next, in Section~\ref{sec:sortware-architecture}, 
+ we will give a general overview of the software architecture.
+ 
+ 
+ 
+ 
+\subsection{Software Functionalities}\label{sec:sortware-functionalities}
+
+
+In the scope of this Paper, we aim at  exploring ideas revolving around quantum 
+gate model-inspired computing devices, and assess their feasibility to 
+benchmark a modern quantum architectures. The main idea that we have envisioned 
+for this project is  introducing new concepts of benchmarks for NISQ devices 
+benchmarking. This project aims to characterize the computing power and 
+investigate possible practical applications of such devices having access by 
+Amazon Braket. 
+ 
+ 
+ 
+\subsection{Software Architecture}\label{sec:sortware-architecture}
+PyQBench can be used in two different ways:
+\begin{itemize}
+\item As a library. This is a more extensible, but also more laborious way of using PyQBench. Most importantly, this way allows for more advanced scripting defining your own measurements scheme.
+
+\item As a CLI tool. This mode of operation trades extensibility for simplicity of usage, as it allows only for running Fourier-discrimination experiments defined with simple YAML input files.
+\end{itemize}
+
+
+\subsubsection{PyQBench as a library}\label{sec:pyqbench-as-library}
+This guide introduces basic concepts needed for using PyQBench as a library from a Python script. In particular, we will cover the following topics:
+\begin{enumerate}
+\item Defining experiment using circuit components.
+\item Assembling circuits needed for given benchmarking scheme.
+\item Running experiment on simulator or hardware.
+\item Obtaining empirical probability of successful discrimination between measurements.
+\end{enumerate}
+
+On the conceptual level, every discrimination experiment performed in PyQBench needs the following:
+\begin{enumerate}
+\item Discriminator, i.e. optimal initial state for the circuit.
+\item Unitary $U^\dagger$ defining alternative measurement to be discriminated from the measurement in Z-basis.
+\item $V_0^\dagger$ and $V_1^\dagger$, positive and negative parts of optimal measurement from Holevo-Helstrom theorem.
+\end{enumerate}
+Currently available quantum computers typically cannot start execution from an arbitrary state. Instead, we have to prepare it ourselves. Hence, to execute experiment using postselection scheme, we need an instruction taking to the desired discriminator
+and instructions implementing $U^\dagger$, $V_0^\dagger$ and $V_1^\dagger$. 
+
+\subsubsection{Example of usage}
+In our example, we will use $U =  H$ (the Hadamard gate). To keep us focused on the implementation in PyQBench and not delve too deep into mathematical explanation, we simply provide explicit formulas for discriminator $\ket{\Psi_0} $, $V_0$ and $V_1$, leaving the calculations to the interested reader. 
+
+The explicit formula for discriminator in our toy model reads:
+\begin{equation}
+\ket{\Psi_0} = \frac{1}{\sqrt{2}} (\ket{00} + \ket{11}), 
+\end{equation}
+with corresponding parts of optimal measurement being equal to
+\begin{equation}
+V_0 = 
+\left(\begin{array}{cc} \alpha & -\beta\\ \beta & \alpha \end{array}\right), 
+\end{equation}
+and \begin{equation}
+V_1 = 
+\left(\begin{array}{cc} -\beta & \alpha \\ \alpha & \beta \end{array}\right), 
+\end{equation} 
+where \begin{equation}
+\alpha = \frac{\sqrt{2 - \sqrt{2}}}{2} \cos\left( \frac{3}{8} \pi \right),
+\end{equation}
+\begin{equation}
+\beta  = \frac{\sqrt{2  + \sqrt{2}}}{2} \sin\left( \frac{3}{8} \pi \right).
+\end{equation}
+
+As a next step, we need decompose our matrices into actual sequences of gates.
+We are lucky, because our discriminator is just a Bell state. Thus, the circuit taking $\ket{00}$ to $\ket{\Phi_0}$ is well known, and comprises Hadamard gate followed by CNOT gate on both qubits. 
+\begin{figure}[h!]
+	\centering
+	\includegraphics[scale=1.7]{pics/discriminator}
+	\caption{Decomposition of the discriminator $\ket{\Phi_0}$. }
+	\label{fig:discriminator}
+\end{figure}
+
+For $V_0$ and $V_1$ observe that $V_0 = RY\left(\frac{3}{4} \pi \right) $, where $RY$ is rotation gate around the $Y$ axis defined by 
+\begin{equation}
+RY(\theta) = 
+\left(\begin{array}{cc} \cos\frac{\theta}{2} & -\sin\frac{\theta}{2} \\ \sin\frac{\theta}{2} & \cos\frac{\theta}{2} \end{array}\right).  
+\end{equation} 
+To obtain $V_1$  we need only to swap the columns, which is equivalent to following $V_0$ by $X$ matrix, more precisely 
+\begin{equation}
+V_1 =  RY\left(\frac{3}{4} \pi \right) \cdot X. 
+\end{equation}
+
+Now running the simulation is as simple as invoking functions imported from qbench package.
+
+\todo[inline]{listingi swieca sie na razie jak choinka ale bedziemy kolorki drasowac}
+\begin{lstlisting}[language=Python, caption=Simulation benchmark by using postselection]
+
+simulator = Aer.get_backend("aer_simulator")
+postselection_result = benchmark_using_postselection(
+	backend=simulator,
+	target=0,
+	ancilla=1,
+	state_preparation=state_prep(),
+	u_dag=u_dag(),
+	v0_dag=v0_dag(),
+	v1_dag=v1_dag(),
+	num_shots_per_measurement=10000,
+)
+\end{lstlisting}
+
+
+\begin{lstlisting}[language=Python, caption=Simulation benchmark by using direct sum]
+
+simulator = Aer.get_backend("aer_simulator")
+direct_sum_result = benchmark_using_direct_sum(
+backend=simulator,
+target=1,
+ancilla=2,
+state_preparation=state_prep(),
+u_dag=u_dag(),
+v0_v1_direct_sum_dag=v0_v1_direct_sum_dag(),
+num_shots_per_measurement=10000,
+)
+\end{lstlisting} 
+
+\begin{lstlisting}[language=Python, caption=Computation of probability]
+p_succ = (2 + np.sqrt(2)) / 4
+print(f"Real p_succ = {p_succ}")
+print(
+f"Postselection: p_succ = {postselection_result}, abs. error = {p_succ - postselection_result}"
+)
+print(f"Direct sum: p_succ = {direct_sum_result}, abs. error = {p_succ - direct_sum_result}")
+
+\end{lstlisting}
+
+
+\begin{lstlisting}
+Real p_succ = 0.8535533905932737
+Postselection: p_succ = 0.8559797193791593, abs. error = -0.0024263287858855564
+Direct sum: p_succ = 0.85605, abs. error = -0.0024966094067262468
+\end{lstlisting}
+
+
+\subsubsection{Gaining more control over the benchmarking process}
+In the example presented above we used functions that automate the whole process - from the circuit assembly, through running the simulations to interpreting the results. But what if we want more control over some parts of this process? Maybe we want play around with some models? Or maybe we want to run the same experiment on multiple backends and we don’t want them to be assembled over and over again?
+
+ PyQBench provides functions performing:
+\begin{enumerate}
+\item assembly of circuits needed for experiment, provided the components discussed above
+\item interpretation of the obtained measurements
+\end{enumerate}
+When using these functions, you need to take care of running circuits on some backend yourself, but it gives you unlimited power over the whole process. The difference between such approaches is illustrated on the diagrams below. 
+
+When using these functions, you need to take care of running circuits on some backend yourself, but it gives you unlimited power over the whole process. The difference between the two approaches is illustrated on the diagrams below. 
+
+\begin{figure}
+	\centering
+	\begin{subfigure}[b]{\textwidth}
+		\centering
+		\includegraphics[width=1\textwidth]{pics/scheme1}
+%		\caption{$y=x$}
+		\label{fig:simplified}
+	\end{subfigure}
+	\vfill
+	\begin{subfigure}[b]{\textwidth}
+		\centering
+	\includegraphics[width=1\textwidth]{pics/scheme2}
+%		\caption{$y=3\sin x$}
+		\label{fig:execution}
+	\end{subfigure}
+\end{figure}
+
+\pagebreak
+
+
+Next, we divide the experiment into two parts: 
+\begin{enumerate}
+	\item Assembling  circuits
+	\item Running  circuits
+\end{enumerate}
+
+
+Let us focus only on the postselection case, as the direct sum case is analogous. In addition, we need to import two more functions from PyQBench.
 
 
 
-\paragraph{Discrimination of unitary channels}
 
-Before we proceed to presenting our main results, we need to briefly discuss the
-problem of discrimination of unitary channels.  For this purpose, we introduce the notion of numerical range of
-a given matrix $A \in M_d$. The set \begin{equation}
-W(A) =\{\bra{x}A\ket{x}: \ket{x} \in 
-\mathbb{C}^d, \;
-\;\braket{x}{x}=1\}.
-\end{equation}   
-is called numerical range of $A$.
-The detailed properties of the numerical range and its generalizations we can see on the website~\cite{nr}. 
+\begin{lstlisting}[language=Python, caption=Assembling circuits]
+from qbench.schemes.postselection import (
+assemble_postselection_circuits,
+compute_probabilities_from_postselection_measurements,
+) 
 
-	Let $U \in \UU_d$ and $\Phi_U$ be a unitary 
-	channel. 
-	Then, the following equation holds
-	\begin{equation}
-	\| \Phi_U  - \Phi_{\1} \|_\diamond = 2 \sqrt{1-\nu^2},
-	\end{equation}
-	where $\nu = \min_{x \in W(U^\dagger)} |x|  $. Finally, the optimal probability to discriminate two unitary channel is given by 
-	\begin{equation}
-	p_{\text{succ}}(\Phi_U, \Phi_\Id) = \frac{1}{2} + \frac{1}{2} \sqrt{1-\nu^2}.
-	\end{equation}
+circuits = assemble_postselection_circuits(
+target=0,
+ancilla=1,
+state_preparation=state_prep(),
+u_dag=u_dag(),
+v0_dag=v0_dag(),
+v1_dag=v1_dag(),
+)
 
-
-
-
-%In the general case, the diamond norm of a Hermiticity-preserving maps $\Phi$ 
-%can be computed using the Semidefinite Program~\cite{watrous2018theory} and 
-%state 
-%primal and dual problem in the following form:	
+circuits
+\end{lstlisting} 
 
 %
-%\begin{minipage}{0.495\linewidth}
-%	\begin{equation*}
-%		\begin{split}
-%			\text{\textbf{Primal problem:}} \\
-%			\text{maximize:}\quad & \tr(X J(\Phi)) \\[2mm]
-%			\text{subject to:}\quad &  \left[ \begin{array}{cc}\Id_{d_2} 
-%\otimes \rho & X \\ X^* & \Id_{d_2} \otimes \rho  \end{array} \right] \ge 0 \\
-%			& \rho \in \HH_d^+\\ 
-%			& X \in M_{d1,d2}.
-%		\end{split}
-%	\end{equation*}
-%\end{minipage}
-%\begin{minipage}{0.495\linewidth}
-%	\begin{equation*}
-%		\begin{split}
-%			\text{\textbf{Dual problem:}} \\
-%			\text{minimize:}\quad & ||\tr_1(Y)||_\infty \\[2mm]
-%			\text{subject to:}\quad & \left[ \begin{array}{cc}Y & -J(\Phi) \\ 
-%-J(\Phi) &  Y \end{array} \right] \ge 0 \\
-%			& Y \in \HH_{d_1d_2}^+.
-%		\end{split}
-%	\end{equation*}
-%	\vspace{0.5cm}
-%\end{minipage} 
+%\begin{lstlisting}[language=Python, caption=Python example]
+%{'id_v0': <qiskit.circuit.quantumcircuit.QuantumCircuit at 0x7f8b1585b9a0>,
+%'id_v1': <qiskit.circuit.quantumcircuit.QuantumCircuit at 0x7f8b37fbfa90>,
+%'u_v0': <qiskit.circuit.quantumcircuit.QuantumCircuit at 0x7f8b1585bf40>,
+%'u_v1': <qiskit.circuit.quantumcircuit.QuantumCircuit at 0x7f8b1585bf10>}
+%\end{lstlisting} 
+
+Now we only need to run the circuits.
+To make things more interesting, we will run a noisy and noiseless simulation of our circuits. We will use the same backend as before, and our noise model will only comprise readout errors on both qubits.
+
+\begin{lstlisting}[language=Python, caption=Noise models]
+from qiskit.providers.aer import noise
+
+error = noise.ReadoutError([[0.75, 0.25], [0.8, 0.2]])
+
+noise_model = noise.NoiseModel()
+noise_model.add_readout_error(error, [0])
+noise_model.add_readout_error(error, [1])
+
+noise_model
+\end{lstlisting} 
+
+Once we have our noise model ready, we can execute our circuits with and without noise. To this end, we will use Qiskit’s execute function. One caveat is that we have to keep track which measurements correspond to which circuit. We do so by fixing an ordering on the keys in circuits dictionary.
+
+\begin{lstlisting}[language=Python, caption=Running  circuits]
+from qiskit import execute
+
+keys_ordering = ["id_v0", "id_v1", "u_v0", "u_v1"]
+all_circuits = [circuits[key] for key in keys_ordering]
+
+counts_noisy = (
+execute(all_circuits, backend=simulator, noise_model=noise_model, shots=10000).result().get_counts()
+)
+
+counts_noiseless = execute(all_circuits, backend=simulator, shots=10000).result().get_counts()
+
+
+print(f"Noisless counts: {counts_noiseless}")
+print(f"Noisy counts: {counts_noisy}")
+\end{lstlisting} 
+
+
+%
+%Noisless counts: [{'11': 737, '00': 731, '10': 4163, '01': 4369}, {'01': 750, '00': 4217, '10': 716, '11': 4317}, {'01': 740, '10': 693, '00': 4209, '11': 4358}, {'11': 775, '01': 4341, '00': 765, '10': 4119}]
+%Noisy counts: [{'01': 1720, '11': 514, '10': 1760, '00': 6006}, {'11': 529, '00': 6025, '10': 1705, '01': 1741}, {'11': 531, '01': 1726, '00': 5956, '10': 1787}, {'01': 1808, '11': 515, '10': 1681, '00': 5996}]
 
 
 
+Finally, the only thing left is to compute the success probabilities. We do so by passing bitstring counts to function \\ \texttt{compute\_probabilities\_from\_postselection\_measurements}. 
 
 
-\section{Illustrative Example}
+\begin{lstlisting}[language=Python, caption=Computation probability without noise]
+prob_succ_noiseless = compute_probabilities_from_postselection_measurements(
+id_v0_counts=counts_noiseless[0],
+id_v1_counts=counts_noiseless[1],
+u_v0_counts=counts_noiseless[2],
+u_v1_counts=counts_noiseless[3],
+)
 
-Let us focus on single-qubit von Neumann measurements $\PP_\1$ and $\PP_U$.
-Assume that the unitary matrix $U$ is of the form 
+print(prob_succ_noiseless)
+\end{lstlisting} 
+
+\begin{lstlisting}[language=Python, caption=Computation probability including noise]
+prob_succ_noisy = compute_probabilities_from_postselection_measurements(
+id_v0_counts=counts_noisy[0],
+id_v1_counts=counts_noisy[1],
+u_v0_counts=counts_noisy[2],
+u_v1_counts=counts_noisy[3],
+)
+
+print(prob_succ_noisy)
+\end{lstlisting} 
+The success probability is 0.8524401115559386, whereas if we obtain some noise, the succes probability is equal to 0.5017958400693446
+As expected, noisy simulations gave us results that are further away from the exact ones.
+
+This concludes introduction to PyQBench library. If you are interested see additoinal usage examples in our examples directory.
+
+
+
+\subsubsection{PyQBench as a CLI tool}\label{sec:pyqbench-as-cli} 
+Using PyQBench as a library allows one to conduct, in principle, arbitrary two-qubit von Neumann measurement experiment. However, as discussed in the previous guide, it requires some amount of boilerplate code.
+
+However, for a Fourier parametrized family of measurements, PyQBench offers a simplified way of performing the experiment using a Command Line Interface (CLI).
+
+
+\todo[inline]{to be continued }
+
+\section{Discrimination scheme for parameterized Fourier family and implementation}
+
+\subsection{Discrimination scheme}
+So far, we only discussed how the discrimination is performed using two different
+schemes, assuming that all needed components ($\ket{\psi_0}$, $V_0$, $V_1$) are known. It turned out that the determination of $V_0$ and $V_1$ is a simple task while the discriminator $\ket{\psi_{0}}$ is known. However, 
+sad to say, determining the analytical form of the discriminator $\ket{\psi_{0}}$
+is, in general, NP-hard problem. 
+We have found the analytical solution of the discrimination scheme for a particular class of von Neumann measurements.  
+
+
+Here,  we will show how all the necessary ingredients look like for
+von Neumann measurements defined by the parameterized Fourier family:
+
 \begin{equation}
-U = H 
-\left(\begin{array}{cc}1&0\\0&e^{i \phi}\end{array}\right)  H^\dagger
+	U = H
+	\left(\begin{array}{cc}1&0\\0&e^{i \phi}\end{array}\right)  H^\dagger, 
 \end{equation}
-%\begin{equation}
-%U = H \diag (1, \ee^{\ii \phi}) H^\dagger,
-%\end{equation}
 where $H$ is the Hadamard matrix of dimension two and $\phi \in [0, 2 \pi)$.
-In this section we present theoretical probability of correct 
-discrimination between these measurements. Moreover, we create the optimal 
-theoretical strategy of their discrimination. 
-The otimal probability will be calculated in 
-subsection~\ref{sec:example_theoretical_probability}. Later, we will 
-discuss the realization of this scheme in 
-subsection~\ref{sec:example_realization}. For such realization, we 
-will need the optimal input state (see sec.~\ref{sec:example_discriminator}), 
-and the optimal final measurement (see sec.~\ref{sec_example_final_measurement}). 
-
-\subsection{Theoretical probability}\label{sec:example_theoretical_probability}
-
-\begin{theorem}\label{th:probability}
-The optimal probability of correct discrimination between von Neumann
-measurements $\PP_U$ and $\PP_{\Id}$ for $U = H \diag(1, e^{i \phi}) H^\dagger$,
-where $\phi \in [0, 2\pi)$ is given by
+In this case, the optimal input state is Bell state of the form
 \begin{equation}
-p_{\text{succ}}(\PP_{U}, \PP_{\Id}) = \frac{1}{2} + \frac{|1 - e^{i \phi}  |}{4} . 
+	\ket{\psi_{0}} = \frac{1}{\sqrt{2}} \ket{00} + \ket{11}.
 \end{equation}
-\end{theorem}
-
-
-
-
-
-
-\subsection{Realization}\label{sec:example_realization}
-
-
-
-To indicate the optimal strategy  we will present two propositions. The first one is concentrated around the discriminator as the optimal input state of discrimination strategy, whereas the second one describes the optimal final measurement. 
- 
-\subsubsection{Discriminator}\label{sec:example_discriminator}
-
-\begin{proposition}\label{prop-discrim}
-Consider the problem of discrimination between von Neumann measurements $\PP_U$ 
-and $\PP_\1$, $U = H\diag(1, e^{i \phi}) H^\dagger $ and $\phi \in [0, 
-2\pi)$.  The optimal input state has the form
+And, for a given angle  $\phi \in  [0, 2 \pi)$,   the unitaries $V_0$,  $V_1$
+have the following form
 \begin{equation}
-\ket{\psi_{0}} = \frac{1}{\sqrt{2}} |\Id_2 \rangle \rangle.
+	V_0 = \left(\begin{array}{cc}i \sin\left( \frac{\pi - \phi}{4} \right)&-i
+		\cos\left( \frac{\pi - \phi}{4} \right)\\ \cos\left( \frac{\pi -
+			\phi}{4}\right)& \sin\left( \frac{\pi - \phi}{4} \right)\end{array}\right),
 \end{equation}
-\end{proposition}
-
-
-
-\subsubsection{Conditional measurement}\label{sec_example_final_measurement}
-
-
-\begin{proposition}\label{prop:optimal-measurement}
-	Consider the problem of discrimination between von Neumann measurements $\PP_U$ 
-	and $\PP_\1$, $U = H\diag(1, e^{i \phi}) H^\dagger $ and $\phi \in [0, 
-	2\pi)$.  
-The  conditioned measurement has the form
 \begin{equation}
-\begin{split}
-\mu(0) = \proj{0} \otimes V_0 \proj{0} V_0^\dagger +  \proj{1} \otimes V_1 
-\proj{0} V_1^\dagger,  \\ 
-\mu(1) = \proj{0} \otimes V_0 \proj{1} V_0^\dagger +  \proj{1} \otimes V_1 
-\proj{1} V_1^\dagger,
-\end{split}
+	V_1 = \left(\begin{array}{cc}-i \cos\left(\frac{\pi - \phi}{4}\right) &i
+		\sin\left( \frac{\pi - \phi}{4}\right)\\\sin\left( \frac{\pi - \phi}{4} \right)
+		&  \cos\left( \frac{\pi - \phi}{4} \right) \end{array}\right).
 \end{equation}
-where for each $\phi \in \mathbb{R}$,  the controlled unitaries $V_0$ and $V_1$ 
-have the form
+Finally, we have also calculated the theoretical probability of correct discrimination between von Neumann
+measurements $\PP_U$ and $\PP_{\Id}$ is given by
 \begin{equation}
-V_0 = \left(\begin{array}{cc}i \sin\left( \frac{\pi - \phi}{4} \right)&-i 
-\cos\left( \frac{\pi - \phi}{4} \right)\\ \cos\left( \frac{\pi - 
-\phi}{4}\right)& \sin\left( \frac{\pi - \phi}{4} \right)\end{array}\right),
+	p_{\text{succ}}(\PP_{U}, \PP_{\Id}) = \frac{1}{2} + \frac{|1 - e^{i \phi}  |}{4} .
 \end{equation}
-and
-\begin{equation}
-V_1 = \left(\begin{array}{cc}-i \cos\left(\frac{\pi - \phi}{4}\right) &i 
-\sin\left( \frac{\pi - \phi}{4}\right)\\\sin\left( \frac{\pi - \phi}{4} \right) 
-&  \cos\left( \frac{\pi - \phi}{4} \right) \end{array}\right).
-\end{equation}
-\end{proposition}
-
-
-
-\section{Implementation}
-In this section we will compare theoretical probability of correct 
-discrimination between these measurements and the realization on real devices.
-\todo[inline]{TU WYNIKI PRAKTYCZNE }
-
-\subsection{Generic case}
-Now we present the circuits for the generic case.
-\begin{figure}[h!]
-\centering
-\includegraphics[scale=1.2]{pics/circuit-qiskit/state_preparation-None}
-\caption{Circuit representing state preparation in the  generic case.}
-\end{figure}
-\begin{figure}[h!]
-\centering
-\includegraphics[scale=1.2]{pics/circuit-qiskit/u_dag-None}
-\caption{Circuit representing $U^\dagger$ in the generic case.}
-\end{figure}
-\begin{figure}[h!]
-\centering
-\includegraphics[scale=1.2]{pics/circuit-qiskit/v0_dag-None}
-\caption{Circuit representing $V_0^\dagger$ in the generic case.}
-\end{figure}
-\begin{figure}[h!]
-\centering
-\includegraphics[scale=1.2]{pics/circuit-qiskit/controlled_v0_v1_dag-None}
-\caption{Circuit representing controlled $V_0$ and $V_1$ the generic case.}
-\end{figure}
-
-\subsection{Lucy}
- basis gates  =["ecr", "i", "rz", "sx", "x"] 
-
-
-\subsection{Rigetti}
- basis gates = ["cz", "rx", "rz"]
-
-
-
-\subsection{Sample code snippets analysis (optional)}
-\todo[inline]{moze tu fragmenty kodu ? }
-\label{}
+More details and proofs of the construction's validity   we can find in the \ref{app:optimal-probability} and \ref{app:optimal-strategy}.   
 
 
 
@@ -768,8 +894,15 @@ Now we present the circuits for the generic case.
 
 
 
-\section{Impact }
 
+
+\subsection{Implementation}
+Here, we will present the results obtained on real devices. For this work we chose IMBQ software. \todo[inline]{tu dokladne informacje o maszynie i rysuneczki}
+
+
+
+\section{Impact}
+\todo[inline]{OJCIEC WYKAZ SIE, bo trzeba to dobrze sprzedac, nizej tekst z formatki softwarex}
 This software has two main contributions. 
 
 
@@ -891,9 +1024,83 @@ S7 & Support email for questions & \\
 \end{table}
 
 \appendix
-\section{Optimal probability}
+\section{Mathematical preliminaries} \label{app:preliminaries}
 
-In this Appendix we calculate the theoretical probability of correct discrimination between two von Neumann measurements $\PP_\1$ and $\PP_U$ for $U = H \diag(1, e^{i \phi}) H^\dagger$, where  $\phi \in [0, 2\pi)$.  To do that, we will present an auxiliary lemma.   
+Let $M_{d_1,d_2}$ be the set of all matrices of dimension $d_1 \times d_2$ over
+the field $\mathbb{C}$. For  simplicity, square matrices will be denoted by
+$M_d$.  
+%The subset of $M_d$ consisting of Hermitian matrices of dimension $d$
+%will  be  denoted  by $\HH_d$,  while  the  set  of  positive semidefinite
+%matrices of dimension $d$ by $\HH_d^+$. 
+By $\Omega_d$, we will denote the set of quantum states, that is
+positive semidefinite operators having trace equal to one. 
+The subset of $M_d$ consisting of unitary matrices will be denoted
+by $\UU_d$, while its subgroup of diagonal unitary operators will be denoted by
+$\DD \UU_d$. 
+%An operator $A = \left( a_{i,j}\right)_{i,j} \in M_d$ is said to be a stochastic matrix if $a_{i,j} \ge 0$   and $\sum_{i} a_{i,j} = 1$, whereas an operator $A = \left( a_{i,j}\right)_{i,j} \in M_d$ is said to be a double stochastic matrix if $A$ is a stochastic matrix and $\sum_{j} a_{i,j} = 1$.
+
+
+We will also need a linear mapping transforming $M_{d_1}$ into
+$M_{d_2}$, which will be denoted 
+\begin{equation}
+\Phi: M_{d_1 } \rightarrow M_{d_2}.
+\end{equation} 
+There
+exists a bijection between the set of linear mappings $\Phi$ and the set of matrices $M_{d_1d_2}$,  known as the Choi-Jamio{\l}kowski isomorphism. 
+For a given linear mapping $\Phi$ the corresponding Choi operator $J(\Phi)$ is explicitly written as 
+\begin{equation}
+J(\Phi) \coloneqq \sum_{i,j=0}^{d- 1} \Phi(\ketbra{i}{j}) \otimes \ketbra{i}{j}. \end{equation}
+
+We introduce a special subset of all mappings $\Phi$, called quantum channels, which are completely positive
+and trace preserving (CPTP).
+In this work we will consider a special class of quantum channels, called unitary channels.  A 
+channel
+$\Phi_{U}$ is said to be a unitary channel if it has the following form $\Phi_U(\cdot) = U \cdot U^\dagger$ for any $U \in 
+\UU_d$.
+
+
+The action of
+von Neumann measurement $\PP_{U}$ on some state $\rho \in \Omega_d$ can be
+seen as  a measure-and-prepare quantum channel as follows \begin{equation}
+\PP_{U} : \rho \rightarrow \sum_{i=0}^{d-1} \bra{u_i} \rho \ket{u_i} \proj{i}.
+\end{equation}
+Moreover, observe that each von Neumann measuement $\PP_{U}$ poses a  composition of a unitary channel $\Phi_{U^\dagger}$ and the maximally dephasing channel $\Delta$, that means $\PP_{U} = \Delta \circ \Phi_{U^\dagger}$. 
+
+We need to also briefly discuss about the distance between unitary channels and von Neumann measurements. From \cite[Theorem 1]{puchala2018strategies}, the distance between measurements $\PP_U$ and 
+$\PP_\Id$ ie equal to 
+\begin{equation}
+\|\PP_U - \PP_\Id\|_\diamond = \min_{E \in \diaguni_d} \|\Phi_{UE} - 
+\Phi_\Id\|_\diamond,
+\end{equation} whereas to express the distance between unitary channels, we need to introduce the notion of numerical range. The set \begin{equation}
+W(A) =\{\bra{x}A\ket{x}: \ket{x} \in 
+\mathbb{C}^d, \;
+\;\braket{x}{x}=1\}.
+\end{equation}   
+is called numerical range of  a matrix $A \in M_d$.
+The detailed properties of the numerical range and its generalizations we can see on the website~\cite{nr}. 
+Due to the definition of $W(A)$, the distance between two unitary channels $\Phi_{U} $ and $\Phi_\Id$
+can be written as 
+\begin{equation}
+\| \Phi_U  - \Phi_{\1} \|_\diamond = 2 \sqrt{1-\nu^2},
+\end{equation}
+where $\nu = \min_{x \in W(U^\dagger)} |x|  $. 
+
+
+\section{Optimal probability} \label{app:optimal-probability}
+
+
+Let us focus on single-qubit von Neumann measurements $\PP_\1$ and $\PP_U$.
+Assume that the unitary matrix $U$ is of the form 
+\begin{equation}
+U = H 
+\left(\begin{array}{cc}1&0\\0&e^{i \phi}\end{array}\right)  H^\dagger
+\end{equation}
+%\begin{equation}
+%U = H \diag (1, \ee^{\ii \phi}) H^\dagger,
+%\end{equation}
+where $H$ is the Hadamard matrix of dimension two and $\phi \in [0, 2 \pi)$.
+In this section we present theoretical probability of correct 
+discrimination between these measurements. To do that, we will present an auxiliary lemma.   
 \begin{lemma}\label{lemma:min-e-optimal}
 	Let $U = H \diag(1, e^{i \phi}) H^\dagger$, $\phi \in [0, 2\pi)$ and	let 
 	$\Phi_U$ and $\Phi_\Id$ be two unitary channels. Then, the following equation holds 
@@ -922,7 +1129,7 @@ In this Appendix we calculate the theoretical probability of correct discriminat
 	%		\begin{equation}
 	%		\max_{E \in \diaguni_2 } \nu_{UE} = \nu_U
 	%		\end{equation}
-	This condition is equivalent to 
+	This condition is equivalent to show
 	\begin{equation}
 	\max_{E \in \diaguni_2 } \nu_{E} = \frac{|1 + e^{i \phi} | }{2},
 	\end{equation}
@@ -930,11 +1137,11 @@ In this Appendix we calculate the theoretical probability of correct discriminat
 	
 	%	For simplify notation, let 	$ \nu \coloneqq \max_{E \in \diaguni_2 } \nu_{E} $.
 	The celebrated Hausdorf-T{\"o}plitz theorem~\cite{hausdorff, toeplitz} states that
-	$W(A)$ of any matrix $A \in M_d$ is a convex set and therefore
+	$W(A)$ of any matrix $A \in M_d$ is a convex set, and therefore we have 
 	\begin{equation}
 	W(A) = \{ \tr(A \rho): \rho \in \Omega_d\}. 
 	\end{equation}
-	So, we obtain that 
+	So, we can assume that 
 	\begin{equation}
 	\min_{\ket{x} \in \mathbb{C}^2:   \proj{x} = 1} |\bra{x}U^\dagger\ket{x}| = 
 	\min_{\rho \in \Omega_2} |\tr(U^\dagger\rho)|. 
@@ -946,9 +1153,9 @@ In this Appendix we calculate the theoretical probability of correct discriminat
 	\end{equation}
 	For that, our task is reduced to show that
 	\begin{equation}
-	\forall_{E \in \diaguni_2} \,\, | \tr \left(\rho U E\right) | \le \mu,
+	\forall_{E \in \diaguni_2} \,\, | \tr \left(\rho U E\right) | \le \max_{E \in \diaguni_2 } \nu_{E}. 
 	\end{equation}
-	where $\mu \coloneqq \max_{E \in \diaguni_2 } \nu_{E}.$
+
 	
 	
 	Let us define $E = \left(\begin{array}{cc}E_0&0\\0&E_1\end{array}\right)  $ 
@@ -956,43 +1163,57 @@ In this Appendix we calculate the theoretical probability of correct discriminat
 	\left(\begin{array}{cc}\frac{1}{2}&0\\0&\frac{1}{2}\end{array}\right) $. 
 	From spectral theorem, let us decompose $U$ as
 	\begin{equation}
-	U= \lambda_1 \ketbra{x_1}{x_1} + \lambda_2 \ketbra{x_1}{x_2}, 
+	U= \lambda_0 \ketbra{x_0}{x_0} + \lambda_1 \ketbra{x_1}{x_1}, 
 	\end{equation}
-	where  for eigenvalue $\lambda_1 = 1$, the corresponding 
+	where  for eigenvalue $\lambda_0 = 1$, the corresponding 
 	eigenvector is 
-	of the form $\ket{x_1} = \left[\begin{array}{c}\frac{1}{\sqrt{2}}\\\frac{1}{\sqrt{2}}\end{array}\right]
+	of the form $\ket{x_0} = \left[\begin{array}{c}\frac{1}{\sqrt{2}}\\\frac{1}{\sqrt{2}}\end{array}\right]
 	$,
-	whereas for  $\lambda_2 = e^{i \phi}$ we have $\ket{x_2} = \left[\begin{array}{c}\frac{1}{\sqrt{2}}\\-\frac{1}{\sqrt{2}}\end{array}\right] 
+	whereas for  $\lambda_1= e^{i \phi}$ we have $\ket{x_1} = \left[\begin{array}{c}\frac{1}{\sqrt{2}}\\-\frac{1}{\sqrt{2}}\end{array}\right] 
 	$.
 	Then, we have 
 	\begin{equation}
 	\begin{split}
 	& \forall E \in \diaguni_2 \,\,\, | \tr (\rho U E) | = \frac{1}{2}  \left| \tr \left(
 	H \diag(1, e^{i\phi}) H^\dagger E \right) \right| =  \\ &
-	\frac{1}{2} \left| \tr\left((   \proj{x_1} +e^{i \phi}\proj{x_2} ) E \right) 
+	\frac{1}{2} \left| \tr\left((   \proj{x_0} +e^{i \phi}\proj{x_1} ) E \right) 
 	\right|  = 
-	\frac{1}{2} \left|  \bra{x_1} E \ket{x_1} +  e^{i \phi}\bra{x_2} E \ket{x_2} 
+	\frac{1}{2} \left|  \bra{x_0} E \ket{x_0} +  e^{i \phi}\bra{x_1} E \ket{x_1} 
 	\right| = \\& 
 	\frac{1}{2} \left| \frac{E_0 + E_1}{2} + e^{i \phi } \frac{E_0+E_1}{2} \right| 
 	= 
 	\frac{\left| 1+ e^{i \phi } \right|}{2} \left| \frac{E_0 + E_1}{2} \right| \le 
-	\mu, 
+	\max_{E \in \diaguni_2 } \nu_{E}, 
 	\end{split}
 	\end{equation}
 	which completes the proof.
 \end{proof}
-\begin{proof}[Proof of Theorem~\ref{th:probability}]
-	From Holevo-Helstrom theorem we obtain
+
+
+
+\begin{theorem}\label{th:probability}
+	The optimal probability of correct discrimination between von Neumann
+	measurements $\PP_U$ and $\PP_{\Id}$ for $U = H \diag(1, e^{i \phi}) H^\dagger$,
+	where $\phi \in [0, 2\pi)$ is given by
+	\begin{equation}
+	p_{\text{succ}}(\PP_{U}, \PP_{\Id}) = \frac{1}{2} + \frac{|1 - e^{i \phi}  |}{4} . 
+	\end{equation}
+\end{theorem}
+
+
+
+\begin{proof}
+	From Holevo-Helstrom theorem, we obtain
 	\begin{equation}
 	p_{\text{succ}}(\PP_{U}, \PP_{\Id}) = \frac{1}{2} + \frac{1}{4} \| \PP_{U} - \PP_{\Id} \|_\diamond.
 	\end{equation}
-	From Theorem 1 in~\cite{puchala2018strategies} we have 
+	From~\cite[Theorem 1]{puchala2018strategies}, we have 
 	\begin{equation}
 	\|\PP_U - \PP_\Id\|_\diamond = \min_{E \in \diaguni_d} \|\Phi_{UE} - 
 	\Phi_\Id\|_\diamond. 
 	\end{equation}
-	From Lemma~\ref{lemma:min-e-optimal} we know that for 
-	$U =  H \diag(1, e^{i \phi}) H^\dagger$ it also holds that
+	From Lemma~\ref{lemma:min-e-optimal},  we know that for 
+	$U =  H \diag(1, e^{i \phi}) H^\dagger$,  it also holds that
 	\begin{equation}
 	\min_{E \in \diaguni_2} \|\Phi_{UE} - 
 	\Phi_\Id\|_\diamond = \|\Phi_{U} - 
@@ -1012,9 +1233,24 @@ In this Appendix we calculate the theoretical probability of correct discriminat
 	\end{equation} which completes the proof.
 \end{proof} 
 
-\section{Optimal discrimination strategy}
-In this Appendix we present proofs of Proposition~\ref{prop-discrim} and Proposition~\ref{prop:optimal-measurement} to indicate the optimal discrimination strategy.
-\begin{proof}[Proof of Proposition~\ref{prop-discrim}]
+\section{Optimal discrimination strategy} \label{app:optimal-strategy}
+
+
+In this Appendix we create the optimal 
+theoretical strategy of  discrimination between $\PP_{U}$ and $\PP_{\Id}$. 
+To indicate the optimal strategy, we will present two propositions. The first one is concentrated around the discriminator as the optimal input state of discrimination strategy, whereas the second one describes the optimal final measurement. 
+
+
+\begin{proposition}\label{prop-discrim}
+	Consider the problem of discrimination between von Neumann measurements $\PP_U$ 
+	and $\PP_\1$, $U = H\diag(1, e^{i \phi}) H^\dagger $ and $\phi \in [0, 
+	2\pi)$.  The  discriminator has the form
+	\begin{equation}
+	\ket{\psi_{0}} = \frac{1}{\sqrt{2}} |\Id_2 \rangle \rangle.
+	\end{equation}
+\end{proposition}
+
+\begin{proof}
 	Let $U = H\diag(1, e^{i \phi}) H^\dagger, \phi \in [0, 
 	2\pi)$ be decomposed as 
 	\begin{equation}
@@ -1028,13 +1264,13 @@ In this Appendix we present proofs of Proposition~\ref{prop-discrim} and Proposi
 	$.
 	For Hermitian-preserving maps \cite{watrous} the diamond norm may be expressed as
 	\begin{equation}
-	\| \Phi  \|_\diamond =  \max_{\rho \in \Omega_d} \| \left( \Id \otimes \sqrt{\rho} \right) \mathcal{J}(\Phi)  \left( \Id \otimes \sqrt{\rho} \right)  \|_1.  \end{equation}
+	\| \Phi  \|_\diamond =  \max_{\rho \in \Omega_d} \| \left( \Id \otimes \sqrt{\rho} \right) J(\Phi)  \left( \Id \otimes \sqrt{\rho} \right)  \|_1.  \end{equation}
 	Hence, we obtain
 	\begin{equation}
 	\begin{split}
 	\| \PP_{U} - \PP_{\Id}  \|_\diamond 
 	& =  \max_{\rho \in \Omega_2} \left\| \left( \Id \otimes \sqrt{\rho} \right) 
-	\mathcal{J}(\PP_{U} - \PP_{\Id} )  \left( \Id \otimes \sqrt{\rho} \right)  \right\|_1   
+	J(\PP_{U} - \PP_{\Id} )  \left( \Id \otimes \sqrt{\rho} \right)  \right\|_1   
 	\\ 
 	& =  \max_{\rho \in \Omega_2} \left\| \left( \Id \otimes \sqrt{\rho} \right) 
 	\sum_{i=0}^{1} \proj{i} \otimes \left( \proj{u_i} - \proj{i} \right)^\top  
@@ -1081,31 +1317,50 @@ In this Appendix we present proofs of Proposition~\ref{prop-discrim} and Proposi
 	Observe that
 	\begin{equation}
 	\begin{split}
- \| \left( \Id \otimes \sqrt{\rho} \right) \mathcal{J}(\PP_{U} - \PP_{\Id} )  \left( 
+ \| \left( \Id \otimes \sqrt{\rho} \right) J(\PP_{U} - \PP_{\Id} )  \left( 
 	\Id \otimes \sqrt{\rho} \right) \|_1 = \left\| ( (\PP_{U} - \PP_\Id) \otimes \Id) \left(  | \sqrt{\rho}^\top 
 	\rangle \rangle \langle \langle \sqrt{\rho}^\top | \right) \right\|_1.
 	\end{split}
 	\end{equation}
 	Due to that, we know  
-	that $\left| \sqrt{\rho_0}^{\top} \rangle \right\rangle$ is the discriminator of the problem 
+	that $\left| \sqrt{\rho_0}^{\top} \rangle \right\rangle$ equals $\frac{1}{\sqrt{2} } | 
+	\Id_2 \rangle \rangle$ is the discriminator of the problem 
 	of discrimination between 
 	$\PP_{\Id} $ and $\PP_U$ for 
 	$ U =  H \diag(1, e^{i \phi}) H^\dagger$ (from definition of diamond norm).      Hence, we obtain that \begin{equation}
-	\ket{\psi_{0}} \coloneqq   | \sqrt{\rho_0}^\top \rangle \rangle = \frac{1}{\sqrt{2} } | 
+	\ket{\psi_{0}} =  \frac{1}{\sqrt{2} } | 
 	\Id_2 \rangle \rangle,
 	\end{equation}
 	which completes the proof.
 \end{proof}
 
 
-
-\begin{proof}[Proof of Proposition~\ref{prop:optimal-measurement}]
+\begin{proposition}\label{prop:optimal-measurement}
+	Consider the problem of discrimination between von Neumann measurements $\PP_U$ 
+	and $\PP_\1$, $U = H\diag(1, e^{i \phi}) H^\dagger $ and $\phi \in [0, 
+	2\pi)$.  
+	The   controlled unitaries $V_0$ and $V_1$ 
+	have the form
+	\begin{equation}
+	V_0 = \left(\begin{array}{cc}i \sin\left( \frac{\pi - \phi}{4} \right)&-i 
+	\cos\left( \frac{\pi - \phi}{4} \right)\\ \cos\left( \frac{\pi - 
+		\phi}{4}\right)& \sin\left( \frac{\pi - \phi}{4} \right)\end{array}\right),
+	\end{equation}
+	and
+	\begin{equation}
+	V_1 = \left(\begin{array}{cc}-i \cos\left(\frac{\pi - \phi}{4}\right) &i 
+	\sin\left( \frac{\pi - \phi}{4}\right)\\\sin\left( \frac{\pi - \phi}{4} \right) 
+	&  \cos\left( \frac{\pi - \phi}{4} \right) \end{array}\right).
+	\end{equation}
+\end{proposition} 
+ 
+\begin{proof}
 	From Proposition~\ref{prop-discrim} we obtain the exact form of discriminator given by
 	\begin{equation}
 	\ket{\psi_0}  = \frac{1}{\sqrt{2}} |\Id_2 
 	\rangle \rangle. 
 	\end{equation}
-	From Holevo-Helstrom theorem  we constrain a conditional measurement $\mu$.  
+	From Holevo-Helstrom theorem~\cite{watrous}, we constrain a conditional measurement $\mu$.  
 	Let us define 
 	\begin{equation}
 	X  = \left( \PP_U \otimes \Id_2 \right)(\proj{\psi_0}) -  \left( \PP_\Id 
@@ -1138,8 +1393,8 @@ In this Appendix we present proofs of Proposition~\ref{prop-discrim} and Proposi
 	\end{equation}
 	For the discrimination task between $\PP_{U}$ and $\PP_{\Id}$, where $U = H 
 	\diag(1, e^{i \phi })H$, the explicit form of $V_0$ and $V_1$ is given as 
-	follows \todo[inline]{udostepniamy ten plik nb?}(see also \texttt{one-qubit.nb}).
-	The unitary $V_0$ has the form
+	follows: \todo[inline]{udostepniamy ten plik nb z obliczeniami? (see also \texttt{one-qubit.nb}}
+	the unitary $V_0$ has the form
 	\begin{equation}
 	V_0 = \left(
 	\begin{array}{cc}i \sin\left( \frac{\pi - \phi}{4} \right)&-i 
@@ -1155,15 +1410,6 @@ In this Appendix we present proofs of Proposition~\ref{prop-discrim} and Proposi
 	\right) &  \cos\left( \frac{\pi - \phi}{4} \right) \end{array}\right),
 	\end{equation}
 	for all $\phi \in [0,2\pi)$. 
-	Finally, we obtain the measurement $\mu$ of the form
-	\begin{equation}
-	\begin{split}
-	\mu(0) = \proj{0} \otimes V_0 \proj{0} V_0^\dagger +  \proj{1} \otimes V_1 
-	\proj{0} V_1^\dagger, \\ 
-	\mu(1) = \proj{0} \otimes V_0 \proj{1} V_0^\dagger +  \proj{1} \otimes V_1 
-	\proj{1} V_1^\dagger.  
-	\end{split}
-	\end{equation} 
 \end{proof}
 
 
