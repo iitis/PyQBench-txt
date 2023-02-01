@@ -249,8 +249,33 @@ include IBM Q's Qiskit or Zapata Computing's Orquestra.
 It is well known that NISQ devices have their limitations. The question is to what extent those
 devices can perform meaningful computations? To answer this question, one has to devise a
 methodology for benchmarking them. For gate--based computers, on which this paper focuses, there
-already exist several approaches. \todo[inline]{List the methods}.
+already exist several approaches. \todo[inline]{List the methods} 
 
+\begin{itemize}
+	\item several examples of benchmarks -- all our metrics are readily available for devices with two qubits only and circuit depths $< 10$  for all benchmarks it should be possible to execute
+	tweaked variants on larger devices when they become available \cite{cornelissen2021scalable}
+	\item random benchmarking \cite{liu2022sampling, knill2007randomized, wallman2014randomized} and general overwiev see here \cite{helsen2022general}
+	\item MQT Bench: Benchmarking Software and
+	Design Automation Tools for Quantum Computing \cite{mqt2022} -- przejebane 
+	\item QUARK framework for quantum compjuting application benchmarking for QUBO using D-QAwe ? \cite{quark2022} --  (e. g., a novel QUBO formulation
+	of the partial MAX-SAT problem) and benchmark these on
+	different infrastructures (e. g., D-Wave and simulation). 
+	\item SupermarQ: A Scalable Quantum Benchmark Suite -- Recent works within the quantum computer architecture
+	community have taken the first steps towards quantum
+	benchmarking. The PPL+2020 [16] suite was evaluated on
+	seven superconducting QPUs, focused on characterizing the
+	error rates of different operations, and demonstrated the
+	time dependence of their performance. The TriQ [17] suite
+	was used to perform a cross-platform comparison between
+	superconducting and trapped-ion systems and revealed the
+	importance of software visibility into the hardware’s native
+	gates. However, the scalability of these suites is limited by
+	their reliance on circuit simulation to estimate how well the
+	QPUs are performing. SupermarQ extends these works by
+	introducing a systematic and principled approach to building
+	a scalable quantum benchmark suite \cite{supermarq2022}
+
+\end{itemize}
 \todo[inline]{What benchmarking techniques are readily available?}
 
 In this paper, we introduce yet another method for benchmarking gate--based devices with a simple
@@ -1007,7 +1032,14 @@ grant InterPOWER (POWR.03.05.00-00-Z305).
 
 
 \begin{thebibliography}{00}
-
+	\bibitem{supermarq} Tomesh, T., Gokhale, P., Omole, V., Ravi, G. S., Smith, K. N., Viszlai, J., ...  Chong, F. T. (2022, April). Supermarq: A scalable quantum benchmark suite. In 2022 IEEE International Symposium on High-Performance Computer Architecture (HPCA) (pp. 587-603). IEEE.
+	\bibitem{mqt2022} Quetschlich, N., Burgholzer, L., Wille, R. (2022). MQT Bench: Benchmarking software and design automation tools for quantum computing. arXiv preprint arXiv:2204.13719.
+	\bibitem{knill2007randomized} Knill, E., Leibfried, D., Reichle, R., Britton, J., Blakestad, R. B., Jost, J. D., ... Wineland, D. J. (2008). Randomized benchmarking of quantum gates. Physical Review A, 77(1), 012307.
+	\bibitem{wallman2014randomized} Wallman, J. J.,  Flammia, S. T. (2014). Randomized benchmarking with confidence. New Journal of Physics, 16(10), 103032.
+	\bibitem{helsen2022general} Helsen, J., Roth, I., Onorati, E., Werner, A. H.,  Eisert, J. (2022). General framework for randomized benchmarking. PRX Quantum, 3(2), 020357.
+ \bibitem{liu2022sampling} 	Liu, Y., Otten, M., Bassirianjahromi, R., Jiang, L.,  Fefferman, B. (2021). Benchmarking near-term quantum computers via random circuit sampling. arXiv preprint arXiv:2105.05232.
+\bibitem{cornelissen2021scalable} Cornelissen, A., Bausch, J.,  Gilyén, A. (2021). Scalable benchmarks for gate-based quantum computers. arXiv preprint arXiv:2104.10698.
+\bibitem{quark2022} Finžgar, J. R., Ross, P., Hölscher, L., Klepsch, J.,  Luckow, A. (2022, September). QUARK: A framework for quantum computing application benchmarking. In 2022 IEEE International Conference on Quantum Computing and Engineering (QCE) (pp. 226-237). IEEE.
 \bibitem{preskill} Preskill, John. "Quantum Computing in the NISQ era and
 beyond." Quantum 2 (2018): 79.
 \bibitem{michielsen2017benchmarking} Michielsen, Kristel, et al. "Benchmarking
