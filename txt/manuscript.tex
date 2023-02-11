@@ -207,7 +207,7 @@ C8 & If available Link to developer documentation/manual &
 C9 & Support email for questions & \url{dexter2206@gmail.com}\\
 \hline
 \end{tabular}
-\caption{Code metadata (mandatory)}
+\caption{Code metadata}
 \label{}
 \end{table}
 
@@ -446,17 +446,17 @@ computing discrimination probabilities based on the measured bitstrings.
 \section{Preliminaries and discrimination scheme approach}
 This section is divided into two parts.
 In Section~\ref{sec:maths}, we introduce the necessary notation and preliminaries needed to understand the concept of PyQBench. Next, in Section~\ref{sec:discrimination-scheme},
-we will present a general overview of the discrimination scheme in theoretical terms. We will also mention NISQ devices' limitations and possible practical solutions in the implementation process.
+we will present a general overview of the discrimination scheme in theoretical terms. We will also mention NISQ devices' limitations and possible practical solutions during implementation process.
 
 \subsection{Mathematical preliminaries}\label{sec:maths}
-Recall that a general quantum
+A general quantum
 measurement, that is a positive operator valued measure (POVM) $\PP$ is a
 collection of positive semidefinite operators $\{E_1, \ldots, E_m \}$ called
 \emph{effects}, which sum up to identity, \ie $ \, \, \sum_{i=1}^m E_i = \1$.
 In PyQBench, we are interested only in von Neumann measurements, i.e. measurements
 for which all the effects are rank-one projectors. Every such measurement can be
-parameterized by a unitary matrix $U$ which the effects $\{\proj{u_0}, \ldots, \proj{u_{d-1}}\}$,
-are created by taking $\ket{u_i}$ as  $i+1$-th column of the unitary matrix $U$.
+parameterized by a unitary matrix $U$ which effects $\{\proj{u_0}, \ldots, \proj{u_{d-1}}\}$,
+are created by taking $\ket{u_i}$ as  $(i+1)$-th column of the unitary matrix $U$.
 We will denote von Neumann measurements described by the matrix $U$ by $\PP_{U}$.
 
 Typically, NISQ devices can only perform measurements in computational $Z$-basis.
@@ -467,7 +467,7 @@ circuits are equivalent.
 \begin{figure}[h!]
 	\centering
 	\includegraphics[scale=1.7]{pics/vonneuman}
-	\caption{Decomposition of von Neumann measurement}
+	\caption{Decomposition of a von Neumann measurement $\PP_{U}$. }
 	\label{fig:vonnneuman}
 \end{figure}
 
@@ -476,15 +476,15 @@ is performed.
 
 \subsection{Discrimination scheme}\label{sec:discrimination-scheme}
 
-Without loss of generality, we consider discrimination between a measurement in the computational
+Without loss of generality, we consider discrimination task between a measurement in the computational
 Z-basis ($\PP_\Id$), and an alternative measurement performed in the basis $U$
-($\PP_U$)\footnote{Explaining why we can consider only Z-basis and alternative measurement is beyond
+($\PP_U$)\footnote{Explaining why we can consider only Z-basis and alternative measurement $\PP_{U}$ is beyond
 	the scope of this technical documentation. See \cite{puchala2018strategies} if you are interested in
 	the explanation.}. In PyQBench, we operate only on two-level systems, but the discrimination scheme,
 described in detail in \cite{puchala2018strategies}, makes no assumptions about the dimensionality.
 
-In general, the discrimination scheme, presented in Fig.\ref{fig:theoretical_scheme}, requires a
-second system of the same dimensionality as the measured one. First, the joint system is prepared in
+In general, the discrimination scheme, presented in Fig.~\ref{fig:theoretical_scheme}, requires an
+auxiliary system of the same dimensionality as the measured one. First, the joint system is prepared in
 some state $\ket{\psi_0}$. Then, the unknown measurement is performed on the first part of the
 system. Based on its outcome $i$, another measurement $\mathcal{P}_{V_i}$ is performed to obtain an
 outcome $j$. Finally, if $j=0$ we guess that the performed measurement is $\mathcal{P}_U$, otherwise
@@ -507,7 +507,7 @@ $V_0^\dagger\oplus V_1^\dagger$.
 
 \begin{scheme}(By using postselection)
 
-	The first idea is very simple. Instead of performing a conditional measurement, for each
+	The first idea uses a postselection. Instead of performing a conditional measurement, for each
 	measurement $\PP_U, \PP_\Id$ to be discriminated and each choice of $k \in \{0, 1\}$ we run circuit presented in Fig. \ref{fig:postselection}.
 
 	\begin{figure}[h!]
@@ -515,13 +515,14 @@ $V_0^\dagger\oplus V_1^\dagger$.
 		\includegraphics[scale=1.7]{pics/postselection_no_channels}
 
 		\caption{
-			Postselection scheme of discrimination between von Neumann measurements $\PP_{U}$ and $\PP_\Id$.
+			A schematic representation of the setup for distinguishing
+			measurements $\PP_{U}$ and $\PP_{\Id}$ using direct sum.
 		}\label{fig:postselection}
 	\end{figure}
 
-	But now our experiment does not match the previously described scheme, right?
-	Yes, unless we discard all the outcomes for which $i\ne k$ (hence the name \emph{postselection},
-	we are selecting valid outcomes after the experiment is performed).
+%	But now our experiment does not match the previously described scheme, right?
+%	Yes, unless we discard all the outcomes for which $i\ne k$ (hence the name \emph{postselection},
+%	we are selecting valid outcomes after the experiment is performed).
 
 	% \begin{scheme}(Postselection)
 
@@ -547,16 +548,15 @@ $V_0^\dagger\oplus V_1^\dagger$.
 	% $\PP_U$ occurs.  If $i=j=1$, we decide that
 	% $\PP_{\Id}$ occurs.
 	% \end{enumerate}
-
-	More precisely, our experiments can be grouped into classes identified by tuples of the form
-	$(\mathcal{Q}, k, i, j)$, where $\mathcal{Q} \in \{\PP_U, \PP_\Id\}$ denotes the chosen measurement.
-	We discard all the experiments for which $k \ne i$. Hence, the total number of valid experiments is
+The experiments can be grouped into classes identified by tuples of the form
+	$(\mathcal{Q}, k, i, j)$, where $\mathcal{Q} \in \{\PP_U, \PP_\Id\}$ denotes the chosen measurement, $k \in \{0,1\}$, $i \in \{0,1\}$ and $j \in \{0,1\}$.
+	In postselection approach, we discard all the experiments for which $k \ne i$. Hence, the total number of valid experiments is
 
 	\begin{equation}
 	N_\text{total} = \#\{(\QQ, k, i, j): k = i \}.
 	\end{equation}
 
-	We now need to count the experiments (among the valid ones) resulting in successful discrimination.
+	Finally, we count the experiments (among the valid ones) resulting in successful discrimination.
 	If we have chosen $\PP_U$, then we guess correctly iff $j=0$. Similarly, for
 	$P_\Id$, we guess correctly iff $j=1$. If we define
 	\begin{eqnarray}
@@ -574,29 +574,30 @@ $V_0^\dagger\oplus V_1^\dagger$.
 \begin{scheme}(By using direct sum)
 
 
+The second idea uses  the direct sum $V_0^\dagger \oplus V_1^\dagger.$    Here, instead of performing a conditional
+measurement $\PP_{V_k}$, where $k\in \{0,1\}$ we run circuit presented in	Fig.~\ref{fig:controlled}.
+%	\begin{enumerate}
+%		\item We prepare the discriminator $\ket{\psi_{0}}$ on bipartite
+%		system.
+%		%\item We perform one of two quantum channels, either $\Phi_{\Id}$ or
+%		%$\Phi_{U^\dagger}$,  on  the first part of the input state  $\ket{\psi_{0}}$, that means $\left(\Phi \otimes \Id\right)(\proj{\psi_0})$.
+%		\item We apply one of unitary,   either $U^\dagger$ or
+%		$\Id$, on the first system.
+%		%\item Based on Holevo--Helstrom theorem, we perform a conditional binary measurement $\PP_{V_j}$, and hence, we implement the direct sum of quantum channels $\Phi_{V_0^\dagger} \oplus \Phi_{V_1^\dagger}$. Observe that   $\Phi_{V_0^\dagger} \oplus \Phi_{V_1^\dagger} = \proj{0} \otimes \Phi_{V_0^\dagger}  + \proj{1} \otimes \Phi_{V_1^\dagger}.  $
+%		\item We apply direct sum $V_0^\dagger \oplus V_1^\dagger$ on the whole systems.
+%		\item We measure both systems in computational basis $\Delta$.
+%		\item We make a decision based on the received label $j$ on the second system. If $j=0$, then we
+%		decide that $\PP_U$ occurs. Otherwise, we decide that $\PP_{\Id}$ occurs.
+%	\end{enumerate}
 
-	\begin{enumerate}
-		\item We prepare the discriminator $\ket{\psi_{0}}$ on bipartite
-		system.
-		%\item We perform one of two quantum channels, either $\Phi_{\Id}$ or
-		%$\Phi_{U^\dagger}$,  on  the first part of the input state  $\ket{\psi_{0}}$, that means $\left(\Phi \otimes \Id\right)(\proj{\psi_0})$.
-		\item We apply one of unitary,   either $U^\dagger$ or
-		$\Id$, on the first system.
-		%\item Based on Holevo--Helstrom theorem, we perform a conditional binary measurement $\PP_{V_j}$, and hence, we implement the direct sum of quantum channels $\Phi_{V_0^\dagger} \oplus \Phi_{V_1^\dagger}$. Observe that   $\Phi_{V_0^\dagger} \oplus \Phi_{V_1^\dagger} = \proj{0} \otimes \Phi_{V_0^\dagger}  + \proj{1} \otimes \Phi_{V_1^\dagger}.  $
-		\item We apply direct sum $V_0^\dagger \oplus V_1^\dagger$ on the whole systems.
-		\item We measure both systems in computational basis $\Delta$.
-		\item We make a decision based on the received label $j$ on the second system. If $j=0$, then we
-		decide that $\PP_U$ occurs. Otherwise, we decide that $\PP_{\Id}$ occurs.
-	\end{enumerate}
-
-	The schematic representation of this setup is depicted in
-	Fig.~\ref{fig:controlled}.
+%	The schematic representation of this setup is depicted in
+%	Fig.~\ref{fig:controlled}.
 	\begin{figure}[h!]
 		\centering
 		\includegraphics[scale=1.5]{pics/controlled_unitary}
 
 		\caption{ A schematic representation of the setup for distinguishing
-			measurements using controlled unitary gate.
+			measurements $\PP_{U}$ and $\PP_{\Id}$ using direct sum.
 		}\label{fig:controlled}
 	\end{figure}
 
@@ -632,6 +633,50 @@ Furthermore,  thanks to the proof of the Holevo-Helstrom theorem, it is possible
 
 
 
+
+\section{Discrimination scheme for parameterized Fourier family and implementation}
+
+
+So far, we only discussed how the discrimination is performed using two different
+schemes, assuming that all needed components ($\ket{\psi_0}$, $V_0$, $V_1$) are known. It turned out that the determination of $V_0$ and $V_1$ is a simple task while the discriminator $\ket{\psi_{0}}$ is known. However,
+sad to say, determining the analytical form of the discriminator $\ket{\psi_{0}}$
+is, in general, NP-hard problem.
+We have found the analytical solution of the discrimination scheme for a particular class of von Neumann measurements.
+
+
+Here,  we will show how all the necessary ingredients look like for
+von Neumann measurements defined by the parameterized Fourier family:
+
+\begin{equation}
+U = H
+\left(\begin{array}{cc}1&0\\0&e^{i \phi}\end{array}\right)  H^\dagger,
+\end{equation}
+where $H$ is the Hadamard matrix of dimension two and $\phi \in [0, 2 \pi)$.
+In this case, the optimal input state is Bell state of the form
+\begin{equation}
+\ket{\psi_{0}} = \frac{1}{\sqrt{2}} \ket{00} + \ket{11}.
+\end{equation}
+And, for a given angle  $\phi \in  [0, 2 \pi)$,   the unitaries $V_0$,  $V_1$
+have the following form
+\begin{equation}
+V_0 = \left(\begin{array}{cc}i \sin\left( \frac{\pi - \phi}{4} \right)&-i
+\cos\left( \frac{\pi - \phi}{4} \right)\\ \cos\left( \frac{\pi -
+	\phi}{4}\right)& \sin\left( \frac{\pi - \phi}{4} \right)\end{array}\right),
+\end{equation}
+\begin{equation}
+V_1 = \left(\begin{array}{cc}-i \cos\left(\frac{\pi - \phi}{4}\right) &i
+\sin\left( \frac{\pi - \phi}{4}\right)\\\sin\left( \frac{\pi - \phi}{4} \right)
+&  \cos\left( \frac{\pi - \phi}{4} \right) \end{array}\right).
+\end{equation}
+Finally, we have also calculated the theoretical probability of correct discrimination between von Neumann
+measurements $\PP_U$ and $\PP_{\Id}$ is given by
+\begin{equation}
+p_{\text{succ}}(\PP_{U}, \PP_{\Id}) = \frac{1}{2} + \frac{|1 - e^{i \phi}  |}{4} .
+\end{equation}
+More details and proofs of the construction's validity   we can find in the \ref{app:optimal-probability} and \ref{app:optimal-strategy}.
+
+ 
+ 
  \section{Software description}
  \label{}
  This section is divided into two parts.
@@ -657,18 +702,18 @@ Amazon Braket.
 \subsection{Software Architecture}\label{sec:sortware-architecture}
 PyQBench can be used in two different ways:
 \begin{itemize}
-\item As a library. This is a more extensible, but also more laborious way of using PyQBench. Most importantly, this way allows for more advanced scripting defining your own measurements scheme.
+\item As a library. This way allows for more advanced scripting defining your own measurements scheme.
 
-\item As a CLI tool. This mode of operation trades extensibility for simplicity of usage, as it allows only for running Fourier-discrimination experiments defined with simple YAML input files.
+\item As a CLI tool. This mode of operation trades extensibility for simplicity of usage, as it allows only for running Fourier-discrimination experiments defined with  YAML input files.
 \end{itemize}
 
 
-\subsubsection{PyQBench as a library}\label{sec:pyqbench-as-library}
+\section{PyQBench as a library}\label{sec:pyqbench-as-library}
 This guide introduces basic concepts needed for using PyQBench as a library from a Python script. In particular, we will cover the following topics:
 \begin{enumerate}
 \item Defining experiment using circuit components.
 \item Assembling circuits needed for given benchmarking scheme.
-\item Running experiment on simulator or hardware.
+\item Running experiment on a simulator or a hardware.
 \item Obtaining empirical probability of successful discrimination between measurements.
 \end{enumerate}
 
@@ -678,15 +723,16 @@ On the conceptual level, every discrimination experiment performed in PyQBench n
 \item Unitary $U^\dagger$ defining alternative measurement to be discriminated from the measurement in Z-basis.
 \item $V_0^\dagger$ and $V_1^\dagger$, positive and negative parts of optimal measurement from Holevo-Helstrom theorem.
 \end{enumerate}
-Currently available quantum computers typically cannot start execution from an arbitrary state. Instead, we have to prepare it ourselves. Hence, to execute experiment using postselection scheme, we need an instruction taking to the desired discriminator
-and instructions implementing $U^\dagger$, $V_0^\dagger$ and $V_1^\dagger$.
+%Currently available quantum computers typically cannot start execution from an arbitrary state. Instead, we have to prepare it ourselves. Hence, to execute experiment using postselection scheme, we need an instruction taking to the desired discriminator $\ket{\psi_0}$
+%and instructions implementing $U^\dagger$, $V_0^\dagger$ and $V_1^\dagger$. Whereas, execute experiment using direct sum approach, we need an instruction taking to the desired discriminator  $\ket{\psi_0}$
+%and instructions implementing $U^\dagger$, $V_0^\dagger \oplus V_1^\dagger$.
 
 \subsubsection{Example of usage}
-In our example, we will use $U =  H$ (the Hadamard gate). To keep us focused on the implementation in PyQBench and not delve too deep into mathematical explanation, we simply provide explicit formulas for discriminator $\ket{\Psi_0} $, $V_0$ and $V_1$, leaving the calculations to the interested reader.
-
-The explicit formula for discriminator in our toy model reads:
+In our example, we will use $U =  H$ (the Hadamard gate).
+% To keep us focused on the implementation in PyQBench and not delve too deep into mathematical explanation, we simply provide explicit formulas for discriminator $\ket{\Psi_0} $, $V_0$ and $V_1$, leaving the calculations to the interested reader.
+The explicit formula for discriminator in this model reads
 \begin{equation}
-\ket{\Psi_0} = \frac{1}{\sqrt{2}} (\ket{00} + \ket{11}),
+\ket{\psi_0} = \frac{1}{\sqrt{2}} (\ket{00} + \ket{11}),
 \end{equation}
 with corresponding parts of optimal measurement being equal to
 \begin{equation}
@@ -703,16 +749,14 @@ where \begin{equation}
 \begin{equation}
 \beta  = \frac{\sqrt{2  + \sqrt{2}}}{2} \sin\left( \frac{3}{8} \pi \right).
 \end{equation}
-
 As a next step, we need decompose our matrices into actual sequences of gates.
-We are lucky, because our discriminator is just a Bell state. Thus, the circuit taking $\ket{00}$ to $\ket{\Phi_0}$ is well known, and comprises Hadamard gate followed by CNOT gate on both qubits.
+The circuit taking $\ket{00}$ to the Bell state $\ket{\psi_0}$ is well known, and comprises Hadamard gate followed by CNOT gate on both qubits (see Fig.~\ref{fig:discriminator}).
 \begin{figure}[h!]
 	\centering
 	\includegraphics[scale=1.7]{pics/discriminator}
-	\caption{Decomposition of the discriminator $\ket{\Phi_0}$. }
+	\caption{Decomposition of the discriminator $\ket{\psi_0}$. }
 	\label{fig:discriminator}
 \end{figure}
-
 For $V_0$ and $V_1$ observe that $V_0 = RY\left(\frac{3}{4} \pi \right) $, where $RY$ is rotation gate around the $Y$ axis defined by
 \begin{equation}
 RY(\theta) =
@@ -722,13 +766,63 @@ To obtain $V_1$  we need only to swap the columns, which is equivalent to follow
 \begin{equation}
 V_1 =  RY\left(\frac{3}{4} \pi \right) \cdot X.
 \end{equation}
+Finally, the optimal probability of correct discrimination between $\PP_{U}$, where $U=H$ and $\PP_{\Id}$ is given by 
+\begin{equation}
+p_{\text{succ}}(\PP_{U}, \PP_{\Id}) = \frac{1}{2} + \frac{\sqrt{2}}{4}. 
+\end{equation}
+The detailed calculation we can see in \ref{app:hadamard}. 
 
-Now running the simulation is as simple as invoking functions imported from qbench package.
-
+Now we simulate  theoretical framework using PyQBench. We will start with simulation in Qiskit SDK with Aer simulator. First, we import necessary modules. \todo[inline]{czy to zdanie jest poprawne?} 
 \todo[inline]{listingi swieca sie na razie jak choinka ale bedziemy kolorki drasowac}
-\begin{lstlisting}[language=Python, caption=Simulation benchmark by using postselection]
 
+
+\begin{lstlisting}[language=Python]
+from qiskit import QuantumCircuit, Aer
+import numpy as np
+\end{lstlisting}
+Next we import needed functions from PyQBench. For our example we will need two functions. 
+\begin{lstlisting}[language=Python]
+from qbench.schemes.postselection import benchmark_using_postselection
+from qbench.schemes.direct_sum import benchmark_using_direct_sum
+\end{lstlisting}
+To run any of these functions, we need to define components that we discussed below. Most importantly, we need to create Qiskit instructions, not circuits. We can conveniently do so by constructing circuit acting on qubits 0 and 1 and then converting them using \textit{to\_instruction()} method.
+\begin{lstlisting}[language=Python, caption= Defining components for Hadamard experiment]
+def state_prep():
+	circuit = QuantumCircuit(2)
+	circuit.h(0)
+	circuit.cnot(0, 1)
+	return circuit.to_instruction()
+
+def u_dag():
+	circuit = QuantumCircuit(1)
+	circuit.h(0)
+	return circuit.to_instruction()
+
+def v0_dag():
+	circuit = QuantumCircuit(1)
+	circuit.ry(-np.pi * 3 / 4, 0)
+	return circuit.to_instruction()
+
+def v1_dag():
+	circuit = QuantumCircuit(1)
+	circuit.ry(-np.pi * 3 / 4, 0)
+	circuit.x(0)
+	return circuit.to_instruction()
+
+def v0_v1_direct_sum_dag():
+	circuit = QuantumCircuit(2)
+	circuit.ry(-np.pi * 3 / 4, 0)
+	circuit.cnot(0, 1)
+	return circuit.to_instruction()
+
+\end{lstlisting}
+For the purpose of this example,  we define Qiskit Aer simulator.
+\begin{lstlisting}[language=Python, caption= Defining a backend]
 simulator = Aer.get_backend("aer_simulator")
+
+\end{lstlisting}
+Now running the simulation is as simple as invoking functions imported from PyQBench package.
+\begin{lstlisting}[language=Python, caption=Simulation benchmark by using postselection]
 postselection_result = benchmark_using_postselection(
 	backend=simulator,
 	target=0,
@@ -741,24 +835,21 @@ postselection_result = benchmark_using_postselection(
 )
 \end{lstlisting}
 
-
 \begin{lstlisting}[language=Python, caption=Simulation benchmark by using direct sum]
-
-simulator = Aer.get_backend("aer_simulator")
 direct_sum_result = benchmark_using_direct_sum(
-backend=simulator,
-target=1,
-ancilla=2,
-state_preparation=state_prep(),
-u_dag=u_dag(),
-v0_v1_direct_sum_dag=v0_v1_direct_sum_dag(),
-num_shots_per_measurement=10000,
+	backend=simulator,
+	target=1,
+	ancilla=2,
+	state_preparation=state_prep(),
+	u_dag=u_dag(),
+	v0_v1_direct_sum_dag=v0_v1_direct_sum_dag(),
+	num_shots_per_measurement=10000,
 )
 \end{lstlisting}
-
+Finally, we calculate the empirical probability obtained from postselection and direct sum experiment and calculate the absolute error between analytical and empirical results. 
 \begin{lstlisting}[language=Python, caption=Computation of probability]
 p_succ = (2 + np.sqrt(2)) / 4
-print(f"Real p_succ = {p_succ}")
+print(f"Analytical p_succ = {p_succ}")
 print(
 f"Postselection: p_succ = {postselection_result}, abs. error = {p_succ - postselection_result}"
 )
@@ -768,74 +859,65 @@ print(f"Direct sum: p_succ = {direct_sum_result}, abs. error = {p_succ - direct_
 
 
 \begin{lstlisting}
-Real p_succ = 0.8535533905932737
+Analytical p_succ = 0.8535533905932737
 Postselection: p_succ = 0.8559797193791593, abs. error = -0.0024263287858855564
 Direct sum: p_succ = 0.85605, abs. error = -0.0024966094067262468
 \end{lstlisting}
 
 
 \subsubsection{Gaining more control over the benchmarking process}
-In the example presented above we used functions that automate the whole process - from the circuit assembly, through running the simulations to interpreting the results. But what if we want more control over some parts of this process? Maybe we want play around with some models? Or maybe we want to run the same experiment on multiple backends and we don’t want them to be assembled over and over again?
-
- PyQBench provides functions performing:
+In the example presented above we used functions that automate the whole process - from the circuit assembly, through running the simulations to interpreting the results. But what if we want more control over some parts of this process? 
+One possibility would be to add more and more parameters to \textit{benchmark\_using\_xyz} functions, but this approach clearly is not very scalable. Also, there is no way we can anticipate all the possible use cases.
+ We decided on another approach.  PyQBench provides functions performing:
 \begin{enumerate}
 \item assembly of circuits needed for experiment, provided the components discussed above
 \item interpretation of the obtained measurements
 \end{enumerate}
-When using these functions, you need to take care of running circuits on some backend yourself, but it gives you unlimited power over the whole process. The difference between such approaches is illustrated on the diagrams below.
+ The difference between the two approaches is illustrated on the diagrams below.
 
-When using these functions, you need to take care of running circuits on some backend yourself, but it gives you unlimited power over the whole process. The difference between the two approaches is illustrated on the diagrams below.
-
-\begin{figure}
+\begin{figure}[ht!]
 	\centering
 	\begin{subfigure}[b]{\textwidth}
 		\centering
-		\includegraphics[width=1\textwidth]{pics/scheme1}
+		\includegraphics[width=0.8\textwidth]{pics/scheme1}
 %		\caption{$y=x$}
 		\label{fig:simplified}
 	\end{subfigure}
 	\vfill
 	\begin{subfigure}[b]{\textwidth}
 		\centering
-	\includegraphics[width=1\textwidth]{pics/scheme2}
-%		\caption{$y=3\sin x$}
+	\includegraphics[width=0.8\textwidth]{pics/scheme2}
 		\label{fig:execution}
 	\end{subfigure}
 \end{figure}
 
 \pagebreak
 
-
-Next, we divide the experiment into two parts:
+By choosing this approach we need to divide the experiment into two parts:
 \begin{enumerate}
 	\item Assembling  circuits
 	\item Running  circuits
 \end{enumerate}
-
-
 Let us focus only on the postselection case, as the direct sum case is analogous. In addition, we need to import two more functions from PyQBench.
-
-
-
-
 \begin{lstlisting}[language=Python, caption=Assembling circuits]
 from qbench.schemes.postselection import (
-assemble_postselection_circuits,
-compute_probabilities_from_postselection_measurements,
+	assemble_postselection_circuits,
+	compute_probabilities_from_postselection_measurements,
 )
-
-circuits = assemble_postselection_circuits(
-target=0,
-ancilla=1,
-state_preparation=state_prep(),
-u_dag=u_dag(),
-v0_dag=v0_dag(),
-v1_dag=v1_dag(),
-)
-
-circuits
 \end{lstlisting}
+The function \textit{assemble\_postselection\_circuits} creates all of neceserry circuits, nicely packed in a dictionary. Each informs if the circuit implements identity or alternative measurement on the target qubit, and which of $V_0$ and
+$V_1$ is used.
+\begin{lstlisting}[language=Python]
+circuits = assemble_postselection_circuits(
+	target=0,
+	ancilla=1,
+	state_preparation=state_prep(),
+	u_dag=u_dag(),
+	v0_dag=v0_dag(),
+	v1_dag=v1_dag(),
+)
 
+\end{lstlisting}
 %
 %\begin{lstlisting}[language=Python, caption=Python example]
 %{'id_v0': <qiskit.circuit.quantumcircuit.QuantumCircuit at 0x7f8b1585b9a0>,
@@ -843,10 +925,8 @@ circuits
 %'u_v0': <qiskit.circuit.quantumcircuit.QuantumCircuit at 0x7f8b1585bf40>,
 %'u_v1': <qiskit.circuit.quantumcircuit.QuantumCircuit at 0x7f8b1585bf10>}
 %\end{lstlisting}
-
 Now we only need to run the circuits.
-To make things more interesting, we will run a noisy and noiseless simulation of our circuits. We will use the same backend as before, and our noise model will only comprise readout errors on both qubits.
-
+To make this example more interesting, we will run a noisy and noiseless simulation of our circuits. We will use the same backend as before, and our noise model will only comprise readout errors on both qubits.
 \begin{lstlisting}[language=Python, caption=Noise models]
 from qiskit.providers.aer import noise
 
@@ -855,12 +935,8 @@ error = noise.ReadoutError([[0.75, 0.25], [0.8, 0.2]])
 noise_model = noise.NoiseModel()
 noise_model.add_readout_error(error, [0])
 noise_model.add_readout_error(error, [1])
-
-noise_model
 \end{lstlisting}
-
-Once we have our noise model ready, we can execute our circuits with and without noise. To this end, we will use Qiskit’s execute function. One caveat is that we have to keep track which measurements correspond to which circuit. We do so by fixing an ordering on the keys in circuits dictionary.
-
+Once we have our noise model ready, we can execute our circuits with and without noise. To this end, we will use Qiskit’s execute function. One caveat is that we have to keep track which measurements correspond to which circuit. We do so by fixing an ordering on the keys in \textit{circuits} dictionary.
 \begin{lstlisting}[language=Python, caption=Running  circuits]
 from qiskit import execute
 
@@ -868,32 +944,20 @@ keys_ordering = ["id_v0", "id_v1", "u_v0", "u_v1"]
 all_circuits = [circuits[key] for key in keys_ordering]
 
 counts_noisy = (
-execute(all_circuits, backend=simulator, noise_model=noise_model, shots=10000).result().get_counts()
+	execute(all_circuits, backend=simulator, noise_model=noise_model, shots=10000).result().get_counts()
 )
 
 counts_noiseless = execute(all_circuits, backend=simulator, shots=10000).result().get_counts()
-
-
-print(f"Noisless counts: {counts_noiseless}")
-print(f"Noisy counts: {counts_noisy}")
 \end{lstlisting}
-
-
-%
-%Noisless counts: [{'11': 737, '00': 731, '10': 4163, '01': 4369}, {'01': 750, '00': 4217, '10': 716, '11': 4317}, {'01': 740, '10': 693, '00': 4209, '11': 4358}, {'11': 775, '01': 4341, '00': 765, '10': 4119}]
-%Noisy counts: [{'01': 1720, '11': 514, '10': 1760, '00': 6006}, {'11': 529, '00': 6025, '10': 1705, '01': 1741}, {'11': 531, '01': 1726, '00': 5956, '10': 1787}, {'01': 1808, '11': 515, '10': 1681, '00': 5996}]
-
-
-
-Finally, the only thing left is to compute the success probabilities. We do so by passing bitstring counts to function \\ \texttt{compute\_probabilities\_from\_postselection\_measurements}.
+Finally, we compute the success probabilities. We do so by passing bitstring counts to  \textit{compute\_probabilities\_from\_postselection\_measurements} function.
 
 
 \begin{lstlisting}[language=Python, caption=Computation probability without noise]
 prob_succ_noiseless = compute_probabilities_from_postselection_measurements(
-id_v0_counts=counts_noiseless[0],
-id_v1_counts=counts_noiseless[1],
-u_v0_counts=counts_noiseless[2],
-u_v1_counts=counts_noiseless[3],
+	id_v0_counts=counts_noiseless[0],
+	id_v1_counts=counts_noiseless[1],
+	u_v0_counts=counts_noiseless[2],
+	u_v1_counts=counts_noiseless[3],
 )
 
 print(prob_succ_noiseless)
@@ -901,25 +965,25 @@ print(prob_succ_noiseless)
 
 \begin{lstlisting}[language=Python, caption=Computation probability including noise]
 prob_succ_noisy = compute_probabilities_from_postselection_measurements(
-id_v0_counts=counts_noisy[0],
-id_v1_counts=counts_noisy[1],
-u_v0_counts=counts_noisy[2],
-u_v1_counts=counts_noisy[3],
+	id_v0_counts=counts_noisy[0],
+	id_v1_counts=counts_noisy[1],
+	u_v0_counts=counts_noisy[2],
+	u_v1_counts=counts_noisy[3],
 )
 
 print(prob_succ_noisy)
 \end{lstlisting}
-The success probability is 0.8524401115559386, whereas if we obtain some noise, the succes probability is equal to 0.5017958400693446
+The success probability is 0.8524401115559386, whereas if we obtain some noise, the success probability is equal to 0.5017958400693446
 As expected, noisy simulations gave us results that are further away from the exact ones.
-
-This concludes introduction to PyQBench library. If you are interested see additoinal usage examples in our examples directory.
-
+This concludes introduction to PyQBench library.
 
 
-\subsubsection{PyQBench as a CLI tool}\label{sec:pyqbench-as-cli}
+
+ 
+ 
+\section{PyQBench as a CLI tool}\label{sec:pyqbench-as-cli}
 Using PyQBench as a library allows one to conduct, in principle, arbitrary two-qubit von Neumann measurement experiment. However, as discussed in the previous guide, it requires some amount of boilerplate code.
-
-However, for a Fourier parametrized family of measurements, PyQBench offers a simplified way of performing the experiment using a Command Line Interface (CLI).
+For a Fourier parametrized family of measurements, PyQBench offers a simplified way of performing the experiment using a Command Line Interface (CLI).
 The workflow is best describe as a list of steps:
 
 \begin{enumerate}
@@ -939,14 +1003,14 @@ which we want to benchmark. Experiments and backends are defined in YAML files. 
 \begin{lstlisting}[language=Python, caption=Defining the experiment]
 type: discrimination-fourier
 qubits:
-- target: 0
-ancilla: 1
-- target: 2
-ancilla: 3
+	- target: 0
+	  ancilla: 1
+	- target: 2
+      ancilla: 3
 angles:
-start: 0
-stop: 2 * pi
-num_steps: 50
+	start: 0
+	stop: 2 * pi
+	num_steps: 50
 gateset: ibmq
 method: direct_sum
 num_shots: 100
@@ -955,8 +1019,11 @@ num_shots: 100
 
 The components of the experiment is as follows:
 \begin{itemize}
-	\item The type describes type of the experiment. Currently, the only option for type is discrimination-fourier. In the future, other benchmarks may be added, in which keys the types key should contain their name.
-	\item The qubits list describes pair of qubits on which the experiment should be run. In our example, the benchmark will run on two pairs of qubits. First pair is 0 and 1, second pair is 2 and 3.
+	\item The \textit{type} describes type of the experiment. Currently, the only option for \textit{type} is \textit{discrimination-fourier}. In the future, other benchmarks may be added, in which keys the \textit{types} key should contain their name.
+	\begin{lstlisting}[language=Python]
+type: discrimination-fourier
+	\end{lstlisting}
+	\item The \textit{qubits} list describes pair of qubits on which the experiment should be run. In our example, the benchmark will run on two pairs of qubits. First pair is 0 and 1, second pair is 2 and 3.
 	Notice that we distinguish between ancilla and target qubit, so e.g
 	
 	
@@ -971,7 +1038,7 @@ qubits:
 	- target: 1
       ancilla: 0
 	\end{lstlisting}
-\item The angles key describe range of angles for Fourier parametrized family. The range is always uniform, starts at the start, ends at stop and contains num$\_$steps points, including both start and stop. The start and stop can be arithmetic expressions using pi literal. For instance range defined as:  
+\item The \textit{angles} key describe range of angles for Fourier parametrized family. The range is always uniform, starts at the \textit{start}, ends at \textit{stop} and contains \textit{num\_steps} points, including both start and stop. The start and stop can be arithmetic expressions using \textit{pi} literal. For instance range defined as:  
 \begin{lstlisting}[language=Python]
 angles:
 	start: 0
@@ -979,16 +1046,25 @@ angles:
 	num_steps: 3
 \end{lstlisting}
  would contain three angles $0, \pi$  and $2\pi$.
- \item The gateset key informs what gates can be used in the experiment. The possible choices are [imbq, lucy, rigetti, ]. ... 
- \item he method can take one of two values: direct$\_$sum or postselection, and as the name suggests, defines which method is used to implement the experiment.
- \item The num$\_$shots defines how many shots are performed in the experiment for particular angle, qubit pair and circuit. For the purpose of calculating possible costs, this is how you compute total number of shots and executed circuits. Let $N$ be the number of qubit pairs in qubits key and let $M$ be the number of steps defined in the angles key. Then number of executed circuits is $2MN$ for the direct$\_$sum method and $4MN$ for the postselection method. Each of those circuits is executed num$\_$shots times.
+ \item 
+ The \textit{gateset} key describes the gate decomposition of the experiment. The possible options are \textit{[ibmq, lucy, rigetti, generic]}. If the user choose the device-dependent key, that is one of the options \textit{ibmq, lucy, rigetti}, then the experiment will be implemented by using predefined sequence of native gates. If the user choose the \textit{generic} key, then the compiler  will automatically decompose given circuit in the way that is suitable for the device in use.
+ \begin{lstlisting}[language=Python]
+gateset: ibmq
+ \end{lstlisting}
+ \item The \textit{method} can take one of two values: \textit{direct\_sum} or \textit{postselection}, and as the name suggests, defines which method is used to implement the experiment.
+ \begin{lstlisting}[language=Python]
+method: direct_sum
+ \end{lstlisting}
+ \item The \textit{num\_shots} defines how many shots are performed in the experiment for particular angle, qubit pair and circuit. For the purpose of calculating possible costs, this is how you compute total number of shots and executed circuits. Let $N$ be the number of qubit pairs in \textit{qubits} key and let $M$ be the number of steps defined in the \textit{angles} key. Then number of executed circuits is $2MN$ for the \textit{direct\_sum} method and $4MN$ for the \textit{postselection} method. Each of those circuits is executed \textit{num\_shots} times.
+ \begin{lstlisting}[language=Python]
+num_shots: 100
+ \end{lstlisting}
 \end{itemize}
 
 Observe that the experiment file does not specify what backend to use. This way, the same experiment file can be used on multiple backends.
-Defining a backend may be quit complicated. Different backends may require different information to be used. For instance, IBMQ backends might require hub, group and project, whereas backends from the Aer package do not. Hence, the exact format of the YAML file depends on what backend one wants to use. Below are the available options.
-
-
-\begin{lstlisting}[language=Python, caption=IBMQ backends]
+ Different backends may require different information to be used. For instance, IBMQ backends might require hub, group and project, whereas backends from the \textit{Aer} package do not. Hence, the exact format of the YAML file depends on what backend one wants to use. Below we present 
+ YAML file defining the IMBQ backend named Quito. 
+\begin{lstlisting}[language=Python, caption=IBMQ backend]
 name: ibmq_quito
 asynchronous: true
 provider:
@@ -998,55 +1074,47 @@ provider:
 \end{lstlisting}
 
 
-IBMQ backends typically require and access token to IBM Quantum Experience. It would be unsafe to store them in plain text, and therefore the token is configured separately. Before running the experiment, you should place your token in the IBMQ$\_$TOKEN environmental variable.
+IBMQ backends typically require and access token to IBM Quantum Experience. It would be unsafe to store them in plain text, and therefore the token is configured separately. Before running the experiment, you should place your token in the \textit{IBMQ\_TOKEN} environmental variable.
 
-\subsubsection{Backends obtainable from simple providers}
-In many cases, backend can be created using Provider.get$\_$backend() method. For such cases, PyQBench provides a simple description. For instance:
+\subsubsection{Notes on using the asynchronous flag}
+In our example, the only key that requires the explanation is \textit{asynchronous} which determines whether experiments will be run asynchronously  (\textit{true}) or not (\textit{false}).
+ We recommend setting it to true, unless your experiment is really small (several circuits total). However, some backends may not support asynchronous execution. This might be especially the case with local simulators. 
 
+For asynchronous execution to work, the following conditions have to be met:
+\begin{itemize}
+\item Jobs returned by the backend have unique \textit{job\_id}, 
+\item Job object is retrievable from the backend using \textit{backend.retrieve\_job} method, even from another process (e.g. if the original process running the experiment has finished).
+\end{itemize}
+Since PyQBench cannot determine if the job retrieval works for given backend, the user is responsible for checking it yourself. 
 
-
-
-\begin{lstlisting}[language=Python]
-provider: qiskit_braket_provider:AWSBraketProvider
-name: SV1
-asynchronous: true
-\end{lstlisting}
-
-This backend will be created using code similar to the one below:
-
-\begin{lstlisting}[language=Python]
-from qiskit_braket_provider import AWSBraketProvider
-
-provider = AWSBraketProvider()
-backend = provider.get_backend("SV1")
-\end{lstlisting}
-
-
-For this to work, the following conditions have to be satisfied:
-provider key has to contain full Python path of the provider class, where the class itself is separated from the module with colon. The provider class needs to have parameter-less initializer.
-
+\todo[inline]{co z tymi sekcjami?}
+\subsubsection{Backends obtainable from simple providers???}
 \subsubsection{Backends constructed from a simple function call???}
-\subsubsection{Notes on using the asynchronous flag???}
-\subsubsection{Running the experiment and collecting measurements data}
-Running the experiment is done by using the following command line invocation:
+\todo[inline]{co z tymi sekcjami?}
 
+\subsubsection{Running the experiment and collecting measurements data}
+After preparing YAML files with defined experiment and backend, 
+running the experiment is done by using the following command line invocation:
 \begin{lstlisting}[language=Python]
 qbench disc-fourier benchmark experiment_file.yaml backend_file.yaml
 \end{lstlisting}
-The output file will be printed to stdout. Optionally, the - -output OUTPUT flag might be provided to write the output to the OUTPUT file instead.
-
+The output file will be printed to stdout. Optionally, the \textit{- -output OUTPUT} flag might be provided to write the output to the \textit{OUTPUT} file instead.
+\begin{lstlisting}[language=Python]
+qbench disc-fourier benchmark experiment_file.yaml backend_file.yaml --async-results.yml
+\end{lstlisting}
 The result of running the above command can be twofold:
 \begin{itemize}
-	\item If backend is asynchronous, the output will contain intermediate data containing, amongst others, job $\_$ids correlated with the circuit they correspond to.
+	\item If backend is asynchronous, the output will contain intermediate data containing, amongst others, job$\_$ids correlated with the circuit they correspond to.
 	\item If the backend is synchronous, the output will contain measurement data (bitstrings) for each of the circuits run.
 \end{itemize}
+For asynchronous experiments, the output looks similar to the one below:
+\todo[inline]{result}
 
-
-\todo[inline]{outputy???}
-
+For synchronous experiment, this looks as follows:
+\todo[inline]{result}
 
 \subsubsection{(Optional) Getting status of asynchronous jobs}
-The whole point of running the asynchronous jobs is to be able to retrieve the results at a later point in time. But how do you know that the jobs you submitted to the backend have completed or not? You can of course, inspect the file manually and check e.g. IBMQ dashboard to see the statuses of the jobs. However, PyQBench provides a helper command that will fetch the statuses for you. The command is:
+The whole point of running the asynchronous jobs is to be able to retrieve the results at a later point in time. But how do we know that the jobs you submitted to the backend have completed or not? We can inspect the file manually and check e.g. IBMQ dashboard to see the statuses of the jobs. However, PyQBench provides a helper command that will fetch the statuses for you. The command is:
 \begin{lstlisting}[language=Python]
 qbench disc-fourier status async-results.yml
 \end{lstlisting}
@@ -1055,82 +1123,20 @@ and it will display dictionary with histogram of statuses.
 
 
 \subsubsection{Resolving asynchronous jobs}
-Before we can compute the discrimination probabilities, we have to obtain measurements from the submitted jobs. This is done using the following command:
-
+If the status of jobs is \textit{DONE}, we have to obtain measurements from the submitted jobs. This is done using the following command:
 \begin{lstlisting}[language=Python]
 qbench disc-fourier resolve async-results.yml resolved.yml
 \end{lstlisting}
-
-The resolved results, stored in resolved.yml, would look just like the experiment was run synchronously. In other words, we should have a file containing measurement histograms, no matter if we run a synchronous or asynchronous experiment. We are ready to move on to computing probabilities.
+The resolved results, stored in \textit{resolved.yml}, would look just like the experiment was run synchronously. In other words, we should have a file containing measurement histograms, no matter if we run a synchronous or asynchronous experiment. After this step, we are ready to computing probabilities.
 
 
 \subsubsection{Computing probabilities}
 To construct a table with discrimination probabilities, you can use the following command
-
-
 \begin{lstlisting}[language=Python]
 qbench disc-fourier tabulate resolved.yml results.csv 
 \end{lstlisting}
-
-
-\begin{lstlisting}[language=Python]
-target,ancilla,phi,disc_prob,mit_disc_prob
-0,1,0.0,0.5009,0.5009414225941422
-0,1,0.3141592653589793,0.56505,0.5680439330543934
-0,1,0.6283185307179586,0.62695,0.6327928870292887
-0,1,0.9424777960769379,0.69045,0.6992154811715481
-0,1,1.2566370614359172,0.76165,0.7736924686192469
-0,1,1.5707963267948966,0.81305,0.8274581589958159
-\end{lstlisting}
-
-As we can see, it contains a single row for each tuple of (target, ancilla, phi). The disc$\_$prob column will contain the discrimination probability for given configuration. The mit$\_$disc$\_$prob column contains discrimination probability if Mthree mitigation was applied.
-
-
-
-
-
-
-
-\section{Discrimination scheme for parameterized Fourier family and implementation}
-
-\subsection{Discrimination scheme}
-So far, we only discussed how the discrimination is performed using two different
-schemes, assuming that all needed components ($\ket{\psi_0}$, $V_0$, $V_1$) are known. It turned out that the determination of $V_0$ and $V_1$ is a simple task while the discriminator $\ket{\psi_{0}}$ is known. However,
-sad to say, determining the analytical form of the discriminator $\ket{\psi_{0}}$
-is, in general, NP-hard problem.
-We have found the analytical solution of the discrimination scheme for a particular class of von Neumann measurements.
-
-
-Here,  we will show how all the necessary ingredients look like for
-von Neumann measurements defined by the parameterized Fourier family:
-
-\begin{equation}
-	U = H
-	\left(\begin{array}{cc}1&0\\0&e^{i \phi}\end{array}\right)  H^\dagger,
-\end{equation}
-where $H$ is the Hadamard matrix of dimension two and $\phi \in [0, 2 \pi)$.
-In this case, the optimal input state is Bell state of the form
-\begin{equation}
-	\ket{\psi_{0}} = \frac{1}{\sqrt{2}} \ket{00} + \ket{11}.
-\end{equation}
-And, for a given angle  $\phi \in  [0, 2 \pi)$,   the unitaries $V_0$,  $V_1$
-have the following form
-\begin{equation}
-	V_0 = \left(\begin{array}{cc}i \sin\left( \frac{\pi - \phi}{4} \right)&-i
-		\cos\left( \frac{\pi - \phi}{4} \right)\\ \cos\left( \frac{\pi -
-			\phi}{4}\right)& \sin\left( \frac{\pi - \phi}{4} \right)\end{array}\right),
-\end{equation}
-\begin{equation}
-	V_1 = \left(\begin{array}{cc}-i \cos\left(\frac{\pi - \phi}{4}\right) &i
-		\sin\left( \frac{\pi - \phi}{4}\right)\\\sin\left( \frac{\pi - \phi}{4} \right)
-		&  \cos\left( \frac{\pi - \phi}{4} \right) \end{array}\right).
-\end{equation}
-Finally, we have also calculated the theoretical probability of correct discrimination between von Neumann
-measurements $\PP_U$ and $\PP_{\Id}$ is given by
-\begin{equation}
-	p_{\text{succ}}(\PP_{U}, \PP_{\Id}) = \frac{1}{2} + \frac{|1 - e^{i \phi}  |}{4} .
-\end{equation}
-More details and proofs of the construction's validity   we can find in the \ref{app:optimal-probability} and \ref{app:optimal-strategy}.
+The results are saved as file csv as a table.
+A single row for each tuple of \textit{(target, ancilla, phi)}. The \textit{disc\_prob} column will contain the discrimination probability for given configuration. The \textit{mit\_disc\_prob} column contains discrimination probability if Mthree mitigation was applied~\cite{mthree, mthreepublication}.
 
 
 
@@ -1139,14 +1145,11 @@ More details and proofs of the construction's validity   we can find in the \ref
 
 
 
-
-\subsection{Implementation}
-Here, we will present the results obtained on real devices. For this work we chose IMBQ software. \todo[inline]{tu dokladne informacje o maszynie i rysuneczki}
 
 
 
 \section{Impact}
-\todo[inline]{OJCIEC WYKAZ SIE, bo trzeba to dobrze sprzedac, nizej tekst z formatki softwarex}
+\todo[inline]{OJCIEC WYKAZ SIE, bo trzeba to dobrze sprzedac, nizej tekst z formatki softwarex co powinna zawierac ta sekcja}
 This software has two main contributions.
 
 
@@ -1231,6 +1234,8 @@ optimal single-shot discrimination of quantum measurements." Physical Review A
 \bibitem{toeplitz} Toeplitz, Otto. "Das algebraische Analogon zu einem Satze von Fejér." Mathematische Zeitschrift 2.1 (1918): 187-197.
 
 \bibitem{pelofske2022volume} Pelofske, E., B{\"a}rtschi, A., Eidenbenz, S. (2022). Quantum volume in practice: What users can expect from NISQ devices. arXiv preprint arXiv:2203.03816.
+\bibitem{mthree} The web resource at \url{https://qiskit.org/documentation/partners/mthree/stubs/mthree.M3Mitigation.html}. Accessed on 2023-02-10.
+\bibitem{mthreepublication} Nation, P. D., Kang, H., Sundaresan, N.,  Gambetta, J. M. (2021). Scalable mitigation of measurement errors on quantum computers. PRX Quantum, 2(4), 040326.
 \end{thebibliography}
 
 
@@ -1337,7 +1342,11 @@ can be written as
 where $\nu = \min_{x \in W(U^\dagger)} |x|  $.
 
 
-\section{Optimal probability} \label{app:optimal-probability}
+
+\section{Discrimination task for Hadamard gate}\label{app:hadamard}
+\todo[inline]{!!!!!!}
+
+\section{Optimal probability for parametrized Fourier family} \label{app:optimal-probability}
 
 
 Let us focus on single-qubit von Neumann measurements $\PP_\1$ and $\PP_U$.
@@ -1484,7 +1493,7 @@ discrimination between these measurements. To do that, we will present an auxili
 	\end{equation} which completes the proof.
 \end{proof}
 
-\section{Optimal discrimination strategy} \label{app:optimal-strategy}
+\section{Optimal discrimination strategy for parametrized Fourier family} \label{app:optimal-strategy}
 
 
 In this Appendix we create the optimal
