@@ -920,9 +920,176 @@ This concludes introduction to PyQBench library. If you are interested see addit
 Using PyQBench as a library allows one to conduct, in principle, arbitrary two-qubit von Neumann measurement experiment. However, as discussed in the previous guide, it requires some amount of boilerplate code.
 
 However, for a Fourier parametrized family of measurements, PyQBench offers a simplified way of performing the experiment using a Command Line Interface (CLI).
+The workflow is best describe as a list of steps:
+
+\begin{enumerate}
+
+\item Preparing configuration files describing backend and the experiment scenario.
+\item Submitting/running experiments. Depending on the experiment scenario, execution can be synchronous, or asynchronous.
+\item (optional) Checking status of the submitted jobs if the execution is asynchronous.
+\item For asynchronous jobs, 
+resolve jobs into actual measurements.
+\item Computing discrimination probabilities and outputting the resulting table.
+\end{enumerate} 
+\subsubsection{Preparing configuration files}
+To prepare configyurartion files we need to define the experiment and the   backend 
+which we want to benchmark. Experiments and backends are defined in YAML files. An example experiment definition looks as follows.
 
 
-\todo[inline]{to be continued }
+\begin{lstlisting}[language=Python, caption=Defining the experiment]
+type: discrimination-fourier
+qubits:
+- target: 0
+ancilla: 1
+- target: 2
+ancilla: 3
+angles:
+start: 0
+stop: 2 * pi
+num_steps: 50
+gateset: ibmq
+method: direct_sum
+num_shots: 100
+\end{lstlisting}
+
+
+The components of the experiment is as follows:
+\begin{itemize}
+	\item The type describes type of the experiment. Currently, the only option for type is discrimination-fourier. In the future, other benchmarks may be added, in which keys the types key should contain their name.
+	\item The qubits list describes pair of qubits on which the experiment should be run. In our example, the benchmark will run on two pairs of qubits. First pair is 0 and 1, second pair is 2 and 3.
+	Notice that we distinguish between ancilla and target qubit, so e.g
+	
+	
+	\begin{lstlisting}[language=Python]
+qubits:
+	- target: 0
+      ancilla: 1
+	\end{lstlisting}
+	is not the same as 
+	\begin{lstlisting}[language=Python]
+qubits:
+	- target: 1
+      ancilla: 0
+	\end{lstlisting}
+\item The angles key describe range of angles for Fourier parametrized family. The range is always uniform, starts at the start, ends at stop and contains num$\_$steps points, including both start and stop. The start and stop can be arithmetic expressions using pi literal. For instance range defined as:  
+\begin{lstlisting}[language=Python]
+angles:
+	start: 0
+	stop: 2 *pi
+	num_steps: 3
+\end{lstlisting}
+ would contain three angles $0, \pi$  and $2\pi$.
+ \item The gateset key informs what gates can be used in the experiment. The possible choices are [imbq, lucy, rigetti, ]. ... 
+ \item he method can take one of two values: direct$\_$sum or postselection, and as the name suggests, defines which method is used to implement the experiment.
+ \item The num$\_$shots defines how many shots are performed in the experiment for particular angle, qubit pair and circuit. For the purpose of calculating possible costs, this is how you compute total number of shots and executed circuits. Let $N$ be the number of qubit pairs in qubits key and let $M$ be the number of steps defined in the angles key. Then number of executed circuits is $2MN$ for the direct$\_$sum method and $4MN$ for the postselection method. Each of those circuits is executed num$\_$shots times.
+\end{itemize}
+
+Observe that the experiment file does not specify what backend to use. This way, the same experiment file can be used on multiple backends.
+Defining a backend may be quit complicated. Different backends may require different information to be used. For instance, IBMQ backends might require hub, group and project, whereas backends from the Aer package do not. Hence, the exact format of the YAML file depends on what backend one wants to use. Below are the available options.
+
+
+\begin{lstlisting}[language=Python, caption=IBMQ backends]
+name: ibmq_quito
+asynchronous: true
+provider:
+	hub: ibm-q
+	group: open
+	project: main
+\end{lstlisting}
+
+
+IBMQ backends typically require and access token to IBM Quantum Experience. It would be unsafe to store them in plain text, and therefore the token is configured separately. Before running the experiment, you should place your token in the IBMQ$\_$TOKEN environmental variable.
+
+\subsubsection{Backends obtainable from simple providers}
+In many cases, backend can be created using Provider.get$\_$backend() method. For such cases, PyQBench provides a simple description. For instance:
+
+
+
+
+\begin{lstlisting}[language=Python]
+provider: qiskit_braket_provider:AWSBraketProvider
+name: SV1
+asynchronous: true
+\end{lstlisting}
+
+This backend will be created using code similar to the one below:
+
+\begin{lstlisting}[language=Python]
+from qiskit_braket_provider import AWSBraketProvider
+
+provider = AWSBraketProvider()
+backend = provider.get_backend("SV1")
+\end{lstlisting}
+
+
+For this to work, the following conditions have to be satisfied:
+provider key has to contain full Python path of the provider class, where the class itself is separated from the module with colon. The provider class needs to have parameter-less initializer.
+
+\subsubsection{Backends constructed from a simple function call???}
+\subsubsection{Notes on using the asynchronous flag???}
+\subsubsection{Running the experiment and collecting measurements data}
+Running the experiment is done by using the following command line invocation:
+
+\begin{lstlisting}[language=Python]
+qbench disc-fourier benchmark experiment_file.yaml backend_file.yaml
+\end{lstlisting}
+The output file will be printed to stdout. Optionally, the - -output OUTPUT flag might be provided to write the output to the OUTPUT file instead.
+
+The result of running the above command can be twofold:
+\begin{itemize}
+	\item If backend is asynchronous, the output will contain intermediate data containing, amongst others, job $\_$ids correlated with the circuit they correspond to.
+	\item If the backend is synchronous, the output will contain measurement data (bitstrings) for each of the circuits run.
+\end{itemize}
+
+
+\todo[inline]{outputy???}
+
+
+\subsubsection{(Optional) Getting status of asynchronous jobs}
+The whole point of running the asynchronous jobs is to be able to retrieve the results at a later point in time. But how do you know that the jobs you submitted to the backend have completed or not? You can of course, inspect the file manually and check e.g. IBMQ dashboard to see the statuses of the jobs. However, PyQBench provides a helper command that will fetch the statuses for you. The command is:
+\begin{lstlisting}[language=Python]
+qbench disc-fourier status async-results.yml
+\end{lstlisting}
+and it will display dictionary with histogram of statuses.
+
+
+
+\subsubsection{Resolving asynchronous jobs}
+Before we can compute the discrimination probabilities, we have to obtain measurements from the submitted jobs. This is done using the following command:
+
+\begin{lstlisting}[language=Python]
+qbench disc-fourier resolve async-results.yml resolved.yml
+\end{lstlisting}
+
+The resolved results, stored in resolved.yml, would look just like the experiment was run synchronously. In other words, we should have a file containing measurement histograms, no matter if we run a synchronous or asynchronous experiment. We are ready to move on to computing probabilities.
+
+
+\subsubsection{Computing probabilities}
+To construct a table with discrimination probabilities, you can use the following command
+
+
+\begin{lstlisting}[language=Python]
+qbench disc-fourier tabulate resolved.yml results.csv 
+\end{lstlisting}
+
+
+\begin{lstlisting}[language=Python]
+target,ancilla,phi,disc_prob,mit_disc_prob
+0,1,0.0,0.5009,0.5009414225941422
+0,1,0.3141592653589793,0.56505,0.5680439330543934
+0,1,0.6283185307179586,0.62695,0.6327928870292887
+0,1,0.9424777960769379,0.69045,0.6992154811715481
+0,1,1.2566370614359172,0.76165,0.7736924686192469
+0,1,1.5707963267948966,0.81305,0.8274581589958159
+\end{lstlisting}
+
+As we can see, it contains a single row for each tuple of (target, ancilla, phi). The disc$\_$prob column will contain the discrimination probability for given configuration. The mit$\_$disc$\_$prob column contains discrimination probability if Mthree mitigation was applied.
+
+
+
+
+
+
 
 \section{Discrimination scheme for parameterized Fourier family and implementation}
 
