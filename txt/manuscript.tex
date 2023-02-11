@@ -1096,27 +1096,27 @@ Since PyQBench cannot determine if the job retrieval works for given backend, th
 After preparing YAML files with defined experiment and backend, 
 running the experiment is done by using the following command line invocation:
 \begin{lstlisting}[language=Python]
-qbench disc-fourier benchmark experiment_file.yaml backend_file.yaml
+qbench disc-fourier benchmark experiment_file.yml backend_file.yml
 \end{lstlisting}
 The output file will be printed to stdout. Optionally, the \textit{- -output OUTPUT} flag might be provided to write the output to the \textit{OUTPUT} file instead.
 \begin{lstlisting}[language=Python]
-qbench disc-fourier benchmark experiment_file.yaml backend_file.yaml --async-results.yml
+qbench disc-fourier benchmark experiment_file.yml backend_file.yml --output async_results.yml
 \end{lstlisting}
 The result of running the above command can be twofold:
 \begin{itemize}
 	\item If backend is asynchronous, the output will contain intermediate data containing, amongst others, job$\_$ids correlated with the circuit they correspond to.
 	\item If the backend is synchronous, the output will contain measurement data (bitstrings) for each of the circuits run.
 \end{itemize}
-For asynchronous experiments, the output looks similar to the one below:
+For asynchronous experiments, the output is as follows:
 \todo[inline]{result}
 
-For synchronous experiment, this looks as follows:
+For synchronous experiment, the output looks similar to the one below: 
 \todo[inline]{result}
 
 \subsubsection{(Optional) Getting status of asynchronous jobs}
 The whole point of running the asynchronous jobs is to be able to retrieve the results at a later point in time. But how do we know that the jobs you submitted to the backend have completed or not? We can inspect the file manually and check e.g. IBMQ dashboard to see the statuses of the jobs. However, PyQBench provides a helper command that will fetch the statuses for you. The command is:
 \begin{lstlisting}[language=Python]
-qbench disc-fourier status async-results.yml
+qbench disc-fourier status async_results.yml
 \end{lstlisting}
 and it will display dictionary with histogram of statuses.
 
