@@ -51,27 +51,27 @@
 	showstringspaces=false,
 	columns=flexible,
 	basicstyle={\small\ttfamily},
-	numberstyle=\color{blue},
-	keywordstyle=\color{blue},
-	commentstyle=\color{PineGreen},
-	stringstyle=\color{ForestGreen},
+%	numberstyle=\color{blue},
+%	keywordstyle=\color{blue},
+%	commentstyle=\color{PineGreen},
+%	stringstyle=\color{ForestGreen},
 	breaklines=true,
 	breakatwhitespace=true,
 	tabsize=3,
 	escapeinside={@}{@},
-	literate=
-	{0}{{{\color{red}0}}}1
-	{1}{{{\color{red}1}}}1
-	{2}{{{\color{red}2}}}1
-	{3}{{{\color{red}3}}}1
-	{4}{{{\color{red}4}}}1
-	{5}{{{\color{red}5}}}1
-	{6}{{{\color{red}6}}}1
-	{7}{{{\color{red}7}}}1
-	{8}{{{\color{red}8}}}1
-	{9}{{{\color{red}9}}}1
-    {v0}{{{\color{black}v0}}}1 %% we can not style only numeric literals
-    {v1}{{{\color{black}v1}}}1
+%	literate=
+%	{0}{{{\color{red}0}}}1
+%	{1}{{{\color{red}1}}}1
+%	{2}{{{\color{red}2}}}1
+%	{3}{{{\color{red}3}}}1
+%	{4}{{{\color{red}4}}}1
+%	{5}{{{\color{red}5}}}1
+%	{6}{{{\color{red}6}}}1
+%	{7}{{{\color{red}7}}}1
+%	{8}{{{\color{red}8}}}1
+%	{9}{{{\color{red}9}}}1
+%    {v0}{{{\color{black}v0}}}1 %% we can not style only numeric literals
+%    {v1}{{{\color{black}v1}}}1
 }
 \restylefloat{table}
 
@@ -773,7 +773,7 @@ p_{\text{succ}}(\PP_{U}, \PP_{\Id}) = \frac{1}{2} + \frac{\sqrt{2}}{4}.
 The detailed calculation we can see in \ref{app:hadamard}. 
 
 Now we simulate  theoretical framework using PyQBench. We will start with simulation in Qiskit SDK with Aer simulator. First, we import necessary modules. \todo[inline]{czy to zdanie jest poprawne?} 
-\todo[inline]{listingi swieca sie na razie jak choinka ale bedziemy kolorki drasowac}
+
 
 
 \begin{lstlisting}[language=Python]
@@ -1005,12 +1005,12 @@ type: discrimination-fourier
 qubits:
 	- target: 0
 	  ancilla: 1
-	- target: 2
-      ancilla: 3
+	- target: 1
+      ancilla: 2
 angles:
 	start: 0
 	stop: 2 * pi
-	num_steps: 50
+	num_steps: 3
 gateset: ibmq
 method: direct_sum
 num_shots: 100
@@ -1023,7 +1023,7 @@ The components of the experiment is as follows:
 	\begin{lstlisting}[language=Python]
 type: discrimination-fourier
 	\end{lstlisting}
-	\item The \textit{qubits} list describes pair of qubits on which the experiment should be run. In our example, the benchmark will run on two pairs of qubits. First pair is 0 and 1, second pair is 2 and 3.
+	\item The \textit{qubits} list describes pair of qubits on which the experiment should be run. In our example, the benchmark will run on two pairs of qubits. First pair is 0 and 1, second pair is 1 and 2.
 	Notice that we distinguish between ancilla and target qubit, so e.g
 	
 	
@@ -1066,7 +1066,7 @@ Observe that the experiment file does not specify what backend to use. This way,
  YAML file defining the IMBQ backend named Quito. 
 \begin{lstlisting}[language=Python, caption=IBMQ backend]
 name: ibmq_quito
-asynchronous: true
+asynchronous: false
 provider:
 	hub: ibm-q
 	group: open
@@ -1075,6 +1075,11 @@ provider:
 
 
 IBMQ backends typically require and access token to IBM Quantum Experience. It would be unsafe to store them in plain text, and therefore the token is configured separately. Before running the experiment, you should place your token in the \textit{IBMQ\_TOKEN} environmental variable.
+
+
+
+
+
 
 \subsubsection{Notes on using the asynchronous flag}
 In our example, the only key that requires the explanation is \textit{asynchronous} which determines whether experiments will be run asynchronously  (\textit{true}) or not (\textit{false}).
@@ -1107,11 +1112,145 @@ The result of running the above command can be twofold:
 	\item If backend is asynchronous, the output will contain intermediate data containing, amongst others, job$\_$ids correlated with the circuit they correspond to.
 	\item If the backend is synchronous, the output will contain measurement data (bitstrings) for each of the circuits run.
 \end{itemize}
-For asynchronous experiments, the output is as follows:
-\todo[inline]{result}
 
 For synchronous experiment, the output looks similar to the one below: 
-\todo[inline]{result}
+\begin{lstlisting}[language=Python]
+metadata:
+	experiments:
+		type: discrimination-fourier
+		qubits:
+		- {target: 0, ancilla: 1}
+		- {target: 1, ancilla: 2}
+		angles: {start: 0.0, stop: 6.283185307179586, num_steps: 3}
+		gateset: ibmq
+		method: direct_sum
+		num_shots: 100
+	backend_description:
+		name: ibmq_quito
+		asynchronous: false
+		provider: {group: open, hub: ibm-q, project: main}
+data:
+- target: 0
+  ancilla: 1
+  phi: 0.0
+  results_per_circuit:
+  - name: id
+  histogram: {'00': 28, '01': 26, '10': 21, '11': 25}
+  mitigation_info:
+	target: {prob_meas0_prep1: 0.052200000000000024, prob_meas1_prep0: 0.0172}
+	ancilla: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
+  mitigated_histogram: {'00': 0.2637212373658018, '01': 0.25865061319892463, '10': 0.2067279352110304, '11': 0.2709002142242433}
+  - name: u
+  histogram: {'00': 30, '01': 16, '10': 28, '11': 26}
+  mitigation_info:
+	target: {prob_meas0_prep1: 0.052200000000000024, prob_meas1_prep0: 0.0172}
+	ancilla: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
+  mitigated_histogram: {'00': 0.2857378991684036, '01': 0.14975297832942433, '10': 0.28142307224788693, '11': 0.2830860502542851}
+- target: 0
+  ancilla: 1
+  phi: 3.141592653589793
+  results_per_circuit:
+  - name: id
+  histogram: {'00': 4, '01': 5, '10': 45, '11': 46}
+  mitigation_info:
+	target: {prob_meas0_prep1: 0.052200000000000024, prob_meas1_prep0: 0.0172}
+	ancilla: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
+  mitigated_histogram: {'00': 0.011053610583159325, '01': 0.02261276648026373, '10': 0.4593955619936729, '11': 0.5069380609429042}
+  - name: u
+  histogram: {'00': 56, '01': 43, '10': 1}
+  mitigation_info:
+  target: {prob_meas0_prep1: 0.052200000000000024, prob_meas1_prep0: 0.0172}
+  ancilla: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
+  mitigated_histogram: {'00': 0.5573987337172156, '01': 0.44424718645642625, '10': -0.0016459201736417181}
+  - target: 0
+    ancilla: 1
+  phi: 6.283185307179586
+  results_per_circuit:
+  - name: id
+  histogram: {'00': 36, '01': 18, '10': 25, '11': 21}
+  mitigation_info:
+	target: {prob_meas0_prep1: 0.052200000000000024, prob_meas1_prep0: 0.0172}
+	ancilla: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
+  mitigated_histogram: {'00': 0.3488190312089973, '01': 0.17355281935572894, '10': 0.2505792064871127, '11': 0.22704894294816103}
+  - name: u
+  histogram: {'00': 32, '01': 27, '10': 24, '11': 17}
+  mitigation_info:
+	target: {prob_meas0_prep1: 0.052200000000000024, prob_meas1_prep0: 0.0172}
+	ancilla: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
+  mitigated_histogram: {'00': 0.3025357275361897, '01': 0.27413673119534815, '10': 0.24313373302688793, '11': 0.18019380824157433}
+- target: 1
+  ancilla: 2
+  phi: 0.0
+  results_per_circuit:
+  - name: id
+  histogram: {'00': 27, '01': 20, '10': 24, '11': 29}
+  mitigation_info:
+	target: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
+	ancilla: {prob_meas0_prep1: 0.07540000000000002, prob_meas1_prep0: 0.0528}
+  mitigated_histogram: {'00': 0.2594378169217188, '01': 0.19318893233269735, '10': 0.23035366874292057, '11': 0.3170195820026633}
+  - name: u
+  histogram: {'00': 31, '01': 24, '10': 23, '11': 22}
+  mitigation_info:
+	target: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
+	ancilla: {prob_meas0_prep1: 0.07540000000000002, prob_meas1_prep0: 0.0528}
+  mitigated_histogram: {'00': 0.30056875246775644, '01': 0.2438221628798003, '10': 0.22180309809696985, '11': 0.23380598655547338}
+- target: 1
+  ancilla: 2
+  phi: 3.141592653589793
+  results_per_circuit:
+  - name: id
+  histogram: {'00': 5, '01': 4, '10': 50, '11': 41}
+  mitigation_info:
+	target: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
+	ancilla: {prob_meas0_prep1: 0.07540000000000002, prob_meas1_prep0: 0.0528}
+  mitigated_histogram: {'00': 0.009552870928837118, '01': 0.007194089383161034,
+  '10': 0.5236791012692514, '11': 0.4595739384187503}
+  - name: u
+  histogram: {'00': 41, '01': 51, '10': 3, '11': 5}
+  mitigation_info:
+	target: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
+	ancilla: {prob_meas0_prep1: 0.07540000000000002, prob_meas1_prep0: 0.0528}
+  mitigated_histogram: {'00': 0.4073387714165384, '01': 0.5614614121117936, '10': 0.006431862814564833, '11': 0.024767953657102992}
+- target: 1
+  ancilla: 2
+  phi: 6.283185307179586
+  results_per_circuit:
+  - name: id
+  histogram: {'00': 30, '01': 28, '10': 23, '11': 19}
+  mitigation_info:
+	target: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
+	ancilla: {prob_meas0_prep1: 0.07540000000000002, prob_meas1_prep0: 0.0528}
+  mitigated_histogram: {'00': 0.2868459834940102, '01': 0.2919564941384742, '10': 0.22466574543735374, '11': 0.19653177693016174}
+  - name: u
+  histogram: {'00': 15, '01': 20, '10': 36, '11': 29}
+  mitigation_info:
+	target: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
+	ancilla: {prob_meas0_prep1: 0.07540000000000002, prob_meas1_prep0: 0.0528}
+  mitigated_histogram: {'00': 0.1187719606657805, '01': 0.1962085394489247, '10': 0.3710195249988589, '11': 0.31399997488643583}
+\end{lstlisting}
+Consider the particular experiment data
+\begin{lstlisting}[language=Python]
+data:
+- target: 0
+  ancilla: 1
+  phi: 0.0
+  results_per_circuit:
+  - name: id
+  histogram: {'00': 28, '01': 26, '10': 21, '11': 25}
+  mitigation_info:
+	target: {prob_meas0_prep1: 0.052200000000000024, prob_meas1_prep0: 0.0172}
+	ancilla: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
+  mitigated_histogram: {'00': 0.2637212373658018, '01': 0.25865061319892463, '10': 0.2067279352110304, '11': 0.2709002142242433}
+\end{lstlisting}
+	The data includes \textit{target, ancilla, phi},
+	and \textit{results\_pre\_circuit}.   The first three pieces of information have already been described. The last data  \textit{results\_pre\_circuit} gives us 
+	the following additional informations: 
+	\begin{itemize}
+		\item  name: id:  the information which measurement is used during experiment,   $\PP_{U}$ or $\PP_{\Id}$. In this example we consider  $\PP_{\Id}$. 
+		\item histogram: {'00': 28, '01': 26, '10': 21, '11': 25}: the dictionary with measurement's outcomes. The keys represent possible measurement oucomes, whereas the values present number of occurrences. 
+		\item mitigation\_info:  ??????????  ~\cite{mthree, mthreepublication}
+		\item mitigated\_histogram:  the histogram with measurement's outcomes after mitigation.
+	\end{itemize}
 
 \subsubsection{(Optional) Getting status of asynchronous jobs}
 The whole point of running the asynchronous jobs is to be able to retrieve the results at a later point in time. But how do we know that the jobs you submitted to the backend have completed or not? We can inspect the file manually and check e.g. IBMQ dashboard to see the statuses of the jobs. However, PyQBench provides a helper command that will fetch the statuses for you. The command is:
@@ -1127,24 +1266,25 @@ If the status of jobs is \textit{DONE}, we have to obtain measurements from the 
 \begin{lstlisting}[language=Python]
 qbench disc-fourier resolve async-results.yml resolved.yml
 \end{lstlisting}
-The resolved results, stored in \textit{resolved.yml}, would look just like the experiment was run synchronously. In other words, we should have a file containing measurement histograms, no matter if we run a synchronous or asynchronous experiment. After this step, we are ready to computing probabilities.
+
+
+The resolved results, stored in \textit{resolved.yml}, would look just like the experiment was run synchronously. In other words, we should have a file containing measurement histograms, no matter if we run a synchronous or asynchronous experiment (see \ref{app:example}). Now, we are ready to computing probabilities.
 
 
 \subsubsection{Computing probabilities}
-To construct a table with discrimination probabilities, you can use the following command
+Regardless of whether we use a synchronous or asynchronous approach, we can convert the resulting YML file \textit{results.yml} to a CSV file by creating a result table in which we place the results of discrimination probabilities.
+To construct a table with probabilities, you can use the following command
 \begin{lstlisting}[language=Python]
-qbench disc-fourier tabulate resolved.yml results.csv 
+qbench disc-fourier tabulate results.yml results.csv 
 \end{lstlisting}
-The results are saved as file csv as a table.
 A single row for each tuple of \textit{(target, ancilla, phi)}. The \textit{disc\_prob} column will contain the discrimination probability for given configuration. The \textit{mit\_disc\_prob} column contains discrimination probability if Mthree mitigation was applied~\cite{mthree, mthreepublication}.
-
-
-
-
-
-
-
-
+A sample csv file is provided below:
+\begin{figure}[h!]
+	\centering
+	\includegraphics[scale=1]{results/async_result}
+	\caption{Tabulate results}
+	\label{fig:tabulateresults}
+\end{figure}
 
 
 
@@ -1671,6 +1811,9 @@ To indicate the optimal strategy, we will present two propositions. The first on
 	\end{equation}
 	for all $\phi \in [0,2\pi)$.
 \end{proof}
+
+
+\section{Example of files} \label{app:example}
 
 
 \end{document}
