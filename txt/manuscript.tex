@@ -1376,6 +1376,8 @@ optimal single-shot discrimination of quantum measurements." Physical Review A
 \bibitem{pelofske2022volume} Pelofske, E., B{\"a}rtschi, A., Eidenbenz, S. (2022). Quantum volume in practice: What users can expect from NISQ devices. arXiv preprint arXiv:2203.03816.
 \bibitem{mthree} The web resource at \url{https://qiskit.org/documentation/partners/mthree/stubs/mthree.M3Mitigation.html}. Accessed on 2023-02-10.
 \bibitem{mthreepublication} Nation, P. D., Kang, H., Sundaresan, N.,  Gambetta, J. M. (2021). Scalable mitigation of measurement errors on quantum computers. PRX Quantum, 2(4), 040326.
+\bibitem{lewandowska2021certification} Lewandowska, P., Krawiec, A., Kukulski, R., Pawela, Ł.,  Puchała, Z. (2021). On the optimal certification of von Neumann measurements. Scientific Reports, 11(1), 3623.
+\bibitem{watrous2021simplier} Watrous, J. (2012). Simpler semidefinite programs for completely bounded norms. arXiv preprint arXiv:1207.5726.
 \end{thebibliography}
 
 
@@ -1484,8 +1486,84 @@ where $\nu = \min_{x \in W(U^\dagger)} |x|  $.
 
 
 \section{Discrimination task for Hadamard gate}\label{app:hadamard}
-\todo[inline]{!!!!!!}
-
+For the discrimination task between von Neumann measurements $\PP_{U}$ and $\PP_\Id$, where $U = H$ (the Hadamard gate) the key is to determine the discriminator $\psi_0$ and calculate the diamond norm $\| \mathcal{P}_H - \PP_\Id \|_\diamond$. 
+Using semidefinite programming \cite{lewandowska2021certification, watrous2021simplier}, we obtain 
+\begin{equation}
+\| \mathcal{P}_H - \PP_\Id \|_\diamond = \sqrt{2}. 
+\end{equation}
+Observe that matrix $E_0$ minimizing Eq.~\eqref{}
+is of the form
+\begin{equation}
+E_0 = \frac{1}{2} \left( \begin{matrix} 
+1 + i & 0  \\  0 & -1-i 
+\end{matrix} \right), 
+\end{equation}
+which means 
+\begin{equation}
+\| \PP_{H} - \PP_{\Id} \|_\diamond = \| \Phi_{HE_0} - \Phi_{\Id}\|_\diamond,
+\end{equation}
+where $\Phi_{U}$ is a unitary channel. 
+Next, in order to construct the discriminator $\ket{\psi_0}$ we use Lemma 5 and the proof of Theorem 1 in ~\cite{puchala2018strategies}. We show that there exist states 
+ $\rho_1 $  and $\rho_2$ of the form $ \rho_1  = \frac{1}{2} \left( \begin{matrix} 
+ 1  & i  \\  -i & 1
+ \end{matrix} \right)  $  and $\rho_2 = \frac{1}{2} \left( \begin{matrix} 
+ 1 & -i \\  i & 1 
+ \end{matrix} \right), $ respectively. Thus, form 
+ the proof of Theorem 1 in ~\cite{puchala2018strategies} we have 
+ \begin{equation}
+ \rho_0 = \frac{1}{2} \rho_1 + \frac{1}{2} \rho_2 = \frac{1}{2} \left( \begin{matrix} 
+ 1  &  0  \\  0  & 1
+ \end{matrix} \right).
+ \end{equation}
+ It direcly implies that 
+ \begin{equation}
+ \ket{\psi_0} = \frac{1}{\sqrt{2}}(\ket{00} + \ket{11}).  \end{equation}
+ Next, from Holevo-Helstrom theorem~\cite{watrous}, we determine a final optimal measurement $\PP_{V_i}$. 
+ Let us consider \begin{equation}
+ X = \left(\PP_{H} \otimes \Id \right)(\proj{\psi_0}) - \left(\PP_{\Id} \otimes \Id \right) (\proj{\psi_0})
+  \end{equation}
+ From the Hahn-Jordan decomposition, let us note
+ \begin{equation}
+ X = P - Q
+ \end{equation}
+ where $P, Q \ge 0 $.
+ Let us define projectors $\Pi_P$ and $\Pi_Q$ onto  $\text{im}(P)$ and $\text{im}(Q)$,
+ respectively. Observe, that $P $ and $Q$ are block-diagonal.  Then,  $\Pi_P$ and $\Pi_Q$ have the following forms
+ \begin{equation}
+ \Pi_P = \left(\begin{array}{cc}\proj{x_p}&0\\0&\proj{y_p}\end{array}\right)
+ \end{equation}
+ and
+ \begin{equation}
+ \Pi_Q = \left(\begin{array}{cc}\proj{x_q}&0\\0&\proj{y_q}\end{array}\right).
+ \end{equation}
+ Hence, we define $V_0$ as
+ \begin{equation}
+ \begin{cases} V_0 \ket{x_p} = \ket{0} \\ V_0 \ket{x_q} = \ket{1} \end{cases}
+ \end{equation}
+ and $V_1$ as
+ \begin{equation}
+ \begin{cases}
+ V_1 \ket{y_p} = \ket{0} \\
+ V_1 \ket{y_q} = \ket{1}
+ \end{cases}.
+ \end{equation}
+ For the discrimination task between $\PP_{H}$ and $\PP_{\Id}$ the explicit form of $V_0$ and $V_1$ is given as
+ follows: \todo[inline]{udostepniamy ten plik nb z obliczeniami? (see also \texttt{one-qubit.nb}}
+ \begin{equation}
+ V_0 =
+ \left(\begin{array}{cc} \alpha & -\beta\\ \beta & \alpha \end{array}\right),
+ \end{equation}
+ and \begin{equation}
+ V_1 =
+ \left(\begin{array}{cc} -\beta & \alpha \\ \alpha & \beta \end{array}\right),
+ \end{equation}
+ where \begin{equation}
+ \alpha = \frac{\sqrt{2 - \sqrt{2}}}{2} \cos\left( \frac{3}{8} \pi \right),
+ \end{equation}
+ \begin{equation}
+ \beta  = \frac{\sqrt{2  + \sqrt{2}}}{2} \sin\left( \frac{3}{8} \pi \right).
+ \end{equation}
+ 
 \section{Optimal probability for parametrized Fourier family} \label{app:optimal-probability}
 
 
@@ -1760,41 +1838,45 @@ To indicate the optimal strategy, we will present two propositions. The first on
 	\ket{\psi_0}  = \frac{1}{\sqrt{2}} |\Id_2
 	\rangle \rangle.
 	\end{equation}
-	From Holevo-Helstrom theorem~\cite{watrous}, we constrain a conditional measurement $\mu$.
-	Let us define
-	\begin{equation}
-	X  = \left( \PP_U \otimes \Id_2 \right)(\proj{\psi_0}) -  \left( \PP_\Id
-	\otimes \Id_2 \right)(\proj{\psi_0}).
-	\end{equation}
-	From the Hahn-Jordan decomposition, let us note
-	\begin{equation}
-	X = P - Q
-	\end{equation}
-	where $P, Q \ge 0 $.
-	Let us define projectors $\Pi_P$ and $\Pi_Q$ onto  $\text{im}(P)$ and $\text{im}(Q)$,
-	respectively. Observe, that $P $ and $Q$ are block-diagonal.  Then,  $\Pi_P$ and $\Pi_Q$ have the following forms
-	\begin{equation}
-	\Pi_P = \left(\begin{array}{cc}\proj{x_p}&0\\0&\proj{y_p}\end{array}\right)
-	\end{equation}
-	and
-	\begin{equation}
-	\Pi_Q = \left(\begin{array}{cc}\proj{x_q}&0\\0&\proj{y_q}\end{array}\right).
-	\end{equation}
-	Hence, we define $V_0$ as
-	\begin{equation}
-	\begin{cases} V_0 \ket{x_p} = \ket{0} \\ V_0 \ket{x_q} = \ket{1} \end{cases}
-	\end{equation}
-	and $V_1$ as
-	\begin{equation}
-	\begin{cases}
-	V_1 \ket{y_p} = \ket{0} \\
-	V_1 \ket{y_q} = \ket{1}
-	\end{cases}.
-	\end{equation}
-	For the discrimination task between $\PP_{U}$ and $\PP_{\Id}$, where $U = H
-	\diag(1, e^{i \phi })H$, the explicit form of $V_0$ and $V_1$ is given as
+	Repeating the scheme used to distinguish the von Neumann measurements in the Hadamard basis (see \ref{app:hadamard}), we use the Hahn Jordan decomposition and then we create the projective operators into the positive and negative part of $X$ matrix.
+%	From Holevo-Helstrom theorem~\cite{watrous}, we constrain a final optimal measurement $\PP_{V_i}$.
+%	Let us define
+%	\begin{equation}
+%	X  = \left( \PP_U \otimes \Id_2 \right)(\proj{\psi_0}) -  \left( \PP_\Id
+%	\otimes \Id_2 \right)(\proj{\psi_0}).
+%	\end{equation}
+%	
+%	
+%	
+%	From the Hahn-Jordan decomposition, let us note
+%	\begin{equation}
+%	X = P - Q
+%	\end{equation}
+%	where $P, Q \ge 0 $.
+%	Let us define projectors $\Pi_P$ and $\Pi_Q$ onto  $\text{im}(P)$ and $\text{im}(Q)$,
+%	respectively. Observe, that $P $ and $Q$ are block-diagonal.  Then,  $\Pi_P$ and $\Pi_Q$ have the following forms
+%	\begin{equation}
+%	\Pi_P = \left(\begin{array}{cc}\proj{x_p}&0\\0&\proj{y_p}\end{array}\right)
+%	\end{equation}
+%	and
+%	\begin{equation}
+%	\Pi_Q = \left(\begin{array}{cc}\proj{x_q}&0\\0&\proj{y_q}\end{array}\right).
+%	\end{equation}
+%	Hence, we define $V_0$ as
+%	\begin{equation}
+%	\begin{cases} V_0 \ket{x_p} = \ket{0} \\ V_0 \ket{x_q} = \ket{1} \end{cases}
+%	\end{equation}
+%	and $V_1$ as
+%	\begin{equation}
+%	\begin{cases}
+%	V_1 \ket{y_p} = \ket{0} \\
+%	V_1 \ket{y_q} = \ket{1}
+%	\end{cases}.
+%	\end{equation}
+%	For the discrimination task between $\PP_{U}$ and $\PP_{\Id}$, where $U = H
+%	\diag(1, e^{i \phi })H$, 
+	Hence, the explicit form of $V_0$ and $V_1$ is given as
 	follows: \todo[inline]{udostepniamy ten plik nb z obliczeniami? (see also \texttt{one-qubit.nb}}
-	the unitary $V_0$ has the form
 	\begin{equation}
 	V_0 = \left(
 	\begin{array}{cc}i \sin\left( \frac{\pi - \phi}{4} \right)&-i
@@ -1803,13 +1885,13 @@ To indicate the optimal strategy, we will present two propositions. The first on
 	\end{array}
 	\right),
 	\end{equation}
-	whereas the unitary  $V_1$  has the form
+and
 	\begin{equation}
 	V_1 = \left(\begin{array}{cc}-i \cos\left(\frac{\pi - \phi}{4}\right) &i
 	\sin\left( \frac{\pi - \phi}{4}\right)\\\sin\left( \frac{\pi - \phi}{4}
 	\right) &  \cos\left( \frac{\pi - \phi}{4} \right) \end{array}\right),
 	\end{equation}
-	for all $\phi \in [0,2\pi)$.
+	where $\phi \in [0,2\pi)$.
 \end{proof}
 
 
