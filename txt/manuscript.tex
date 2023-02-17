@@ -133,7 +133,7 @@
 \cortext[cor1]{Corresponding author}
 
 \author{Paulina Lewandowska}
-\author{Profesor Kierownik \L ukasz Pawela}
+\author{\L ukasz Pawela}
 
 \address{Institute of Theoretical and Applied Informatics, Polish Academy
 	of Sciences, Ba{\l}tycka 5, 44-100 Gliwice, Poland}
@@ -231,216 +231,65 @@ C9 & Support email for questions & \url{dexter2206@gmail.com}\\
 
 
 
+
 \section{Motivation and significance}
+
+\todo[inline]{lewandowska add cite !!!}
 
 Noisy Intermediate-Scale Quantum (NISQ)~\cite{preskill} devices are storming the market,
 with a wide selection of devices based on different architectures and accompanying software
 solutions. Among hardware providers offering public access to their gate--based devices, one could
 mention Rigetti, IBM, Oxford Quantum Group, IonQ or Xanadu. Other vendors offer devices operating in
 different paradigms. Notably, one could mention D-Wave and their quantum
-annealers, or QuEra devices based on neural atoms. \todo[inline]{Expand this list and provide short
-description of those architectures}. Most vendors provide their own software stack and
+annealers, or QuEra devices based on neural atoms.  Most vendors provide their own software stack and
 application programming interface for accessing their devices. To name a few, Rigetti's computers
 are available through their Forest SDK and PyQuil library and IBM Q computers can be accessed
 through Qiskit or IBM Quantum Experience web interface. Some cloud services, like Amazon Braket, offer access to several quantum devices under a unified API. On top of that, several
 libraries and frameworks can integrate with different hardware vendors. Examples of such frameworks
 include IBM Q's Qiskit or Zapata Computing's Orquestra.
 
-It is well known that NISQ devices have their limitations. The question is to what extent those
+It is well known that NISQ devices have their limitations \cite{}. The question is to what extent those
 devices can perform meaningful computations? To answer this question, one has to devise a
 methodology for benchmarking them. For gate--based computers, on which this paper focuses, there
-already exist several approaches. \todo[inline]{List the methods} 
+already exist several approaches. 
+One could mention randomized benchmarking  \cite{knill2008randomized} , benchmarks based on the quantum volume\cite{cross2019validating, moll2018quantum} or or cross-entropy benchmarking ~\cite{arute2019quantum, neill2018blueprint}.  
 
-\begin{itemize}
-	\item several examples of benchmarks -- all our metrics are readily available for devices with two qubits only and circuit depths $< 10$  for all benchmarks it should be possible to execute
-	tweaked variants on larger devices when they become available \cite{cornelissen2021scalable}
-	\item random benchmarking \cite{liu2022sampling, knill2007randomized, wallman2014randomized} and general overwiev see here \cite{helsen2022general}
-	\item MQT Bench: Benchmarking Software and
-	Design Automation Tools for Quantum Computing \cite{mqt2022} -- przejebane 
-	\item QUARK framework for quantum compjuting application benchmarking for QUBO using D-QAwe ? \cite{quark2022} --  (e. g., a novel QUBO formulation
-	of the partial MAX-SAT problem) and benchmark these on
-	different infrastructures (e. g., D-Wave and simulation). 
-	\item SupermarQ: A Scalable Quantum Benchmark Suite -- Recent works within the quantum computer architecture
-	community have taken the first steps towards quantum
-	benchmarking. The PPL+2020 [16] suite was evaluated on
-	seven superconducting QPUs, focused on characterizing the
-	error rates of different operations, and demonstrated the
-	time dependence of their performance. The TriQ [17] suite
-	was used to perform a cross-platform comparison between
-	superconducting and trapped-ion systems and revealed the
-	importance of software visibility into the hardware’s native
-	gates. However, the scalability of these suites is limited by
-	their reliance on circuit simulation to estimate how well the
-	QPUs are performing. SupermarQ extends these works by
-	introducing a systematic and principled approach to building
-	a scalable quantum benchmark suite \cite{supermarq2022}
-
-\end{itemize}
-\todo[inline]{What benchmarking techniques are readily available?}
 
 In this paper, we introduce yet another method for benchmarking gate--based devices with a simple
 operational interpretation. In our method, we test how well the given device can distinguish between
 two von Neumann measurements performed in different bases. We implemented our method in an
 open-source Python library called PyQBench. The library supports any device available through Qiskit
 library, and thus can be used with providers such as IBM Q or Amazon Braket. Along with the library,
-the PyQBench package contains a command line tool for running benchmarks in most common scenarios.
-
-
-
-
-\begin{itemize}
-	\item NISQs are becoming widespread and easily available for the general audience
-	\item As with any computational technology, there's a need for benchmarking NISQs to assess
-	their potential usability.
-	\item Our work aims to provide a new benchmarking scheme for gate-based devices.
-	\item Why is PyQBench important?
-	\begin{itemize}
-		\item There exist multiple benchmarking methods already on the market
-		\item Most of them have the following drawbacks:
-		\begin{itemize}
-			\item Their interpretation is not very intuitive (We cannot phrase it like this without
-			explaining why it is so)
-			\item Hard to use (is this true?)
-			\item No libraries are readily available in Python (needs to be checked).
-		\end{itemize}
-		\item PyQBench is easy to install, it works with any Qiskit backend, and its results are
-		easy to understand and interpret.
-	\end{itemize}
-\end{itemize}
-
-
-\todo[inline]{In particular, we compile circuits to standard gate sets of the vendor using compiler RECZNEGO?, and we perform experiments across different qubit subsets.}
-
-
-
-
-quantum volume - '' has become the de-facto standard benchmark to quantify the capability of Noisy Intermediate-Scale Quantum (NISQ) devices '' \cite{pelofske2022volume}
+the PyQBench package contains a command line tool for running most common benchmarking scenarios. 
 
 
 
 
 
-Noisy intermediate-scale quantum
-(NISQ)~\cite{preskill} devices are currently storming the market. We
-have a selection of readily available quantum computers based on different
-architectures. Historically, the first widely introduced quantum computing
-architecture is D-Wave's quantum annealer.
+\section{Existing benchmarking methodologies and software}
+Unsurprisingly, PyQBench is not the only software package for benchmarking gate--based devices.
+While we believe that our approach has significant benefits over other benchmarking techniques, for
+completeness, in this section we discuss some of the currently available similar software.
 
+Probably the simplest benchmarking method one could devise is simply running known algorithms and
+comparing outputs with the expected ones. Analyzing the frequency of the correct outputs, or the
+deviation between actual and expected outputs distribution provides then a metric of the performance
+of a given device. Libraries such as Munich Quantum Toolkit (MQT) Benchmark library contain
+benchmarks leveraging multiple algorithms, such as Shor's algorithm or Grover's algorithm, 
+Despite being intuitive and easily interpretable, such benchmarks may have some problems. Most
+importantly, they assess the usefulness of a quantum device only for a very particular algorithm,
+and it might be hard to extrapolate their results to other algorithms and applications. For
+instance, the inability of a device to consistently find factorizations using Shor's algirithms
+does not tell anything about its usefulness in Variational Quantum Algorithm's. 
 
-
-Additional approaches to quantum computing are currently in development. For
-instance we have Ionq's computer based on ion traps and Xanadu's optical
-lattices. As they are in prototype versions no access to general public is
-provided.
-
-Next, we have computers implementing the gate model of quantum computation.
-These are the best potentially developed machines, which can be thought
-of as fully quantum computers, by which we understand that the qubits can be in
-an entangled state.
-
-Currently one of the main providers of such architectures is Rigetti and its
-Quantum Cloud Services platform. The company has
-released three generations of QPUs so far: Rigetti 8Q Agave, Rigetti 19Q Acorn
-and Rigetti 16Q Aspen-1. The most recent one was deployed in November 2018 and
-is a downgrade in terms of number of qubits compared to the previous 19 qubit
-one. However, the new chip is reportedly much more robust to noise and the
-proposed architecture is much easier to scale up. The new unit is supposed to
-serve as a building block for a 128 qubit
-system~\footnote{https://medium.com/rigetti/the-rigetti-128-qubit-chip-and-what-it-means-for-quantum-df757d1b71ea}.
-As was the case for IBM, Rigetti also provides a \texttt{Python} library,
-\texttt{pyquil}~\cite{}, which enables easy access to the machine.
-
-\todo[inline]{co napisac o tym Amazonie, czy nic ?}
-
-\todo[inline]{rysunki architektur}
-
-%
-%\begin{figure}[h]
-%	\centering
-%
-%	\includegraphics[width=0.9\linewidth]{aspen.png}
-%	\caption{?}
-%	\label{fig:aspen}
-%\end{figure}
-
-
-Now the natural question arises: how to construct a good metric of the
-computational power of such devices?
-Lately, there have emerged propositions from the scientific community on how to
-benchmark such devices.
-
- First let us mention the work by Michielsen
-\emph{et.al.}~\cite{michielsen2017benchmarking}. In there the authors study the
-IBM-QE device. Their first test is the creation of the entangled state
-$\frac{1}{\sqrt{2}} (\ket{01} - \ket{10})$. Next they implement a
-two-qubit+two-qubit adder. Another test is an identity operation, realized by an
-even number of CNOT operations. Their final test is a quantum error correction
-scheme (is it possible with measurement-controlled-operations?). The final
-conclusion is that, except for simple circuits, the device fails to return
-correct results.
-
-Another, recent approach is utilizing quantum communication protocols in testing
-of quantum architectures~\cite{zhukov2019quantum}. Here, the authors decide to
-utilize superdense coding and the BB84 quantum cryptography protocol as
-benchmarks for the IBM Q devices. They utilize the mutual information of the
-transferred bits as a figure of merit for the quantum computer.
-
-Other approaches focus on generative model training. One of these
-works~\cite{hamilton2018generative} is aimed at small architectures, up to 5
-qubits. Another recently presented is much more
-robust~\cite{benedetti2018generative}. The main drawback of both of them is the
-level of complication.
-
-
-
-The goal of this work is to introduce a new benchmark for Rigetti
-architecture...
-
-
-\label{}
-\todo[inline]{
-	Introduce the scientific background and the motivation for developing the
-	software. - motywacje
-
-	Explain why the software is important, and describe the exact (scientific)
-	problem(s) it solves. - czemu ejst wazne, jakie problemy rozwiazuje
-
-	Indicate in what way the software has contributed (or how it will
-	contribute in the future) to the process of scientific discovery; if
-	available, this is to be supported by citing a research paper using the
-	software. - do czego sie to przyczyni w przyszlosci
-
-	Provide a description of the experimental setting (how does the user use
-	the software?). - w jaki sposób użytkownik korzysta z oprogramowania?
-
-	Introduce related work in literature (cite or list algorithms used, other
-	software etc.). - inne oprogramowania i algorytmy }
-
-!!!!!!!
-
-
-
-
-Suppose we have access to a device performing one of the predefined von Neumann
-measurements, $\PP$ or $\QQ$. In PyQBench, we restrict ourselves to discriminating von Neumann measurements.
-This is because, unlike other measurement types, they can be implemented on actual hardware. While the $\PP$ and $\QQ$ are known, it is not known which of them is
-performed when the device executes. Based on the measurement outcome, you have to guess which
-measurement was performed (but you can perform arbitrary unitary operations before and after the
-measurement). What is the highest probability of making a correct guess? And what do you have to do
-to achieve it? And, most importantly, why would we want to do this?
-
-Suppose that you know a strategy that, for an ideal device, would yield a probability
-$p_{\text{succ}}$ of successfully discriminating between two measurements. Will the probability be
-the same on an actual physical device? For current, Noisy Intermediate Scale Quantum devices
-(NISQs), the answer is: certainly not. However, the error rate that you make when guessing can be
-used as a benchmarking metric. PyQBench helps you in organizing such discrimination experiments for
-a single qubit system, executing them on real hardware or simulators, and
-computing discrimination probabilities based on the measured bitstrings.
-
-
-
-
-
+Another possible approach to benchmarking quantum computers is randomized benchmarking
+\cite{liu2022sampling, knill2007randomized, wallman2014randomized, helsen2022general,
+	cornelissen2021scalable}. In this approach, one samples circuits to be run from some predefined set
+of gates (e.g. from the Clifford group) and tests how much the output distribution obtained from the
+device running these circuits differs from the ideal one. It is also common to concatenate randomly
+chosen circuits with their inverses (which should yield the identity circuit) and run those
+concatenated circuits on the device. Libraries implementing this approach include Qiskit \cite{},
+\todo[inline]{enumerate other libraries and summary}
 
 
 \section{Preliminaries and discrimination scheme approach}
@@ -486,9 +335,8 @@ described in detail in \cite{puchala2018strategies}, makes no assumptions about 
 In general, the discrimination scheme, presented in Fig.~\ref{fig:theoretical_scheme}, requires an
 auxiliary system of the same dimensionality as the measured one. First, the joint system is prepared in
 some state $\ket{\psi_0}$. Then, the unknown measurement is performed on the first part of the
-system. Based on its outcome $i$, another measurement $\mathcal{P}_{V_i}$ is performed to obtain an
-outcome $j$. Finally, if $j=0$ we guess that the performed measurement is $\mathcal{P}_U$, otherwise
-we guess that it was $\mathcal{P}_\Id$.
+system. Based on its outcome $i$, the final measurement $\mathcal{P}_{V_i}$ is performed to obtain an
+outcome $j$. Finally, if $j=0$ we guess that the performed measurement is $\mathcal{P}_U$, otherwise we guess that it was $\mathcal{P}_\Id$.
 
 \begin{figure}[h!]
 	\centering
@@ -500,15 +348,14 @@ we guess that it was $\mathcal{P}_\Id$.
 \subsubsection{Limitations of NISQ devices and practical discrimination schemes}
 
 Current NISQ devices are unable to perform conditional measurements, which is the biggest
-obstacle to implementing our scheme on real hardware. Luckily, we can overcome it by
-cleverly adjusting our scheme so that it only uses components available on current devices.
-We have two possible choices here: using a postselection or a direct sum
+obstacle to implementing our scheme on real hardware. However, we can adjusting our scheme so that it only uses components available on current devices.
+For this purpose, we use two possible options: using a postselection or a direct sum
 $V_0^\dagger\oplus V_1^\dagger$.
 
 \begin{scheme}(By using postselection)
 
-	The first idea uses a postselection. Instead of performing a conditional measurement, for each
-	measurement $\PP_U, \PP_\Id$ to be discriminated and each choice of $k \in \{0, 1\}$ we run circuit presented in Fig. \ref{fig:postselection}.
+	The first idea uses a postselection scheme. Instead of performing a conditional measurement $\PP_{V_k}$, for each
+	measurement $\PP_U, \PP_\Id$ to be discriminated and each choice of $k \in \{0, 1\}$ we run circuits presented in Fig. \ref{fig:postselection}.
 
 	\begin{figure}[h!]
 		\centering
@@ -516,38 +363,10 @@ $V_0^\dagger\oplus V_1^\dagger$.
 
 		\caption{
 			A schematic representation of the setup for distinguishing
-			measurements $\PP_{U}$ and $\PP_{\Id}$ using direct sum.
+			measurements $\PP_{U}$ and $\PP_{\Id}$ using postselection approach.
 		}\label{fig:postselection}
 	\end{figure}
 
-%	But now our experiment does not match the previously described scheme, right?
-%	Yes, unless we discard all the outcomes for which $i\ne k$ (hence the name \emph{postselection},
-%	we are selecting valid outcomes after the experiment is performed).
-
-	% \begin{scheme}(Postselection)
-
-	% %\begin{figure}[h!]
-	% %	\includegraphics[scale=1.5]{onequbit.pdf}
-	% %	\caption{A schematic representation of the setup for distinguishing
-	% %		measurements using postselection.}
-	% %	\label{postselection}
-	% %\end{figure}
-
-	% \begin{enumerate}
-	% \item We prepare  the discriminator $\ket{\psi_{0}}$ on bipartite system.
-	% \item We perform one of two quantum channels, either $\Phi_{\Id}$ or
-	% $\Phi_{U^\dagger}$,  on  the first part of the input state  $\ket{\psi_{0}}$, that means $\left( \Phi \otimes \Id\right)(\proj{\psi_0})$.
-	% \item We measure the first part of the input state  $\ket{\psi_{0}}$ and
-	% receive an output label $i$.
-	% \item
-	% Based on Holevo--Helstrom theorem, we perform a conditional binary
-	% measurement	$\PP_{V_j}$ and hence, we implement the quantum channel $\Phi_{V_j^\dagger}$ on the second part.
-	% \item To calculate the probability of correct discrimination, we include just those cases for which $i = j$.
-	% \item We measure the second part of the input state  $\ket{\psi_{0}}$ and make a
-	% decision based on received label $j$. If $i=j=0$, then we decide that
-	% $\PP_U$ occurs.  If $i=j=1$, we decide that
-	% $\PP_{\Id}$ occurs.
-	% \end{enumerate}
 The experiments can be grouped into classes identified by tuples of the form
 	$(\mathcal{Q}, k, i, j)$, where $\mathcal{Q} \in \{\PP_U, \PP_\Id\}$ denotes the chosen measurement, $k \in \{0,1\}$, $i \in \{0,1\}$ and $j \in \{0,1\}$.
 	In postselection approach, we discard all the experiments for which $k \ne i$. Hence, the total number of valid experiments is
@@ -556,7 +375,7 @@ The experiments can be grouped into classes identified by tuples of the form
 	N_\text{total} = \#\{(\QQ, k, i, j): k = i \}.
 	\end{equation}
 
-	Finally, we count the experiments (among the valid ones) resulting in successful discrimination.
+	Finally, we count the valid experiments resulting in successful discrimination.
 	If we have chosen $\PP_U$, then we guess correctly iff $j=0$. Similarly, for
 	$P_\Id$, we guess correctly iff $j=1$. If we define
 	\begin{eqnarray}
@@ -574,24 +393,9 @@ The experiments can be grouped into classes identified by tuples of the form
 \begin{scheme}(By using direct sum)
 
 
-The second idea uses  the direct sum $V_0^\dagger \oplus V_1^\dagger.$    Here, instead of performing a conditional
-measurement $\PP_{V_k}$, where $k\in \{0,1\}$ we run circuit presented in	Fig.~\ref{fig:controlled}.
-%	\begin{enumerate}
-%		\item We prepare the discriminator $\ket{\psi_{0}}$ on bipartite
-%		system.
-%		%\item We perform one of two quantum channels, either $\Phi_{\Id}$ or
-%		%$\Phi_{U^\dagger}$,  on  the first part of the input state  $\ket{\psi_{0}}$, that means $\left(\Phi \otimes \Id\right)(\proj{\psi_0})$.
-%		\item We apply one of unitary,   either $U^\dagger$ or
-%		$\Id$, on the first system.
-%		%\item Based on Holevo--Helstrom theorem, we perform a conditional binary measurement $\PP_{V_j}$, and hence, we implement the direct sum of quantum channels $\Phi_{V_0^\dagger} \oplus \Phi_{V_1^\dagger}$. Observe that   $\Phi_{V_0^\dagger} \oplus \Phi_{V_1^\dagger} = \proj{0} \otimes \Phi_{V_0^\dagger}  + \proj{1} \otimes \Phi_{V_1^\dagger}.  $
-%		\item We apply direct sum $V_0^\dagger \oplus V_1^\dagger$ on the whole systems.
-%		\item We measure both systems in computational basis $\Delta$.
-%		\item We make a decision based on the received label $j$ on the second system. If $j=0$, then we
-%		decide that $\PP_U$ occurs. Otherwise, we decide that $\PP_{\Id}$ occurs.
-%	\end{enumerate}
+The second idea uses the direct sum $V_0^\dagger \oplus V_1^\dagger$ implementation.     Here, instead of performing a conditional
+measurement $\PP_{V_k}$, where $k\in \{0,1\}$,  we run circuits presented in	Fig.~\ref{fig:controlled}.
 
-%	The schematic representation of this setup is depicted in
-%	Fig.~\ref{fig:controlled}.
 	\begin{figure}[h!]
 		\centering
 		\includegraphics[scale=1.5]{pics/controlled_unitary}
@@ -639,7 +443,7 @@ Furthermore,  thanks to the proof of the Holevo-Helstrom theorem, it is possible
 
 So far, we only discussed how the discrimination is performed using two different
 schemes, assuming that all needed components ($\ket{\psi_0}$, $V_0$, $V_1$) are known. It turned out that the determination of $V_0$ and $V_1$ is a simple task while the discriminator $\ket{\psi_{0}}$ is known. However,
-sad to say, determining the analytical form of the discriminator $\ket{\psi_{0}}$
+determining the analytical form of the discriminator $\ket{\psi_{0}}$
 is, in general, NP-hard problem.
 We have found the analytical solution of the discrimination scheme for a particular class of von Neumann measurements.
 
@@ -652,11 +456,12 @@ U = H
 \left(\begin{array}{cc}1&0\\0&e^{i \phi}\end{array}\right)  H^\dagger,
 \end{equation}
 where $H$ is the Hadamard matrix of dimension two and $\phi \in [0, 2 \pi)$.
-In this case, the optimal input state is Bell state of the form
+In this case, the optimal input state is the Bell state of the form
 \begin{equation}
 \ket{\psi_{0}} = \frac{1}{\sqrt{2}} \ket{00} + \ket{11}.
 \end{equation}
-And, for a given angle  $\phi \in  [0, 2 \pi)$,   the unitaries $V_0$,  $V_1$
+Observe that the discriminator does not depend on the angle $\phi$. 
+Nevertheless, for a given angle  $\phi \in  [0, 2 \pi)$,   the unitaries $V_0$,  $V_1$
 have the following form
 \begin{equation}
 V_0 = \left(\begin{array}{cc}i \sin\left( \frac{\pi - \phi}{4} \right)&-i
@@ -709,7 +514,7 @@ PyQBench can be used in two different ways:
 
 
 \section{PyQBench as a library}\label{sec:pyqbench-as-library}
-This guide introduces basic concepts needed for using PyQBench as a library from a Python script. In particular, we will cover the following topics:
+This guide introduces basic concepts needed for using PyQBench as a library from a Python script. In particular, we will consider the following topics:
 \begin{enumerate}
 \item Defining experiment using circuit components.
 \item Assembling circuits needed for given benchmarking scheme.
@@ -723,13 +528,9 @@ On the conceptual level, every discrimination experiment performed in PyQBench n
 \item Unitary $U^\dagger$ defining alternative measurement to be discriminated from the measurement in Z-basis.
 \item $V_0^\dagger$ and $V_1^\dagger$, positive and negative parts of optimal measurement from Holevo-Helstrom theorem.
 \end{enumerate}
-%Currently available quantum computers typically cannot start execution from an arbitrary state. Instead, we have to prepare it ourselves. Hence, to execute experiment using postselection scheme, we need an instruction taking to the desired discriminator $\ket{\psi_0}$
-%and instructions implementing $U^\dagger$, $V_0^\dagger$ and $V_1^\dagger$. Whereas, execute experiment using direct sum approach, we need an instruction taking to the desired discriminator  $\ket{\psi_0}$
-%and instructions implementing $U^\dagger$, $V_0^\dagger \oplus V_1^\dagger$.
 
 \subsubsection{Example of usage}
-In our example, we will use $U =  H$ (the Hadamard gate).
-% To keep us focused on the implementation in PyQBench and not delve too deep into mathematical explanation, we simply provide explicit formulas for discriminator $\ket{\Psi_0} $, $V_0$ and $V_1$, leaving the calculations to the interested reader.
+In  this example, we will use $U =  H$ (the Hadamard gate).
 The explicit formula for discriminator in this model reads
 \begin{equation}
 \ket{\psi_0} = \frac{1}{\sqrt{2}} (\ket{00} + \ket{11}),
@@ -750,7 +551,7 @@ where \begin{equation}
 \beta  = \frac{\sqrt{2  + \sqrt{2}}}{2} \sin\left( \frac{3}{8} \pi \right).
 \end{equation}
 As a next step, we need decompose our matrices into actual sequences of gates.
-The circuit taking $\ket{00}$ to the Bell state $\ket{\psi_0}$ is well known, and comprises Hadamard gate followed by CNOT gate on both qubits (see Fig.~\ref{fig:discriminator}).
+The circuit taking $\ket{00}$ to the Bell state $\ket{\psi_0}$  comprises the Hadamard gate followed by CNOT gate on both qubits (see Fig.~\ref{fig:discriminator}).
 \begin{figure}[h!]
 	\centering
 	\includegraphics[scale=1.7]{pics/discriminator}
@@ -762,30 +563,24 @@ For $V_0$ and $V_1$ observe that $V_0 = RY\left(\frac{3}{4} \pi \right) $, where
 RY(\theta) =
 \left(\begin{array}{cc} \cos\frac{\theta}{2} & -\sin\frac{\theta}{2} \\ \sin\frac{\theta}{2} & \cos\frac{\theta}{2} \end{array}\right).
 \end{equation}
-To obtain $V_1$  we need only to swap the columns, which is equivalent to following $V_0$ by $X$ matrix, more precisely
+To obtain $V_1$  we need only to swap the columns, which is equivalent to 
 \begin{equation}
 V_1 =  RY\left(\frac{3}{4} \pi \right) \cdot X.
 \end{equation}
-Finally, the optimal probability of correct discrimination between $\PP_{U}$, where $U=H$ and $\PP_{\Id}$ is given by 
+Finally, calculate the optimal probability of correct discrimination which is equal to
 \begin{equation}
 p_{\text{succ}}(\PP_{U}, \PP_{\Id}) = \frac{1}{2} + \frac{\sqrt{2}}{4}. 
 \end{equation}
 The detailed calculation we can see in \ref{app:hadamard}. 
-
-Now we simulate  theoretical framework using PyQBench. We will start with simulation in Qiskit SDK with Aer simulator. First, we import necessary modules. \todo[inline]{czy to zdanie jest poprawne?} 
-
-
+Now we simulate the  theoretical framework using PyQBench. We will start with simulation in Qiskit SDK with Aer simulator. First, we import necessary modules and needed functions from PyQBench.
 
 \begin{lstlisting}[language=Python]
-from qiskit import QuantumCircuit, Aer
 import numpy as np
-\end{lstlisting}
-Next we import needed functions from PyQBench. For our example we will need two functions. 
-\begin{lstlisting}[language=Python]
+from qiskit import QuantumCircuit, Aer
 from qbench.schemes.postselection import benchmark_using_postselection
 from qbench.schemes.direct_sum import benchmark_using_direct_sum
 \end{lstlisting}
-To run any of these functions, we need to define components that we discussed below. Most importantly, we need to create Qiskit instructions, not circuits. We can conveniently do so by constructing circuit acting on qubits 0 and 1 and then converting them using \textit{to\_instruction()} method.
+To run a function from PyQBench, we need to define Qiskit instructions.  We can do so by constructing circuit acting on qubits 0 and 1 and then converting them using \textit{to\_instruction()} method.
 \begin{lstlisting}[language=Python, caption= Defining components for Hadamard experiment]
 def state_prep():
 	circuit = QuantumCircuit(2)
@@ -816,7 +611,7 @@ def v0_v1_direct_sum_dag():
 	return circuit.to_instruction()
 
 \end{lstlisting}
-For the purpose of this example,  we define Qiskit Aer simulator.
+For the purpose of this example,  we run experiments on Qiskit Aer simulator.
 \begin{lstlisting}[language=Python, caption= Defining a backend]
 simulator = Aer.get_backend("aer_simulator")
 
@@ -847,7 +642,7 @@ direct_sum_result = benchmark_using_direct_sum(
 )
 \end{lstlisting}
 Finally, we calculate the empirical probability obtained from postselection and direct sum experiment and calculate the absolute error between analytical and empirical results. 
-\begin{lstlisting}[language=Python, caption=Computation of probability]
+\begin{lstlisting}[language=Python, caption=Computation of discrimination probability]
 p_succ = (2 + np.sqrt(2)) / 4
 print(f"Analytical p_succ = {p_succ}")
 print(
@@ -867,7 +662,7 @@ Direct sum: p_succ = 0.85605, abs. error = -0.0024966094067262468
 
 \subsubsection{Gaining more control over the benchmarking process}
 In the example presented above we used functions that automate the whole process - from the circuit assembly, through running the simulations to interpreting the results. But what if we want more control over some parts of this process? 
-One possibility would be to add more and more parameters to \textit{benchmark\_using\_xyz} functions, but this approach clearly is not very scalable. Also, there is no way we can anticipate all the possible use cases.
+One possibility would be to add some additional parameters to \textit{benchmark\_using\_xyz} functions, but this approach is not scalable. Moreover, there is no way we can anticipate all the possible use cases.
  We decided on another approach.  PyQBench provides functions performing:
 \begin{enumerate}
 \item assembly of circuits needed for experiment, provided the components discussed above
@@ -894,20 +689,15 @@ One possibility would be to add more and more parameters to \textit{benchmark\_u
 \pagebreak
 
 By choosing this approach we need to divide the experiment into two parts:
-\begin{enumerate}
-	\item Assembling  circuits
-	\item Running  circuits
-\end{enumerate}
+assembling  circuits and running  circuits.
+
 Let us focus only on the postselection case, as the direct sum case is analogous. In addition, we need to import two more functions from PyQBench.
-\begin{lstlisting}[language=Python, caption=Assembling circuits]
+\begin{lstlisting}[language=Python, caption= Assembling circuits]
 from qbench.schemes.postselection import (
-	assemble_postselection_circuits,
-	compute_probabilities_from_postselection_measurements,
+assemble_postselection_circuits,
+compute_probabilities_from_postselection_measurements,
 )
-\end{lstlisting}
-The function \textit{assemble\_postselection\_circuits} creates all of neceserry circuits, nicely packed in a dictionary. Each informs if the circuit implements identity or alternative measurement on the target qubit, and which of $V_0$ and
-$V_1$ is used.
-\begin{lstlisting}[language=Python]
+
 circuits = assemble_postselection_circuits(
 	target=0,
 	ancilla=1,
@@ -918,16 +708,14 @@ circuits = assemble_postselection_circuits(
 )
 
 \end{lstlisting}
-%
-%\begin{lstlisting}[language=Python, caption=Python example]
-%{'id_v0': <qiskit.circuit.quantumcircuit.QuantumCircuit at 0x7f8b1585b9a0>,
-%'id_v1': <qiskit.circuit.quantumcircuit.QuantumCircuit at 0x7f8b37fbfa90>,
-%'u_v0': <qiskit.circuit.quantumcircuit.QuantumCircuit at 0x7f8b1585bf40>,
-%'u_v1': <qiskit.circuit.quantumcircuit.QuantumCircuit at 0x7f8b1585bf10>}
-%\end{lstlisting}
-Now we only need to run the circuits.
-To make this example more interesting, we will run a noisy and noiseless simulation of our circuits. We will use the same backend as before, and our noise model will only comprise readout errors on both qubits.
-\begin{lstlisting}[language=Python, caption=Noise models]
+The function \textit{assemble\_postselection\_circuits} creates all of neceserry circuits as a dictionary. Each informs if the circuit implements $U^\dagger$ or $\Id$ on the target qubit, and which of $V_0$ and
+$V_1$ is used.
+
+
+Now we need to run the circuits. We will run a noisy and noiseless simulation of our circuits. 
+
+
+\begin{lstlisting}[language=Python, caption=Adding noise model]
 from qiskit.providers.aer import noise
 
 error = noise.ReadoutError([[0.75, 0.25], [0.8, 0.2]])
@@ -949,10 +737,10 @@ counts_noisy = (
 
 counts_noiseless = execute(all_circuits, backend=simulator, shots=10000).result().get_counts()
 \end{lstlisting}
-Finally, we compute the success probabilities. We do so by passing bitstring counts to  \textit{compute\_probabilities\_from\_postselection\_measurements} function.
+Finally, we compute the success probabilities using  \textit{compute\_probabilities\_from\_\\postselection\_measurements} function.
 
 
-\begin{lstlisting}[language=Python, caption=Computation probability without noise]
+\begin{lstlisting}[language=Python, caption=Computation probabilities]
 prob_succ_noiseless = compute_probabilities_from_postselection_measurements(
 	id_v0_counts=counts_noiseless[0],
 	id_v1_counts=counts_noiseless[1],
@@ -960,10 +748,7 @@ prob_succ_noiseless = compute_probabilities_from_postselection_measurements(
 	u_v1_counts=counts_noiseless[3],
 )
 
-print(prob_succ_noiseless)
-\end{lstlisting}
 
-\begin{lstlisting}[language=Python, caption=Computation probability including noise]
 prob_succ_noisy = compute_probabilities_from_postselection_measurements(
 	id_v0_counts=counts_noisy[0],
 	id_v1_counts=counts_noisy[1],
@@ -971,9 +756,8 @@ prob_succ_noisy = compute_probabilities_from_postselection_measurements(
 	u_v1_counts=counts_noisy[3],
 )
 
-print(prob_succ_noisy)
 \end{lstlisting}
-The success probability is 0.8524401115559386, whereas if we obtain some noise, the success probability is equal to 0.5017958400693446
+The success probability is 0.8524401115559386. Whereas if we obtain a readout error, the success probability is equal to 0.5017958400693446. 
 As expected, noisy simulations gave us results that are further away from the exact ones.
 This concludes introduction to PyQBench library.
 
@@ -982,9 +766,9 @@ This concludes introduction to PyQBench library.
  
  
 \section{PyQBench as a CLI tool}\label{sec:pyqbench-as-cli}
-Using PyQBench as a library allows one to conduct, in principle, arbitrary two-qubit von Neumann measurement experiment. However, as discussed in the previous guide, it requires some amount of boilerplate code.
+Using PyQBench as a library allows one to conduct arbitrary two-qubit von Neumann measurement experiment. However, as discussed in the previous guide, it requires some amount of boilerplate code.
 For a Fourier parametrized family of measurements, PyQBench offers a simplified way of performing the experiment using a Command Line Interface (CLI).
-The workflow is best describe as a list of steps:
+The workflow is describe as a list of steps:
 
 \begin{enumerate}
 
@@ -998,8 +782,6 @@ resolve jobs into actual measurements.
 \subsubsection{Preparing configuration files}
 To prepare configyurartion files we need to define the experiment and the   backend 
 which we want to benchmark. Experiments and backends are defined in YAML files. An example experiment definition looks as follows.
-
-
 \begin{lstlisting}[language=Python, caption=Defining the experiment]
 type: discrimination-fourier
 qubits:
@@ -1019,24 +801,29 @@ num_shots: 100
 
 The components of the experiment is as follows:
 \begin{itemize}
-	\item The \textit{type} describes type of the experiment. Currently, the only option for \textit{type} is \textit{discrimination-fourier}. In the future, other benchmarks may be added, in which keys the \textit{types} key should contain their name.
+	\item The \textit{type} describes type of the experiment. Currently, the only option of  \textit{type} is \textit{discrimination-fourier}. 
 	\begin{lstlisting}[language=Python]
 type: discrimination-fourier
 	\end{lstlisting}
-	\item The \textit{qubits} list describes pair of qubits on which the experiment should be run. In our example, the benchmark will run on two pairs of qubits. First pair is 0 and 1, second pair is 1 and 2.
-	Notice that we distinguish between ancilla and target qubit, so e.g
-	
-	
-	\begin{lstlisting}[language=Python]
+	\item The \textit{qubits} list describes pair of qubits on which the experiment should be run. In this example, the benchmark will run on two pairs of qubits. First pair is 0 and 1, second pair is 1 and 2.
+%	Notice that we distinguish between ancilla and target qubit, so e.g
+%	\begin{lstlisting}[language=Python]
+%qubits:
+%	- target: 0
+%      ancilla: 1
+%	\end{lstlisting}
+%	is not the same as 
+%	\begin{lstlisting}[language=Python]
+%qubits:
+%	- target: 1
+%      ancilla: 0
+%	\end{lstlisting}
+\begin{lstlisting}[language=Python]
 qubits:
 	- target: 0
-      ancilla: 1
-	\end{lstlisting}
-	is not the same as 
-	\begin{lstlisting}[language=Python]
-qubits:
+	  ancilla: 1
 	- target: 1
-      ancilla: 0
+	  ancilla: 2
 	\end{lstlisting}
 \item The \textit{angles} key describe range of angles for Fourier parametrized family. The range is always uniform, starts at the \textit{start}, ends at \textit{stop} and contains \textit{num\_steps} points, including both start and stop. The start and stop can be arithmetic expressions using \textit{pi} literal. For instance range defined as:  
 \begin{lstlisting}[language=Python]
@@ -1082,8 +869,8 @@ IBMQ backends typically require and access token to IBM Quantum Experience. It w
 
 
 \subsubsection{Notes on using the asynchronous flag}
-In our example, the only key that requires the explanation is \textit{asynchronous} which determines whether experiments will be run asynchronously  (\textit{true}) or not (\textit{false}).
- We recommend setting it to true, unless your experiment is really small (several circuits total). However, some backends may not support asynchronous execution. This might be especially the case with local simulators. 
+In this example, the only key that requires the explanation is \textit{asynchronous} which determines whether experiments will be run asynchronously  (\textit{true}) or not (\textit{false}).
+% We recommend setting it to true, unless your experiment is really small (several circuits total). However, some backends may not support asynchronous execution. This might be especially the case with local simulators. 
 
 For asynchronous execution to work, the following conditions have to be met:
 \begin{itemize}
@@ -1113,122 +900,8 @@ The result of running the above command can be twofold:
 	\item If the backend is synchronous, the output will contain measurement data (bitstrings) for each of the circuits run.
 \end{itemize}
 
-For synchronous experiment, the output looks similar to the one below: 
-\begin{lstlisting}[language=Python]
-metadata:
-	experiments:
-		type: discrimination-fourier
-		qubits:
-		- {target: 0, ancilla: 1}
-		- {target: 1, ancilla: 2}
-		angles: {start: 0.0, stop: 6.283185307179586, num_steps: 3}
-		gateset: ibmq
-		method: direct_sum
-		num_shots: 100
-	backend_description:
-		name: ibmq_quito
-		asynchronous: false
-		provider: {group: open, hub: ibm-q, project: main}
-data:
-- target: 0
-  ancilla: 1
-  phi: 0.0
-  results_per_circuit:
-  - name: id
-  histogram: {'00': 28, '01': 26, '10': 21, '11': 25}
-  mitigation_info:
-	target: {prob_meas0_prep1: 0.052200000000000024, prob_meas1_prep0: 0.0172}
-	ancilla: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
-  mitigated_histogram: {'00': 0.2637212373658018, '01': 0.25865061319892463, '10': 0.2067279352110304, '11': 0.2709002142242433}
-  - name: u
-  histogram: {'00': 30, '01': 16, '10': 28, '11': 26}
-  mitigation_info:
-	target: {prob_meas0_prep1: 0.052200000000000024, prob_meas1_prep0: 0.0172}
-	ancilla: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
-  mitigated_histogram: {'00': 0.2857378991684036, '01': 0.14975297832942433, '10': 0.28142307224788693, '11': 0.2830860502542851}
-- target: 0
-  ancilla: 1
-  phi: 3.141592653589793
-  results_per_circuit:
-  - name: id
-  histogram: {'00': 4, '01': 5, '10': 45, '11': 46}
-  mitigation_info:
-	target: {prob_meas0_prep1: 0.052200000000000024, prob_meas1_prep0: 0.0172}
-	ancilla: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
-  mitigated_histogram: {'00': 0.011053610583159325, '01': 0.02261276648026373, '10': 0.4593955619936729, '11': 0.5069380609429042}
-  - name: u
-  histogram: {'00': 56, '01': 43, '10': 1}
-  mitigation_info:
-  target: {prob_meas0_prep1: 0.052200000000000024, prob_meas1_prep0: 0.0172}
-  ancilla: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
-  mitigated_histogram: {'00': 0.5573987337172156, '01': 0.44424718645642625, '10': -0.0016459201736417181}
-  - target: 0
-    ancilla: 1
-  phi: 6.283185307179586
-  results_per_circuit:
-  - name: id
-  histogram: {'00': 36, '01': 18, '10': 25, '11': 21}
-  mitigation_info:
-	target: {prob_meas0_prep1: 0.052200000000000024, prob_meas1_prep0: 0.0172}
-	ancilla: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
-  mitigated_histogram: {'00': 0.3488190312089973, '01': 0.17355281935572894, '10': 0.2505792064871127, '11': 0.22704894294816103}
-  - name: u
-  histogram: {'00': 32, '01': 27, '10': 24, '11': 17}
-  mitigation_info:
-	target: {prob_meas0_prep1: 0.052200000000000024, prob_meas1_prep0: 0.0172}
-	ancilla: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
-  mitigated_histogram: {'00': 0.3025357275361897, '01': 0.27413673119534815, '10': 0.24313373302688793, '11': 0.18019380824157433}
-- target: 1
-  ancilla: 2
-  phi: 0.0
-  results_per_circuit:
-  - name: id
-  histogram: {'00': 27, '01': 20, '10': 24, '11': 29}
-  mitigation_info:
-	target: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
-	ancilla: {prob_meas0_prep1: 0.07540000000000002, prob_meas1_prep0: 0.0528}
-  mitigated_histogram: {'00': 0.2594378169217188, '01': 0.19318893233269735, '10': 0.23035366874292057, '11': 0.3170195820026633}
-  - name: u
-  histogram: {'00': 31, '01': 24, '10': 23, '11': 22}
-  mitigation_info:
-	target: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
-	ancilla: {prob_meas0_prep1: 0.07540000000000002, prob_meas1_prep0: 0.0528}
-  mitigated_histogram: {'00': 0.30056875246775644, '01': 0.2438221628798003, '10': 0.22180309809696985, '11': 0.23380598655547338}
-- target: 1
-  ancilla: 2
-  phi: 3.141592653589793
-  results_per_circuit:
-  - name: id
-  histogram: {'00': 5, '01': 4, '10': 50, '11': 41}
-  mitigation_info:
-	target: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
-	ancilla: {prob_meas0_prep1: 0.07540000000000002, prob_meas1_prep0: 0.0528}
-  mitigated_histogram: {'00': 0.009552870928837118, '01': 0.007194089383161034,
-  '10': 0.5236791012692514, '11': 0.4595739384187503}
-  - name: u
-  histogram: {'00': 41, '01': 51, '10': 3, '11': 5}
-  mitigation_info:
-	target: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
-	ancilla: {prob_meas0_prep1: 0.07540000000000002, prob_meas1_prep0: 0.0528}
-  mitigated_histogram: {'00': 0.4073387714165384, '01': 0.5614614121117936, '10': 0.006431862814564833, '11': 0.024767953657102992}
-- target: 1
-  ancilla: 2
-  phi: 6.283185307179586
-  results_per_circuit:
-  - name: id
-  histogram: {'00': 30, '01': 28, '10': 23, '11': 19}
-  mitigation_info:
-	target: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
-	ancilla: {prob_meas0_prep1: 0.07540000000000002, prob_meas1_prep0: 0.0528}
-  mitigated_histogram: {'00': 0.2868459834940102, '01': 0.2919564941384742, '10': 0.22466574543735374, '11': 0.19653177693016174}
-  - name: u
-  histogram: {'00': 15, '01': 20, '10': 36, '11': 29}
-  mitigation_info:
-	target: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
-	ancilla: {prob_meas0_prep1: 0.07540000000000002, prob_meas1_prep0: 0.0528}
-  mitigated_histogram: {'00': 0.1187719606657805, '01': 0.1962085394489247, '10': 0.3710195249988589, '11': 0.31399997488643583}
-\end{lstlisting}
-Consider the particular experiment data
+For synchronous experiment, the part of output looks similar to the one below. The whole YAML file can be seen in \ref{app:example}.
+%Consider the particular experiment data
 \begin{lstlisting}[language=Python]
 data:
 - target: 0
@@ -1248,27 +921,23 @@ data:
 	\begin{itemize}
 		\item  name: id:  the information which measurement is used during experiment,   $\PP_{U}$ or $\PP_{\Id}$. In this example we consider  $\PP_{\Id}$. 
 		\item histogram: {'00': 28, '01': 26, '10': 21, '11': 25}: the dictionary with measurement's outcomes. The keys represent possible measurement oucomes, whereas the values present number of occurrences. 
-		\item mitigation\_info:  ??????????  ~\cite{mthree, mthreepublication}
+		\item mitigation\_info:  \textit{system.properties().qubits} contains information on the physical attributes of the qubits. This includes e.g. information about readout error. As shown below, the \textit{readout\_error} is further partitioned into \textit{prob\_meas0\_prep1} and \textit{prob\_meas1\_prep0}, indicating the probability of preparing a given computational basis state, but measuring the orthogonal state.  The readout error is taken to be the average of these two values. Note that \textit{prob\_meas0\_prep1} is usually the dominant factor in the readout error due to relaxation during the measurement process.  ~\cite{mthree, mthreepublication}
 		\item mitigated\_histogram:  the histogram with measurement's outcomes after mitigation.
 	\end{itemize}
 
 \subsubsection{(Optional) Getting status of asynchronous jobs}
-The whole point of running the asynchronous jobs is to be able to retrieve the results at a later point in time. But how do we know that the jobs you submitted to the backend have completed or not? We can inspect the file manually and check e.g. IBMQ dashboard to see the statuses of the jobs. However, PyQBench provides a helper command that will fetch the statuses for you. The command is:
+ PyQBench provides also a helper command that will fetch the statuses of asynchronous jobs. The command is:
 \begin{lstlisting}[language=Python]
 qbench disc-fourier status async_results.yml
 \end{lstlisting}
 and it will display dictionary with histogram of statuses.
-
-
 
 \subsubsection{Resolving asynchronous jobs}
 If the status of jobs is \textit{DONE}, we have to obtain measurements from the submitted jobs. This is done using the following command:
 \begin{lstlisting}[language=Python]
 qbench disc-fourier resolve async-results.yml resolved.yml
 \end{lstlisting}
-
-
-The resolved results, stored in \textit{resolved.yml}, would look just like the experiment was run synchronously. In other words, we should have a file containing measurement histograms, no matter if we run a synchronous or asynchronous experiment (see \ref{app:example}). Now, we are ready to computing probabilities.
+The resolved results, stored in \textit{resolved.yml}, would look just like the experiment was run synchronously. More precisely, we should have a file containing measurement histograms, no matter if we run a synchronous or asynchronous experiment (see \ref{app:example}). Next, we can compute the discrimination probabilities.
 
 
 \subsubsection{Computing probabilities}
@@ -1355,6 +1024,8 @@ beyond." Quantum 2 (2018): 79.
 \bibitem{michielsen2017benchmarking} Michielsen, Kristel, et al. "Benchmarking
 gate-based quantum computers." Computer Physics Communications 220 (2017):
 44-55.
+\bibitem{cross2019validating}
+Cross, A. W., Bishop, L. S., Sheldon, S., Nation, P. D., Gambetta, J. M. (2019). Validating quantum computers using randomized model circuits. Physical Review A, 100(3), 032328.
 \bibitem{zhukov2019quantum} Zhukov, A. A., et al. "Quantum communication
 protocols as a benchmark for programmable quantum computers." Quantum
 Information Processing 18.1 (2019): 1-23.
@@ -1378,6 +1049,17 @@ optimal single-shot discrimination of quantum measurements." Physical Review A
 \bibitem{mthreepublication} Nation, P. D., Kang, H., Sundaresan, N.,  Gambetta, J. M. (2021). Scalable mitigation of measurement errors on quantum computers. PRX Quantum, 2(4), 040326.
 \bibitem{lewandowska2021certification} Lewandowska, P., Krawiec, A., Kukulski, R., Pawela, Ł.,  Puchała, Z. (2021). On the optimal certification of von Neumann measurements. Scientific Reports, 11(1), 3623.
 \bibitem{watrous2021simplier} Watrous, J. (2012). Simpler semidefinite programs for completely bounded norms. arXiv preprint arXiv:1207.5726.
+\bibitem{arute2019quantum}Arute, F., Arya, K., Babbush, R., Bacon, D., Bardin, J. C., Barends, R., ... Martinis, J. M. (2019). Quantum supremacy using a programmable superconducting processor. Nature, 574(7779), 505-510.
+\bibitem{knill2008randomized}
+Knill, E., Leibfried, D., Reichle, R., Britton, J., Blakestad, R. B., Jost, J. D., ...  Wineland, D. J. (2008). Randomized benchmarking of quantum gates. Physical Review A, 77(1), 012307.
+\bibitem{moll2018quantum}
+Moll, N., Barkoutsos, P., Bishop, L. S., Chow, J. M., Cross, A., Egger, D. J., ...  Temme, K. (2018). Quantum optimization using variational algorithms on near-term quantum devices. Quantum Science and Technology, 3(3), 030503.
+
+
+\bibitem{neill2018blueprint}
+Neill, C., Roushan, P., Kechedzhi, K., Boixo, S., Isakov, S. V., Smelyanskiy, V., ...  Martinis, J. M. (2018). A blueprint for demonstrating quantum supremacy with superconducting qubits. Science, 360(6385), 195-199.
+
+
 \end{thebibliography}
 
 
@@ -1486,39 +1168,42 @@ where $\nu = \min_{x \in W(U^\dagger)} |x|  $.
 
 
 \section{Discrimination task for Hadamard gate}\label{app:hadamard}
-For the discrimination task between von Neumann measurements $\PP_{U}$ and $\PP_\Id$, where $U = H$ (the Hadamard gate) the key is to determine the discriminator $\psi_0$ and calculate the diamond norm $\| \mathcal{P}_H - \PP_\Id \|_\diamond$. 
-Using semidefinite programming \cite{lewandowska2021certification, watrous2021simplier}, we obtain 
+For the discrimination task between von Neumann measurements $\PP_{U}$ and $\PP_\Id$, where $U = H$ (the Hadamard gate) the key is to calculate the diamond norm $\| \mathcal{P}_H - \PP_\Id \|_\diamond$ and 
+determine the discriminator $\ket{\psi_0}$.
+Using semidefinite programming \cite{watrous2021simplier}, we obtain 
 \begin{equation}
 \| \mathcal{P}_H - \PP_\Id \|_\diamond = \sqrt{2}. 
 \end{equation}
-Observe that matrix $E_0$ minimizing Eq.~\eqref{}
+From \cite{lewandowska2021certification} we have 
+\begin{equation}
+\| \PP_{H} - \PP_{\Id} \|_\diamond = \| \Phi_{HE_0} - \Phi_{\Id}\|_\diamond,
+\end{equation}
+where $\Phi_{U}$ is a unitary channel and 
+ $E_0$ 
 is of the form
 \begin{equation}
 E_0 = \frac{1}{2} \left( \begin{matrix} 
 1 + i & 0  \\  0 & -1-i 
-\end{matrix} \right), 
+\end{matrix} \right). 
 \end{equation}
-which means 
-\begin{equation}
-\| \PP_{H} - \PP_{\Id} \|_\diamond = \| \Phi_{HE_0} - \Phi_{\Id}\|_\diamond,
-\end{equation}
-where $\Phi_{U}$ is a unitary channel. 
-Next, in order to construct the discriminator $\ket{\psi_0}$ we use Lemma 5 and the proof of Theorem 1 in ~\cite{puchala2018strategies}. We show that there exist states 
+Next, in order to construct the discriminator $\ket{\psi_0}$ we use Lemma 5 and the proof of Theorem 1 in \cite{puchala2018strategies}. We show that there exist states 
  $\rho_1 $  and $\rho_2$ of the form $ \rho_1  = \frac{1}{2} \left( \begin{matrix} 
  1  & i  \\  -i & 1
  \end{matrix} \right)  $  and $\rho_2 = \frac{1}{2} \left( \begin{matrix} 
  1 & -i \\  i & 1 
- \end{matrix} \right), $ respectively. Thus, form 
- the proof of Theorem 1 in ~\cite{puchala2018strategies} we have 
+ \end{matrix} \right), $ respectively. Thus, we construct the quantum state $\rho_0$ as follows:
  \begin{equation}
  \rho_0 = \frac{1}{2} \rho_1 + \frac{1}{2} \rho_2 = \frac{1}{2} \left( \begin{matrix} 
  1  &  0  \\  0  & 1
  \end{matrix} \right).
  \end{equation}
+ According to the Lemma 5 and the proof of Theorem 1 in \cite{puchala2018strategies} we assume that \begin{equation}
+ \ket{\psi_0} = | \rho_0 \rangle \rangle. 
+ \end{equation}
  It direcly implies that 
  \begin{equation}
  \ket{\psi_0} = \frac{1}{\sqrt{2}}(\ket{00} + \ket{11}).  \end{equation}
- Next, from Holevo-Helstrom theorem~\cite{watrous}, we determine a final optimal measurement $\PP_{V_i}$. 
+ Next, from Holevo-Helstrom theorem~\cite{watrous}, we determine the final measurement $\PP_{V_i}$. 
  Let us consider \begin{equation}
  X = \left(\PP_{H} \otimes \Id \right)(\proj{\psi_0}) - \left(\PP_{\Id} \otimes \Id \right) (\proj{\psi_0})
   \end{equation}
@@ -1895,8 +1580,121 @@ and
 \end{proof}
 
 
-\section{Example of files} \label{app:example}
-
+\section{Output YAML files} \label{app:example}
+\begin{lstlisting}[language=Python]
+metadata:
+experiments:
+type: discrimination-fourier
+qubits:
+- {target: 0, ancilla: 1}
+- {target: 1, ancilla: 2}
+angles: {start: 0.0, stop: 6.283185307179586, num_steps: 3}
+gateset: ibmq
+method: direct_sum
+num_shots: 100
+backend_description:
+name: ibmq_quito
+asynchronous: false
+provider: {group: open, hub: ibm-q, project: main}
+data:
+- target: 0
+ancilla: 1
+phi: 0.0
+results_per_circuit:
+- name: id
+histogram: {'00': 28, '01': 26, '10': 21, '11': 25}
+mitigation_info:
+target: {prob_meas0_prep1: 0.052200000000000024, prob_meas1_prep0: 0.0172}
+ancilla: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
+mitigated_histogram: {'00': 0.2637212373658018, '01': 0.25865061319892463, '10': 0.2067279352110304, '11': 0.2709002142242433}
+- name: u
+histogram: {'00': 30, '01': 16, '10': 28, '11': 26}
+mitigation_info:
+target: {prob_meas0_prep1: 0.052200000000000024, prob_meas1_prep0: 0.0172}
+ancilla: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
+mitigated_histogram: {'00': 0.2857378991684036, '01': 0.14975297832942433, '10': 0.28142307224788693, '11': 0.2830860502542851}
+- target: 0
+ancilla: 1
+phi: 3.141592653589793
+results_per_circuit:
+- name: id
+histogram: {'00': 4, '01': 5, '10': 45, '11': 46}
+mitigation_info:
+target: {prob_meas0_prep1: 0.052200000000000024, prob_meas1_prep0: 0.0172}
+ancilla: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
+mitigated_histogram: {'00': 0.011053610583159325, '01': 0.02261276648026373, '10': 0.4593955619936729, '11': 0.5069380609429042}
+- name: u
+histogram: {'00': 56, '01': 43, '10': 1}
+mitigation_info:
+target: {prob_meas0_prep1: 0.052200000000000024, prob_meas1_prep0: 0.0172}
+ancilla: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
+mitigated_histogram: {'00': 0.5573987337172156, '01': 0.44424718645642625, '10': -0.0016459201736417181}
+- target: 0
+ancilla: 1
+phi: 6.283185307179586
+results_per_circuit:
+- name: id
+histogram: {'00': 36, '01': 18, '10': 25, '11': 21}
+mitigation_info:
+target: {prob_meas0_prep1: 0.052200000000000024, prob_meas1_prep0: 0.0172}
+ancilla: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
+mitigated_histogram: {'00': 0.3488190312089973, '01': 0.17355281935572894, '10': 0.2505792064871127, '11': 0.22704894294816103}
+- name: u
+histogram: {'00': 32, '01': 27, '10': 24, '11': 17}
+mitigation_info:
+target: {prob_meas0_prep1: 0.052200000000000024, prob_meas1_prep0: 0.0172}
+ancilla: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
+mitigated_histogram: {'00': 0.3025357275361897, '01': 0.27413673119534815, '10': 0.24313373302688793, '11': 0.18019380824157433}
+- target: 1
+ancilla: 2
+phi: 0.0
+results_per_circuit:
+- name: id
+histogram: {'00': 27, '01': 20, '10': 24, '11': 29}
+mitigation_info:
+target: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
+ancilla: {prob_meas0_prep1: 0.07540000000000002, prob_meas1_prep0: 0.0528}
+mitigated_histogram: {'00': 0.2594378169217188, '01': 0.19318893233269735, '10': 0.23035366874292057, '11': 0.3170195820026633}
+- name: u
+histogram: {'00': 31, '01': 24, '10': 23, '11': 22}
+mitigation_info:
+target: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
+ancilla: {prob_meas0_prep1: 0.07540000000000002, prob_meas1_prep0: 0.0528}
+mitigated_histogram: {'00': 0.30056875246775644, '01': 0.2438221628798003, '10': 0.22180309809696985, '11': 0.23380598655547338}
+- target: 1
+ancilla: 2
+phi: 3.141592653589793
+results_per_circuit:
+- name: id
+histogram: {'00': 5, '01': 4, '10': 50, '11': 41}
+mitigation_info:
+target: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
+ancilla: {prob_meas0_prep1: 0.07540000000000002, prob_meas1_prep0: 0.0528}
+mitigated_histogram: {'00': 0.009552870928837118, '01': 0.007194089383161034,
+'10': 0.5236791012692514, '11': 0.4595739384187503}
+- name: u
+histogram: {'00': 41, '01': 51, '10': 3, '11': 5}
+mitigation_info:
+target: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
+ancilla: {prob_meas0_prep1: 0.07540000000000002, prob_meas1_prep0: 0.0528}
+mitigated_histogram: {'00': 0.4073387714165384, '01': 0.5614614121117936, '10': 0.006431862814564833, '11': 0.024767953657102992}
+- target: 1
+ancilla: 2
+phi: 6.283185307179586
+results_per_circuit:
+- name: id
+histogram: {'00': 30, '01': 28, '10': 23, '11': 19}
+mitigation_info:
+target: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
+ancilla: {prob_meas0_prep1: 0.07540000000000002, prob_meas1_prep0: 0.0528}
+mitigated_histogram: {'00': 0.2868459834940102, '01': 0.2919564941384742, '10': 0.22466574543735374, '11': 0.19653177693016174}
+- name: u
+histogram: {'00': 15, '01': 20, '10': 36, '11': 29}
+mitigation_info:
+target: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
+ancilla: {prob_meas0_prep1: 0.07540000000000002, prob_meas1_prep0: 0.0528}
+mitigated_histogram: {'00': 0.1187719606657805, '01': 0.1962085394489247, '10': 0.3710195249988589, '11': 0.31399997488643583}
+\end{lstlisting}
 
 \end{document}
 \endinput
