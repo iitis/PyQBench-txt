@@ -136,7 +136,7 @@
 \author{\L ukasz Pawela}
 
 \address{Institute of Theoretical and Applied Informatics, Polish Academy
-	of Sciences, Ba{\l}tycka 5, 44-100 Gliwice, Poland}
+	of Sciences, Ba{\l}tycka~5, 44-100 Gliwice, Poland}
 
 \begin{abstract}
 We introduce PyQBench, an innovative open-source framework for benchmarking
@@ -149,11 +149,10 @@ measurements instead of predefined ones.
 \end{abstract}
 
 \begin{keyword}
-%% keywords here, in the form: keyword \sep keyword
 Quantum computing \sep
 Benchmarking quantum computers \sep
 Discrimination of quantum measurements \sep
-Discrimination of von Neumann Measurements \sep
+Discrimination of von Neumann measurements \sep
 Open-source \sep
 Python programming
 
@@ -234,25 +233,23 @@ C9 & Support email for questions & \url{dexter2206@gmail.com}\\
 
 \section{Motivation and significance}
 
-\todo[inline]{lewandowska add cite !!!}
-
 Noisy Intermediate-Scale Quantum (NISQ)~\cite{preskill} devices are storming the market,
 with a wide selection of devices based on different architectures and accompanying software
 solutions. Among hardware providers offering public access to their gate--based devices, one could
-mention Rigetti, IBM, Oxford Quantum Group, IonQ or Xanadu. Other vendors offer devices operating in
-different paradigms. Notably, one could mention D-Wave and their quantum
-annealers, or QuEra devices based on neural atoms.  Most vendors provide their own software stack and
+mention Rigetti \cite{rigetti}, IBM \cite{ibmq}, Oxford Quantum Group \cite{oxforf}, IonQ \cite{ionq} or Xanadu \cite{xanadu}. Other vendors offer devices operating in
+different paradigms. Notably, one could mention D-Wave \cite{dwave} and their quantum
+annealers, or QuEra devices \cite{quera} based on neural atoms.  Most vendors provide their own software stack and
 application programming interface for accessing their devices. To name a few, Rigetti's computers
-are available through their Forest SDK and PyQuil library and IBM Q computers can be accessed
-through Qiskit or IBM Quantum Experience web interface. Some cloud services, like Amazon Braket, offer access to several quantum devices under a unified API. On top of that, several
+are available through their Forest SDK \cite{sdk} and PyQuil library \cite{pyquil} and IBM Q \cite{ibmq} computers can be accessed
+through Qiskit \cite{qiskit} or IBM Quantum Experience web interface \cite{ibmqplatform}. Some cloud services, like Amazon Braket \cite{amazon}, offer access to several quantum devices under a unified API. On top of that, several
 libraries and frameworks can integrate with different hardware vendors. Examples of such frameworks
-include IBM Q's Qiskit or Zapata Computing's Orquestra.
+include IBM Q's Qiskit or Zapata Computing's Orquestra \cite{zapata}.
 
-It is well known that NISQ devices have their limitations \cite{}. The question is to what extent those
+It is well known that NISQ devices have their limitations \cite{preskillnew}. The question is to what extent those
 devices can perform meaningful computations? To answer this question, one has to devise a
 methodology for benchmarking them. For gate--based computers, on which this paper focuses, there
 already exist several approaches. 
-One could mention randomized benchmarking  \cite{knill2008randomized} , benchmarks based on the quantum volume\cite{cross2019validating, moll2018quantum} or or cross-entropy benchmarking ~\cite{arute2019quantum, neill2018blueprint}.  
+One could mention randomized benchmarking  \cite{knill2008randomized}, benchmarks based on the quantum volume \cite{cross2019validating, moll2018quantum, pelofske2022volume} or or cross-entropy benchmarking \cite{arute2019quantum, neill2018blueprint}.  
 
 
 In this paper, we introduce yet another method for benchmarking gate--based devices with a simple
@@ -806,18 +803,6 @@ The components of the experiment is as follows:
 type: discrimination-fourier
 	\end{lstlisting}
 	\item The \textit{qubits} list describes pair of qubits on which the experiment should be run. In this example, the benchmark will run on two pairs of qubits. First pair is 0 and 1, second pair is 1 and 2.
-%	Notice that we distinguish between ancilla and target qubit, so e.g
-%	\begin{lstlisting}[language=Python]
-%qubits:
-%	- target: 0
-%      ancilla: 1
-%	\end{lstlisting}
-%	is not the same as 
-%	\begin{lstlisting}[language=Python]
-%qubits:
-%	- target: 1
-%      ancilla: 0
-%	\end{lstlisting}
 \begin{lstlisting}[language=Python]
 qubits:
 	- target: 0
@@ -995,7 +980,7 @@ command line interface (CLI) for running benchmarks using a predefined parametri
 family of measurements. For more advanced scenarios, PyQBench offers a way of employing user-defined
 measurements instead of predefined ones.
 \section{Conflict of Interest}
-No conflict of interest exists: We wish to confirm that there are no known
+We wish to confirm that there are no known
 conflicts of interest associated with this publication and there has been no
 significant financial support for this work that could have influenced its out-
 come.
@@ -1011,21 +996,62 @@ grant InterPOWER (POWR.03.05.00-00-Z305).
 
 
 \begin{thebibliography}{00}
+\bibitem{preskill} Preskill, John. "Quantum Computing in the NISQ era and beyond." Quantum 2 (2018): 79.
+\bibitem{rigetti} The web resource at \url{https://www.rigetti.com/}. Accessed on 2023-02-18.
+\bibitem{ibmq} The web resource at \url{https://www.ibm.com/quantum}. Accessed on 2023-02-18.
+\bibitem{oxforf} The web resource at \url{http://oxfordquantum.org/}. Accessed on 2023-02-18.
+\bibitem{ionq} The web resource at \url{https://ionq.com/}. Accessed on 2023-02-18. 
+\bibitem{xanadu} The web resource at \url{https://www.xanadu.ai/}. Accessed on 2023-02-18.
+\bibitem{dwave} The web resource at \url{https://www.dwavesys.com/}. Accessed on 2023-02-18.
+\bibitem{quera} The web resource at \url{https://www.quera.com/}. Accessed on 2023-02-18.
+\bibitem{sdk} The web resource at \url{https://docs.rigetti.com/qcs/}. Accessed on 2023-02-18.
+\bibitem{pyquil} The web resource at \url{https://pyquil-docs.rigetti.com/en/stable/}. Accessed on 2023-02-18.
+\bibitem{qiskit} The web resource at \url{https://qiskit.org/}. Accessed on 2023-02-18.
+\bibitem{ibmqplatform} The web resource at \url{https://quantum-computing.ibm.com/}. Accessed on 2023-02-18.
+\bibitem{amazon} The web resource at \url{https://aws.amazon.com/braket/}. Accessed on 2023-02-18.
+\bibitem{zapata} The web resource at \url{https://www.zapatacomputing.com/orquestra-platform/}. Accessed on 2023-02-18.
+\bibitem{preskillnew} Preskill, J. (2021). Quantum computing 40 years later. arXiv preprint arXiv:2106.10522.
+\bibitem{knill2008randomized}
+Knill, E., Leibfried, D., Reichle, R., Britton, J., Blakestad, R. B., Jost, J. D., ...  Wineland, D. J. (2008). Randomized benchmarking of quantum gates. Physical Review A, 77(1), 012307.	
+\bibitem{cross2019validating}
+Cross, A. W., Bishop, L. S., Sheldon, S., Nation, P. D., Gambetta, J. M. (2019). Validating quantum computers using randomized model circuits. Physical Review A, 100(3), 032328.
+\bibitem{moll2018quantum}
+Moll, N., Barkoutsos, P., Bishop, L. S., Chow, J. M., Cross, A., Egger, D. J., ...  Temme, K. (2018). Quantum optimization using variational algorithms on near-term quantum devices. Quantum Science and Technology, 3(3), 030503.
+\bibitem{pelofske2022volume} Pelofske, E., B{\"a}rtschi, A., Eidenbenz, S. (2022). Quantum volume in practice: What users can expect from NISQ devices. arXiv preprint arXiv:2203.03816.
+\bibitem{arute2019quantum}Arute, F., Arya, K., Babbush, R., Bacon, D., Bardin, J. C., Barends, R., ... Martinis, J. M. (2019). Quantum supremacy using a programmable superconducting processor. Nature, 574(7779), 505-510.
+\bibitem{neill2018blueprint}
+Neill, C., Roushan, P., Kechedzhi, K., Boixo, S., Isakov, S. V., Smelyanskiy, V., ...  Martinis, J. M. (2018). A blueprint for demonstrating quantum supremacy with superconducting qubits. Science, 360(6385), 195-199.
+\bibitem{liu2022sampling} 	Liu, Y., Otten, M., Bassirianjahromi, R., Jiang, L.,  Fefferman, B. (2021). Benchmarking near-term quantum computers via random circuit sampling. arXiv preprint arXiv:2105.05232.
+\bibitem{knill2007randomized} Knill, E., Leibfried, D., Reichle, R., Britton, J., Blakestad, R. B., Jost, J. D., ... Wineland, D. J. (2008). Randomized benchmarking of quantum gates. Physical Review A, 77(1), 012307.
+\bibitem{wallman2014randomized} Wallman, J. J.,  Flammia, S. T. (2014). Randomized benchmarking with confidence. New Journal of Physics, 16(10), 103032.
+\bibitem{helsen2022general} Helsen, J., Roth, I., Onorati, E., Werner, A. H.,  Eisert, J. (2022). General framework for randomized benchmarking. PRX Quantum, 3(2), 020357.
+\bibitem{cornelissen2021scalable} Cornelissen, A., Bausch, J.,  Gilyén, A. (2021). Scalable benchmarks for gate-based quantum computers. arXiv preprint arXiv:2104.10698.
+\bibitem{puchala2018strategies} Puchała, Zbigniew, et al. "Strategies for
+optimal single-shot discrimination of quantum measurements." Physical Review A
+98.4 (2018): 042103.
+\bibitem{helstrom1976quantum} Helstrom, C. W. (1969). "Quantum detection and estimation theory." Journal of Statistical Physics, 1(2), 231-252.
+\bibitem{mthree} The web resource at \url{https://qiskit.org/documentation/partners/mthree/stubs/mthree.M3Mitigation.html}. Accessed on 2023-02-10.
+\bibitem{mthreepublication} Nation, P. D., Kang, H., Sundaresan, N.,  Gambetta, J. M. (2021). Scalable mitigation of measurement errors on quantum computers. PRX Quantum, 2(4), 040326.
+\bibitem{numericalrangle} Murnaghan, F. D. (1932). On the field of values of a square matrix. Proceedings of the National Academy of Sciences, 18(3), 246-248.
+\bibitem{nr} Lewandowska, Paulina and others. The web resource at \url{https://numericalshadow.org/}. Accessed on 2022-10-02.
+\bibitem{watrous2021simplier} Watrous, J. (2012). Simpler semidefinite programs for completely bounded norms. arXiv preprint arXiv:1207.5726.
+\bibitem{lewandowska2021certification} Lewandowska, P., Krawiec, A., Kukulski, R., Pawela, Ł.,  Puchała, Z. (2021). On the optimal certification of von Neumann measurements. Scientific Reports, 11(1), 3623.
+\bibitem{watrous} Watrous, John (2018). The theory of quantum information. Cambridge university press.
+\bibitem{hausdorff} Hausdorff, Felix. "Der wertvorrat einer bilinearform." Mathematische Zeitschrift 3.1 (1919): 314-316.
+\bibitem{toeplitz} Toeplitz, Otto. "Das algebraische Analogon zu einem Satze von Fejér." Mathematische Zeitschrift 2.1 (1918): 187-197.
+
+
+
+	\todo[inline]{do wykorzystania cite}
+
 	\bibitem{supermarq} Tomesh, T., Gokhale, P., Omole, V., Ravi, G. S., Smith, K. N., Viszlai, J., ...  Chong, F. T. (2022, April). Supermarq: A scalable quantum benchmark suite. In 2022 IEEE International Symposium on High-Performance Computer Architecture (HPCA) (pp. 587-603). IEEE.
 	\bibitem{mqt2022} Quetschlich, N., Burgholzer, L., Wille, R. (2022). MQT Bench: Benchmarking software and design automation tools for quantum computing. arXiv preprint arXiv:2204.13719.
-	\bibitem{knill2007randomized} Knill, E., Leibfried, D., Reichle, R., Britton, J., Blakestad, R. B., Jost, J. D., ... Wineland, D. J. (2008). Randomized benchmarking of quantum gates. Physical Review A, 77(1), 012307.
-	\bibitem{wallman2014randomized} Wallman, J. J.,  Flammia, S. T. (2014). Randomized benchmarking with confidence. New Journal of Physics, 16(10), 103032.
-	\bibitem{helsen2022general} Helsen, J., Roth, I., Onorati, E., Werner, A. H.,  Eisert, J. (2022). General framework for randomized benchmarking. PRX Quantum, 3(2), 020357.
- \bibitem{liu2022sampling} 	Liu, Y., Otten, M., Bassirianjahromi, R., Jiang, L.,  Fefferman, B. (2021). Benchmarking near-term quantum computers via random circuit sampling. arXiv preprint arXiv:2105.05232.
-\bibitem{cornelissen2021scalable} Cornelissen, A., Bausch, J.,  Gilyén, A. (2021). Scalable benchmarks for gate-based quantum computers. arXiv preprint arXiv:2104.10698.
+
 \bibitem{quark2022} Finžgar, J. R., Ross, P., Hölscher, L., Klepsch, J.,  Luckow, A. (2022, September). QUARK: A framework for quantum computing application benchmarking. In 2022 IEEE International Conference on Quantum Computing and Engineering (QCE) (pp. 226-237). IEEE.
-\bibitem{preskill} Preskill, John. "Quantum Computing in the NISQ era and
-beyond." Quantum 2 (2018): 79.
 \bibitem{michielsen2017benchmarking} Michielsen, Kristel, et al. "Benchmarking
 gate-based quantum computers." Computer Physics Communications 220 (2017):
 44-55.
-\bibitem{cross2019validating}
-Cross, A. W., Bishop, L. S., Sheldon, S., Nation, P. D., Gambetta, J. M. (2019). Validating quantum computers using randomized model circuits. Physical Review A, 100(3), 032328.
+
 \bibitem{zhukov2019quantum} Zhukov, A. A., et al. "Quantum communication
 protocols as a benchmark for programmable quantum computers." Quantum
 Information Processing 18.1 (2019): 1-23.
@@ -1035,73 +1061,54 @@ qubits." Physical Review A 99.6 (2019): 062323.
 \bibitem{benedetti2018generative} Benedetti, Marcello, et al. "A generative
 modeling approach for benchmarking and training shallow quantum circuits." npj
 Quantum Information 5.1 (2019): 1-9.
-\bibitem{puchala2018strategies} Puchała, Zbigniew, et al. "Strategies for
-optimal single-shot discrimination of quantum measurements." Physical Review A
-98.4 (2018): 042103.
-\bibitem{helstrom1976quantum} Helstrom, C. W. (1969). "Quantum detection and estimation theory." Journal of Statistical Physics, 1(2), 231-252.
-\bibitem{watrous} Watrous, John (2018). The theory of quantum information. Cambridge university press.
-\bibitem{nr} Lewandowska, Paulina and others. The web resource at \url{https://numericalshadow.org/}. Accessed on 2022-10-02.
-\bibitem{hausdorff} Hausdorff, Felix. "Der wertvorrat einer bilinearform." Mathematische Zeitschrift 3.1 (1919): 314-316.
-\bibitem{toeplitz} Toeplitz, Otto. "Das algebraische Analogon zu einem Satze von Fejér." Mathematische Zeitschrift 2.1 (1918): 187-197.
-
-\bibitem{pelofske2022volume} Pelofske, E., B{\"a}rtschi, A., Eidenbenz, S. (2022). Quantum volume in practice: What users can expect from NISQ devices. arXiv preprint arXiv:2203.03816.
-\bibitem{mthree} The web resource at \url{https://qiskit.org/documentation/partners/mthree/stubs/mthree.M3Mitigation.html}. Accessed on 2023-02-10.
-\bibitem{mthreepublication} Nation, P. D., Kang, H., Sundaresan, N.,  Gambetta, J. M. (2021). Scalable mitigation of measurement errors on quantum computers. PRX Quantum, 2(4), 040326.
-\bibitem{lewandowska2021certification} Lewandowska, P., Krawiec, A., Kukulski, R., Pawela, Ł.,  Puchała, Z. (2021). On the optimal certification of von Neumann measurements. Scientific Reports, 11(1), 3623.
-\bibitem{watrous2021simplier} Watrous, J. (2012). Simpler semidefinite programs for completely bounded norms. arXiv preprint arXiv:1207.5726.
-\bibitem{arute2019quantum}Arute, F., Arya, K., Babbush, R., Bacon, D., Bardin, J. C., Barends, R., ... Martinis, J. M. (2019). Quantum supremacy using a programmable superconducting processor. Nature, 574(7779), 505-510.
-\bibitem{knill2008randomized}
-Knill, E., Leibfried, D., Reichle, R., Britton, J., Blakestad, R. B., Jost, J. D., ...  Wineland, D. J. (2008). Randomized benchmarking of quantum gates. Physical Review A, 77(1), 012307.
-\bibitem{moll2018quantum}
-Moll, N., Barkoutsos, P., Bishop, L. S., Chow, J. M., Cross, A., Egger, D. J., ...  Temme, K. (2018). Quantum optimization using variational algorithms on near-term quantum devices. Quantum Science and Technology, 3(3), 030503.
 
 
-\bibitem{neill2018blueprint}
-Neill, C., Roushan, P., Kechedzhi, K., Boixo, S., Isakov, S. V., Smelyanskiy, V., ...  Martinis, J. M. (2018). A blueprint for demonstrating quantum supremacy with superconducting qubits. Science, 360(6385), 195-199.
+
+
+
+
+
 
 
 \end{thebibliography}
 
 
-\todo[inline]{Please add the reference to the software repository if DOI for
-software  is available. }
-
-\section*{Current executable software version}
-\label{}
-
-Ancillary data table required for sub version of the executable software: (x.1,
-x.2 etc.) kindly replace examples in right column with the correct information
-about your executables, and leave the left column as it is.
-
-\begin{table}[!h]
-\begin{tabular}{|l|p{6.5cm}|p{6.5cm}|}
-\hline
-\textbf{Nr.} & \textbf{(Executable) software metadata description} &
-\textbf{Please fill in this column} \\
-\hline
-S1 & Current software version & For example 1.1, 2.4 etc. \\
-\hline
-S2 & Permanent link to executables of this version  & For example:
-$https://github.com/combogenomics/$ $DuctApe/releases/tag/DuctApe-0.16.4$ \\
-\hline
-S3 & Legal Software License & List one of the approved licenses \\
-\hline
-S4 & Computing platforms/Operating Systems & For example Android, BSD, iOS,
-Linux, OS X, Microsoft Windows, Unix-like , IBM z/OS, distributed/web based
-etc. \\
-\hline
-S5 & Installation requirements \& dependencies & \\
-\hline
-S6 & If available, link to user manual - if formally published include a
-reference to the publication in the reference list & For example:
-$http://mozart.github.io/documentation/$ \\
-\hline
-S7 & Support email for questions & \\
-\hline
-\end{tabular}
-\caption{Software metadata (optional)}
-\label{}
-\end{table}
+%\section*{Current executable software version}
+%\label{}
+%
+%Ancillary data table required for sub version of the executable software: (x.1,
+%x.2 etc.) kindly replace examples in right column with the correct information
+%about your executables, and leave the left column as it is.
+%
+%\begin{table}[!h]
+%\begin{tabular}{|l|p{6.5cm}|p{6.5cm}|}
+%\hline
+%\textbf{Nr.} & \textbf{(Executable) software metadata description} &
+%\textbf{Please fill in this column} \\
+%\hline
+%S1 & Current software version & For example 1.1, 2.4 etc. \\
+%\hline
+%S2 & Permanent link to executables of this version  & For example:
+%$https://github.com/combogenomics/$ $DuctApe/releases/tag/DuctApe-0.16.4$ \\
+%\hline
+%S3 & Legal Software License & List one of the approved licenses \\
+%\hline
+%S4 & Computing platforms/Operating Systems & For example Android, BSD, iOS,
+%Linux, OS X, Microsoft Windows, Unix-like , IBM z/OS, distributed/web based
+%etc. \\
+%\hline
+%S5 & Installation requirements \& dependencies & \\
+%\hline
+%S6 & If available, link to user manual - if formally published include a
+%reference to the publication in the reference list & For example:
+%$http://mozart.github.io/documentation/$ \\
+%\hline
+%S7 & Support email for questions & \\
+%\hline
+%\end{tabular}
+%\caption{Software metadata (optional)}
+%\label{}
+%\end{table}
 
 \appendix
 \section{Mathematical preliminaries} \label{app:preliminaries}
@@ -1151,7 +1158,7 @@ $\PP_\Id$ ie equal to
 \begin{equation}
 \|\PP_U - \PP_\Id\|_\diamond = \min_{E \in \diaguni_d} \|\Phi_{UE} -
 \Phi_\Id\|_\diamond,
-\end{equation} whereas to express the distance between unitary channels, we need to introduce the notion of numerical range. The set \begin{equation}
+\end{equation} whereas to express the distance between unitary channels, we need to introduce the notion of numerical range \cite{numericalrangle}. The set \begin{equation}
 W(A) =\{\bra{x}A\ket{x}: \ket{x} \in
 \mathbb{C}^d, \;
 \;\braket{x}{x}=1\}.
@@ -1243,15 +1250,13 @@ Next, in order to construct the discriminator $\ket{\psi_0}$ we use Lemma 5 and 
  \left(\begin{array}{cc} -\beta & \alpha \\ \alpha & \beta \end{array}\right),
  \end{equation}
  where \begin{equation}
- \alpha = \frac{\sqrt{2 - \sqrt{2}}}{2} \cos\left( \frac{3}{8} \pi \right),
+ \alpha = \frac{\sqrt{2 - \sqrt{2}}}{2} = \cos\left( \frac{3}{8} \pi \right),
  \end{equation}
  \begin{equation}
- \beta  = \frac{\sqrt{2  + \sqrt{2}}}{2} \sin\left( \frac{3}{8} \pi \right).
+ \beta  = \frac{\sqrt{2  + \sqrt{2}}}{2} = \sin\left( \frac{3}{8} \pi \right).
  \end{equation}
  
 \section{Optimal probability for parametrized Fourier family} \label{app:optimal-probability}
-
-
 Let us focus on single-qubit von Neumann measurements $\PP_\1$ and $\PP_U$.
 Assume that the unitary matrix $U$ is of the form
 \begin{equation}
@@ -1442,7 +1447,7 @@ To indicate the optimal strategy, we will present two propositions. The first on
 	\sqrt{\rho}  \left( \proj{u_i} - \proj{i} \right)^\top \sqrt{\rho}  \right\|_1
 	\\
 	& = \max_{\rho \in \Omega_2} \left\| \sum_{i=0}^{1}\sqrt{\rho}  \left(
-	\proj{u_i} - \proj{i} \right)^\top \sqrt{\rho}  \right\|_1
+	\proj{u_i} - \proj{i} \right)^\top \sqrt{\rho}  \right\|_1. 
 	\end{split}
 	\end{equation}
 	One can prove that for all $\alpha, \beta \ge 0 $, and unit vectors $\ket{x},
@@ -1581,119 +1586,458 @@ and
 
 
 \section{Output YAML files} \label{app:example}
-\begin{lstlisting}[language=Python]
-metadata:
-experiments:
+In this appendix we present examples of YAML's files obtained from synchronous ans asynchronous experiments. We will start at synchronous case.
+
+\begin{lstlisting}[language=Python, caption=Defining experiment file]
 type: discrimination-fourier
 qubits:
-- {target: 0, ancilla: 1}
-- {target: 1, ancilla: 2}
-angles: {start: 0.0, stop: 6.283185307179586, num_steps: 3}
+	- target: 0
+	  ancilla: 1
+	- target: 1
+	  ancilla: 2
+angles:
+	start: 0
+	stop: 2 * pi
+	num_steps: 3
 gateset: ibmq
 method: direct_sum
 num_shots: 100
-backend_description:
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python, caption=Defining backend file]
 name: ibmq_quito
 asynchronous: false
-provider: {group: open, hub: ibm-q, project: main}
+provider:
+	hub: ibm-q
+	group: open
+	project: main
+
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python, caption=Results (synchronous)]
+metadata:
+	experiments:
+		type: discrimination-fourier
+		qubits:
+		- {target: 0, ancilla: 1}
+		- {target: 1, ancilla: 2}
+		angles: {start: 0.0, stop: 6.283185307179586, num_steps: 3}
+		gateset: ibmq
+		method: direct_sum
+		num_shots: 100
+	backend_description:
+		name: ibmq_quito
+		asynchronous: false
+		provider: {group: open, hub: ibm-q, project: main}
 data:
 - target: 0
-ancilla: 1
-phi: 0.0
-results_per_circuit:
-- name: id
-histogram: {'00': 28, '01': 26, '10': 21, '11': 25}
-mitigation_info:
-target: {prob_meas0_prep1: 0.052200000000000024, prob_meas1_prep0: 0.0172}
-ancilla: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
-mitigated_histogram: {'00': 0.2637212373658018, '01': 0.25865061319892463, '10': 0.2067279352110304, '11': 0.2709002142242433}
-- name: u
-histogram: {'00': 30, '01': 16, '10': 28, '11': 26}
-mitigation_info:
-target: {prob_meas0_prep1: 0.052200000000000024, prob_meas1_prep0: 0.0172}
-ancilla: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
-mitigated_histogram: {'00': 0.2857378991684036, '01': 0.14975297832942433, '10': 0.28142307224788693, '11': 0.2830860502542851}
+  ancilla: 1
+  phi: 0.0
+  results_per_circuit:
+  - name: id
+	histogram: {'00': 28, '01': 26, '10': 21, '11': 25}
+	mitigation_info:
+		target: {prob_meas0_prep1: 0.052200000000000024, prob_meas1_prep0: 0.0172}
+		ancilla: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
+	mitigated_histogram: {'00': 0.2637212373658018, '01': 0.25865061319892463, '10': 0.2067279352110304, '11': 0.2709002142242433}
+  - name: u
+	histogram: {'00': 30, '01': 16, '10': 28, '11': 26}
+	mitigation_info:
+		target: {prob_meas0_prep1: 0.052200000000000024, prob_meas1_prep0: 0.0172}
+		ancilla: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
+	mitigated_histogram: {'00': 0.2857378991684036, '01': 0.14975297832942433, '10': 0.28142307224788693, '11': 0.2830860502542851}
 - target: 0
-ancilla: 1
-phi: 3.141592653589793
-results_per_circuit:
-- name: id
-histogram: {'00': 4, '01': 5, '10': 45, '11': 46}
-mitigation_info:
-target: {prob_meas0_prep1: 0.052200000000000024, prob_meas1_prep0: 0.0172}
-ancilla: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
-mitigated_histogram: {'00': 0.011053610583159325, '01': 0.02261276648026373, '10': 0.4593955619936729, '11': 0.5069380609429042}
-- name: u
-histogram: {'00': 56, '01': 43, '10': 1}
-mitigation_info:
-target: {prob_meas0_prep1: 0.052200000000000024, prob_meas1_prep0: 0.0172}
-ancilla: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
-mitigated_histogram: {'00': 0.5573987337172156, '01': 0.44424718645642625, '10': -0.0016459201736417181}
+  ancilla: 1
+  phi: 3.141592653589793
+  results_per_circuit:
+  - name: id
+	histogram: {'00': 4, '01': 5, '10': 45, '11': 46}
+	mitigation_info:
+		target: {prob_meas0_prep1: 0.052200000000000024, prob_meas1_prep0: 0.0172}
+		ancilla: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
+	mitigated_histogram: {'00': 0.011053610583159325, '01': 0.02261276648026373, '10': 0.4593955619936729, '11': 0.5069380609429042}
+  - name: u
+	histogram: {'00': 56, '01': 43, '10': 1}
+	mitigation_info:
+		target: {prob_meas0_prep1: 0.052200000000000024, prob_meas1_prep0: 0.0172}
+		ancilla: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
+	mitigated_histogram: {'00': 0.5573987337172156, '01': 0.44424718645642625, '10': -0.0016459201736417181}
 - target: 0
-ancilla: 1
-phi: 6.283185307179586
-results_per_circuit:
-- name: id
-histogram: {'00': 36, '01': 18, '10': 25, '11': 21}
-mitigation_info:
-target: {prob_meas0_prep1: 0.052200000000000024, prob_meas1_prep0: 0.0172}
-ancilla: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
-mitigated_histogram: {'00': 0.3488190312089973, '01': 0.17355281935572894, '10': 0.2505792064871127, '11': 0.22704894294816103}
-- name: u
-histogram: {'00': 32, '01': 27, '10': 24, '11': 17}
-mitigation_info:
-target: {prob_meas0_prep1: 0.052200000000000024, prob_meas1_prep0: 0.0172}
-ancilla: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
-mitigated_histogram: {'00': 0.3025357275361897, '01': 0.27413673119534815, '10': 0.24313373302688793, '11': 0.18019380824157433}
+  ancilla: 1
+  phi: 6.283185307179586
+  results_per_circuit:
+  - name: id
+	histogram: {'00': 36, '01': 18, '10': 25, '11': 21}
+	mitigation_info:
+		target: {prob_meas0_prep1: 0.052200000000000024, prob_meas1_prep0: 0.0172}
+		ancilla: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
+	mitigated_histogram: {'00': 0.3488190312089973, '01': 0.17355281935572894, '10': 0.2505792064871127, '11': 0.22704894294816103}
+  - name: u
+	histogram: {'00': 32, '01': 27, '10': 24, '11': 17}
+	mitigation_info:
+		target: {prob_meas0_prep1: 0.052200000000000024, prob_meas1_prep0: 0.0172}
+		ancilla: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
+	mitigated_histogram: {'00': 0.3025357275361897, '01': 0.27413673119534815, '10': 0.24313373302688793, '11': 0.18019380824157433}
 - target: 1
-ancilla: 2
-phi: 0.0
-results_per_circuit:
-- name: id
-histogram: {'00': 27, '01': 20, '10': 24, '11': 29}
-mitigation_info:
-target: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
-ancilla: {prob_meas0_prep1: 0.07540000000000002, prob_meas1_prep0: 0.0528}
-mitigated_histogram: {'00': 0.2594378169217188, '01': 0.19318893233269735, '10': 0.23035366874292057, '11': 0.3170195820026633}
-- name: u
-histogram: {'00': 31, '01': 24, '10': 23, '11': 22}
-mitigation_info:
-target: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
-ancilla: {prob_meas0_prep1: 0.07540000000000002, prob_meas1_prep0: 0.0528}
-mitigated_histogram: {'00': 0.30056875246775644, '01': 0.2438221628798003, '10': 0.22180309809696985, '11': 0.23380598655547338}
+  ancilla: 2
+  phi: 0.0
+  results_per_circuit:
+  - name: id
+	histogram: {'00': 27, '01': 20, '10': 24, '11': 29}
+	mitigation_info:
+		target: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
+		ancilla: {prob_meas0_prep1: 0.07540000000000002, prob_meas1_prep0: 0.0528}
+	mitigated_histogram: {'00': 0.2594378169217188, '01': 0.19318893233269735, '10': 0.23035366874292057, '11': 0.3170195820026633}
+  - name: u
+	histogram: {'00': 31, '01': 24, '10': 23, '11': 22}
+	mitigation_info:
+		target: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
+		ancilla: {prob_meas0_prep1: 0.07540000000000002, prob_meas1_prep0: 0.0528}
+	mitigated_histogram: {'00': 0.30056875246775644, '01': 0.2438221628798003, '10': 0.22180309809696985, '11': 0.23380598655547338}
 - target: 1
-ancilla: 2
-phi: 3.141592653589793
-results_per_circuit:
-- name: id
-histogram: {'00': 5, '01': 4, '10': 50, '11': 41}
-mitigation_info:
-target: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
-ancilla: {prob_meas0_prep1: 0.07540000000000002, prob_meas1_prep0: 0.0528}
-mitigated_histogram: {'00': 0.009552870928837118, '01': 0.007194089383161034,
-'10': 0.5236791012692514, '11': 0.4595739384187503}
-- name: u
-histogram: {'00': 41, '01': 51, '10': 3, '11': 5}
-mitigation_info:
-target: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
-ancilla: {prob_meas0_prep1: 0.07540000000000002, prob_meas1_prep0: 0.0528}
-mitigated_histogram: {'00': 0.4073387714165384, '01': 0.5614614121117936, '10': 0.006431862814564833, '11': 0.024767953657102992}
+  ancilla: 2
+  phi: 3.141592653589793
+  results_per_circuit:
+  - name: id
+	histogram: {'00': 5, '01': 4, '10': 50, '11': 41}
+	mitigation_info:
+		target: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
+		ancilla: {prob_meas0_prep1: 0.07540000000000002, prob_meas1_prep0: 0.0528}
+	mitigated_histogram: {'00': 0.009552870928837118, '01': 0.007194089383161034, '10': 0.5236791012692514, '11': 0.4595739384187503}
+  - name: u
+	histogram: {'00': 41, '01': 51, '10': 3, '11': 5}
+	mitigation_info:
+		target: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
+		ancilla: {prob_meas0_prep1: 0.07540000000000002, prob_meas1_prep0: 0.0528}
+	mitigated_histogram: {'00': 0.4073387714165384, '01': 0.5614614121117936, '10': 0.006431862814564833, '11': 0.024767953657102992}
 - target: 1
-ancilla: 2
-phi: 6.283185307179586
-results_per_circuit:
-- name: id
-histogram: {'00': 30, '01': 28, '10': 23, '11': 19}
-mitigation_info:
-target: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
-ancilla: {prob_meas0_prep1: 0.07540000000000002, prob_meas1_prep0: 0.0528}
-mitigated_histogram: {'00': 0.2868459834940102, '01': 0.2919564941384742, '10': 0.22466574543735374, '11': 0.19653177693016174}
-- name: u
-histogram: {'00': 15, '01': 20, '10': 36, '11': 29}
-mitigation_info:
-target: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
-ancilla: {prob_meas0_prep1: 0.07540000000000002, prob_meas1_prep0: 0.0528}
-mitigated_histogram: {'00': 0.1187719606657805, '01': 0.1962085394489247, '10': 0.3710195249988589, '11': 0.31399997488643583}
+  ancilla: 2
+  phi: 6.283185307179586
+  results_per_circuit:
+  - name: id
+	histogram: {'00': 30, '01': 28, '10': 23, '11': 19}
+	mitigation_info:
+		target: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
+		ancilla: {prob_meas0_prep1: 0.07540000000000002, prob_meas1_prep0: 0.0528}
+	mitigated_histogram: {'00': 0.2868459834940102, '01': 0.2919564941384742, '10': 0.22466574543735374, '11': 0.19653177693016174}
+  - name: u
+	histogram: {'00': 15, '01': 20, '10': 36, '11': 29}
+	mitigation_info:
+		target: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
+		ancilla: {prob_meas0_prep1: 0.07540000000000002, prob_meas1_prep0: 0.0528}
+	mitigated_histogram: {'00': 0.1187719606657805, '01': 0.1962085394489247, '10': 0.3710195249988589, '11': 0.31399997488643583}
+\end{lstlisting}
+For the same experiment file, we use the flag \textit{asynchronous: true} to define asynchronous experiment.
+
+\begin{lstlisting}[language=Python, caption=Backend file]
+name: ibmq_quito
+asynchronous: true
+provider:
+	hub: ibm-q
+	group: open
+	project: main
+
+\end{lstlisting}
+If backend is asynchronous, the output will contain intermediate data
+containing, amongst others, job ids correlated with the circuit they
+correspond to.
+
+\begin{lstlisting}[language=Python, caption=Resolved results]
+metadata:
+	experiments:
+		type: discrimination-fourier
+		qubits:
+		- {target: 0, ancilla: 1}
+		- {target: 1, ancilla: 2}
+		angles: {start: 0.0, stop: 6.283185307179586, num_steps: 3}
+		gateset: ibmq
+		method: direct_sum
+		num_shots: 100
+	backend_description:
+		name: ibmq_quito
+		asynchronous: true
+		provider: {group: open, hub: ibm-q, project: main}
+data:
+- job_id: 63e7f17a17b7ed49ca24e05b
+  keys:
+  - [0, 1, id, 0.0]
+  - [0, 1, u, 0.0]
+  - [0, 1, id, 3.141592653589793]
+  - [0, 1, u, 3.141592653589793]
+  - [0, 1, id, 6.283185307179586]
+  - [0, 1, u, 6.283185307179586]
+  - [1, 2, id, 0.0]
+  - [1, 2, u, 0.0]
+  - [1, 2, id, 3.141592653589793]
+  - [1, 2, u, 3.141592653589793]
+  - [1, 2, id, 6.283185307179586]
+  - [1, 2, u, 6.283185307179586]
+
+\end{lstlisting}
+Finally, if the status of jobs is DONE, we resolve the measurements from the
+submitted jobs obtaining the following file.
+\begin{lstlisting}[language=Python, caption=Results (asynchronous)]
+metadata:
+  experiments:
+	type: discrimination-fourier
+	qubits:
+	- target: 0
+	  ancilla: 1
+	- target: 1
+	  ancilla: 2
+	angles:
+	  start: 0.0
+	  stop: 6.283185307179586
+	  num_steps: 3
+	gateset: ibmq
+	method: direct_sum
+	num_shots: 100
+  backend_description:
+	name: ibmq_quito
+	asynchronous: true
+	provider:
+		group: open
+		hub: ibm-q
+		project: main
+data:
+- target: 0
+  ancilla: 1
+  phi: 0.0
+  results_per_circuit:
+  - name: id
+	histogram:
+		'00': 27
+		'01': 28
+		'10': 18
+		'11': 27
+	mitigation_info:
+	  target:
+		prob_meas0_prep1: 0.052200000000000024
+		prob_meas1_prep0: 0.0172
+	  ancilla:
+		prob_meas0_prep1: 0.05900000000000005
+		prob_meas1_prep0: 0.0202
+	mitigated_histogram:
+		'00': 0.254196166145997
+		'01': 0.2790358060520916
+		'10': 0.1732699847244092
+		'11': 0.29349804307750227
+  - name: u
+	histogram:
+		'00': 29
+		'01': 17
+		'10': 30
+		'11': 24
+	mitigation_info:
+	  target:
+		prob_meas0_prep1: 0.052200000000000024
+		prob_meas1_prep0: 0.0172
+	  ancilla:
+		prob_meas0_prep1: 0.05900000000000005
+		prob_meas1_prep0: 0.0202
+	mitigated_histogram:
+		'00': 0.2733793468261183
+		'01': 0.1621115306717096
+		'10': 0.3045273800167787
+		'11': 0.2599817424853933
+- target: 0
+  ancilla: 1
+  phi: 3.141592653589793
+  results_per_circuit:
+  - name: id
+	histogram:
+		'00': 3
+		'01': 5
+		'10': 37
+		'11': 55
+	mitigation_info:
+	  target:
+		prob_meas0_prep1: 0.052200000000000024
+		prob_meas1_prep0: 0.0172
+	  ancilla:
+		prob_meas0_prep1: 0.05900000000000005
+		prob_meas1_prep0: 0.0202
+	mitigated_histogram:
+		'00': 0.006189545789708441
+		'01': 0.016616709640352317
+		'10': 0.3675478279476653
+		'11': 0.6096459166222741
+  - name: u
+	histogram:
+		'00': 56
+		'01': 42
+		'10': 2
+	mitigation_info:
+	  target:
+		prob_meas0_prep1: 0.052200000000000024
+		prob_meas1_prep0: 0.0172
+	  ancilla:
+		prob_meas0_prep1: 0.05900000000000005
+		prob_meas1_prep0: 0.0202
+	mitigated_histogram:
+		'00': 0.55731929321128
+		'01': 0.43367489257574243
+		'10': 0.009005814212977551
+- target: 0
+  ancilla: 1
+  phi: 6.283185307179586
+  results_per_circuit:
+  - name: id
+	histogram:
+		'00': 18
+		'01': 28
+		'10': 30
+		'11': 24
+	mitigation_info:
+	  target:
+		prob_meas0_prep1: 0.052200000000000024
+		prob_meas1_prep0: 0.0172
+	  ancilla:
+		prob_meas0_prep1: 0.05900000000000005
+		prob_meas1_prep0: 0.0202
+	mitigated_histogram:
+		'00': 0.15258295844557557
+		'01': 0.2829079190522524
+		'10': 0.3071204587046501
+		'11': 0.25738866379752195
+  - name: u
+	histogram:
+		'00': 32
+		'01': 28
+		'10': 23
+		'11': 17
+	mitigation_info:
+	  target:
+		prob_meas0_prep1: 0.052200000000000024
+		prob_meas1_prep0: 0.0172
+	  ancilla:
+		prob_meas0_prep1: 0.05900000000000005
+		prob_meas1_prep0: 0.0202
+	mitigated_histogram:
+		'00': 0.3026150836796529
+		'01': 0.28491749668524724
+		'10': 0.23230862145681827
+		'11': 0.18015879817828173
+- target: 1
+  ancilla: 2
+  phi: 0.0
+  results_per_circuit:
+  - name: id
+	histogram:
+		'00': 27
+		'01': 16
+		'10': 30
+		'11': 27
+	mitigation_info:
+	  target:
+		prob_meas0_prep1: 0.05900000000000005
+		prob_meas1_prep0: 0.0202
+	  ancilla:
+		prob_meas0_prep1: 0.07540000000000002
+		prob_meas1_prep0: 0.0528
+	mitigated_histogram:
+		'00': 0.256742095057232
+		'01': 0.15000257115061383
+		'10': 0.29821012040758116
+		'11': 0.29504521338457296
+  - name: u
+	histogram:
+		'00': 34
+		'01': 22
+		'10': 25
+		'11': 19
+	mitigation_info:
+	 target:
+		prob_meas0_prep1: 0.05900000000000005
+		prob_meas1_prep0: 0.0202
+	  ancilla:
+		prob_meas0_prep1: 0.07540000000000002
+		prob_meas1_prep0: 0.0528
+	mitigated_histogram:
+		'00': 0.3325088211394024
+		'01': 0.22335261496979697
+		'10': 0.2441636375921354
+		'11': 0.19997492629866526
+- target: 1
+  ancilla: 2
+  phi: 3.141592653589793
+  results_per_circuit:
+  - name: id
+	histogram:
+		'00': 3
+		'01': 9
+		'10': 51
+		'11': 37
+	mitigation_info:
+	  target:
+		prob_meas0_prep1: 0.05900000000000005
+		prob_meas1_prep0: 0.0202
+	  ancilla:
+		prob_meas0_prep1: 0.07540000000000002
+		prob_meas1_prep0: 0.0528
+	mitigated_histogram:
+		'00': -0.016627023111853642
+		'01': 0.06778554570877951
+		'10': 0.53899887367658
+		'11': 0.40984260372649417
+  - name: u
+	histogram:
+		'00': 43
+		'01': 45
+		'10': 7
+		'11': 5
+	mitigation_info:
+	  target:
+		prob_meas0_prep1: 0.05900000000000005
+		prob_meas1_prep0: 0.0202
+	  ancilla:
+		prob_meas0_prep1: 0.07540000000000002
+		prob_meas1_prep0: 0.0528
+	mitigated_histogram:
+		'00': 0.42955729968594086
+		'01': 0.49336080079582095
+		'10': 0.04937406434533623
+		'11': 0.02770783517290191
+- target: 1
+  ancilla: 2
+  phi: 6.283185307179586
+  results_per_circuit:
+  - name: id
+	histogram:
+		'00': 22
+		'01': 19
+		'10': 35
+		'11': 24
+	mitigation_info:
+	  target:
+		prob_meas0_prep1: 0.05900000000000005
+		prob_meas1_prep0: 0.0202
+	  ancilla:
+		prob_meas0_prep1: 0.07540000000000002
+		prob_meas1_prep0: 0.0528
+	mitigated_histogram:
+		'00': 0.19592641048040849
+		'01': 0.18787721420415215
+		'10': 0.3590258049844047
+		'11': 0.25717057033103463
+  - name: u
+		histogram:
+		'00': 27
+		'01': 24
+		'10': 25
+		'11': 24
+	mitigation_info:
+	  target:
+		prob_meas0_prep1: 0.05900000000000005
+		prob_meas1_prep0: 0.0202
+	  ancilla:
+		prob_meas0_prep1: 0.07540000000000002
+		prob_meas1_prep0: 0.0528
+	mitigated_histogram:
+		'00': 0.25555866817587225
+		'01': 0.2429501641251142
+		'10': 0.24509293912212946
+		'11': 0.2563982285768841
 \end{lstlisting}
 
 \end{document}
