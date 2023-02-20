@@ -14,20 +14,19 @@
 
 \Qcircuit @C=2em @R=1em  {
 \lstick{}
-    & \gate{U^\dagger / \Id}
-    & \meter
-    & \multigate{1}{\proj{0}\otimes V_0^\dagger + \proj{1} \otimes V_1^\dagger}
+    & \gate{U^\dagger / \Id}    
     & \meter
     &  \measure{\mathrm{i}}[0]   \cw
+    & \multigate{1}{\proj{0}\otimes V_0^\dagger + \proj{1} \otimes V_1^\dagger}
     \\
 \lstick{}
-    &
+    & \qw
+    & \qw
     & \qw
     & \ghost{\proj{0}\otimes V_0^\dagger + \proj{1} \otimes V_1^\dagger}
-    & \gate{\Delta}
+    & \meter
     & \measure{\mathrm{j}}[0] \cw
     \inputgrouph{1}{2}{1.4em}{\ket{\psi_{0}}}{1.5em}  \\
 }
-
 
 \end{document}
