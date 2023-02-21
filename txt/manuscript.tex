@@ -261,10 +261,6 @@ open-source Python library called PyQBench. The library supports any device avai
 library, and thus can be used with providers such as IBM Q or Amazon Braket. Along with the library,
 the PyQBench package contains a command line tool for running most common benchmarking scenarios. 
 
-
-
-
-
 \section{Existing benchmarking methodologies and software}
 Unsurprisingly, PyQBench is not the only software package for benchmarking gate--based devices.
 While we believe that our approach has significant benefits over other benchmarking techniques, for
@@ -541,40 +537,36 @@ We explore the construction of $\ket{\phi_0}$, $V_0$ and $V_1$ for parametrized 
 \subsection{Software Functionalities}\label{sec:sortware-functionalities}
 
 The PyQBench can be used in two modes: as a Python library and as a CLI script. When used as a
-library, PyQBench allows using user--defined discrimination schemes. The user is supposed to provide
+library, PyQBench allows customization of discrimination scheme. The user provides
 a unitary matrix $U$ defining the measurement to be discriminated, the discriminator $\ket{\phi_0}$,
 and unitaries $V_0$ and $V_1$ describing the final measurement. The PyQBench library provides then
 the following functionalities.
 
 \begin{enumerate}
 	\item Assembling circuits for both postselection and direct sum--based discrimination schemes.
-	\item Executing the whole benchmarking scenario on specified hardware.
-	\item Interpreting the obtained measurements in terms of discrimination probabilities.
+	\item Executing the whole benchmarking scenario on specified backend (either real hardware or
+	software simulator).
+	\item Interpreting the obtained outputs in terms of discrimination probabilities.
 \end{enumerate}
 Note that the execution of circuits by PyQBench is optional. Instead, the user might want to opt-in for
 fine--grained control over the execution of the circuits, For instance, suppose the user wants to
 simulate the discrimination experiment on a noisy simulator. In such a case, he or she can define
 the necessary components and assemble the circuits using PyQBench. The circuits can then be altered,
-e.g. to add noise to particular gates, and then run using any Qiskit backend. Finally, the user can
-use PyQBench to interpret the measurements to obtain discrimination probability. 
+e.g. to add noise to particular gates, and then run using any Qiskit backend by the user. Finally,
+PyQBench can be used to interpret the measurements to obtain discrimination probability. 
 
 The PyQBench library also contains a readily available implementation of all necessary components
-needed to run discrimination experiments for parametrized Fourier family of measurements defined in
-section \ref{sec:fourier}. However, if one only wishes to use this particular family in benchmarks, then using
-PyQBench as a CLI tool might be a simpler choice. When operating as CLI, PyQBench can currently only
-run experiments that use parametrized Fourier family, but the whole process is greatly simplified.
-Essentially, the CLI tool can be used in two types of workflows:
+needed to run discrimination experiments for parametrized Fourier family of measurements, defined
+previously in section \ref{sec:fourier}. However, if one only wishes to use this particular family
+of measurements in their benchmarks, then using PyQBench as a command line tool might be a simpler
+choice. PyQBench's command line interface allows for running the whole benchmarking process without
+writing Python code. The configuration of CLI is done by YAML \cite{} files describing the benchmark
+to be performed and the description of backend on which the benchmark should be run. Importantly,
+the YAML configuration files are reusable. The same benchmark can be used with different backends
+and vice versa.
 
-\begin{itemize}
-	\item \emph{synchronous}: in this scenario PyQBench submits circuits to the given device and
-	waits for the results.
-	\item \emph{asynchronous}: PyQBench submits circuits to the device and then produces
-	an intermediate file containing, among others, metadata allowing for querying results later on.
-\end{itemize}
-
-The execution of the experiment is driven by configuration files written in YAML \cite{}. Examples
-of such files can be found in \ref{sec:examples}, and their detailed description can be found at
-PyQBench's documentation website \cite{}.
+The next section describes important architectural decisions taken when creating PyQBench, and
+how they affect the end user experience.
 
 \subsection{Software Architecture}\label{sec:sortware-architecture}
 
@@ -585,16 +577,20 @@ implemented as a part of \texttt{qbench} Python package. The exposed CLI tool is
 refer an interested reader to the source code available at GitHub \cite{} or at the reference manual
 \cite{}.
 
-\subsubsection{Integration with devices and hardware providers}
+PyQBench can be installed from official Python Package Index (PyPI) by running \texttt{pip install
+pyqbench}. In a properly configured Python environment the installation process should also make the
+\texttt{qbench} command available to the user without a need for further configuration.
+
+\subsubsection{Integration with hardware providers and software simulators}
 
 PyQBench is built around the Qiskit\cite{qiskit} ecosystem. Hence, both the CLI tool and the
-\texttt{qbench} library can use any Qiskit--compatible backend. This includes, in particular, IBM Q
+\texttt{qbench} library can use any Qiskit--compatible backend. This includes, IBM Q
 backends (available by default in Qiskit) and Amazon Braket devices and simulators (available
 through \texttt{qiskit-braket-provider} package \cite{qiskit-braket-provider}). 
 
 When using PyQBench as library, instances of Qiskit backends can be passed to functions that expect
 them as parameters. However, in CLI mode, the user has to provide a YAML file describing the
-backend. An xample of such file can be found in \ref{sec:examples}, and the detailed description of
+backend. An example of such file can be found in \ref{sec:examples}, and the detailed description of
 the expected format can be found at PyQBench's documentation.
 
 \subsubsection{Command Line Interface}
@@ -607,9 +603,9 @@ qbench <benchmark-type> <command> <parameters>
 \end{lstlisting}
 Currently, PyQBench's CLI supports only one type of benchmark (discrimination of parametrized
 Fourier family of measurements), but we decided on structuring the CLI in a hierarchical
-fashion will allow for future extensions. Thus, the only accepted value of \texttt{<benchmark-type>}
+fashion to allow for future extensions. Thus, the only accepted value of \texttt{<benchmark-type>}
 is \texttt{disc-fourier}.
-
+%
 The \texttt{qbench disc-fourier} command has four subcommands:
 
 \begin{itemize}
@@ -622,41 +618,44 @@ The \texttt{qbench disc-fourier} command has four subcommands:
 	synchronous experiments.
 	\item \texttt{tabulate}: interpret the results of a benchamrk and summarize them in the CSV file.
 \end{itemize}
+%
+We present usage of each of the above commands later in section \ref{sec:examples}.
 
 \subsubsection{Asynchronous vs. synchronous execution}
-As stated in previous sections, PyQBench CLI can be used in synchronous and asynchronous modes. The
-mode of execution is defined in the YAML file describing the backend (see \ref{sec:examples}). We
-decided to couple the mode of execution to the backend description because some backends cannot work
-in asynchronous mode.
+PyQBench's CLI can be used in synchronous and asynchronous modes. The
+mode of execution is defined in the YAML file describing the backend (see section
+\ref{sec:examples} for example of this configuratoin). We decided to couple the mode of execution to
+the backend description because some backends cannot work in asynchronous mode.
 
-When running \texttt{qbench disc-fourier benchmark}, an intermediate file containing metadata of
-submitted experiments is created. This metadata contains, in particular, identifiers of the
-submitted jobs. The intermediate file can be used to query the status of the submitted jobs or to
-resolve them, i.e. to wait for their completion and get the measurement outcomes.
+When running \texttt{qbench disc-fourier benchmark} in asynchronous mode, the PyQBench submits all
+the circuits needed to perform a benchmark and then wirte an intermediate YAML file
+containing metadata of submitted experiments. In particular, this metadata contains information on
+how to correlate submitted job identifiers with particular circuits. The intermediate file can be
+used to query the status of the submitted jobs or to resolve them, i.e. to wait for their completion
+and get the measurement outcomes.
 
 In synchronous mode, PyQBench first submits all jobs required to run the benchmark, and then
 immediately waits for their completion. The advantage of this approach is that no separate
 invocation of \texttt{qbench} command is needed to actually download the measurement outcomes. The
 downside, however, is that if the script is interrupted while the command is running, the
-intermediate results will be lost. This might result, in particular, in financial loss if the
-backend used is available as a paid service. Therefore, we recommend using asynchronous mode
+intermediate results will be lost. Therefore, we recommend using asynchronous mode
 whenever possible.
 
 \section{Illustrative examples}
-
+\label{sec:examples}
 In this section, we present two examples demonstrating the usage of PyQBench. In the first example,
-we show how to implement a benchmarking scheme for a user--defined measurement and possible ways of
-using this scheme with \texttt{qbench} library. The second example demonstrates the usage of the
-CLI. We show how to prepare the input files for the experiment and how to run it using the
+we show how to implement a discrimination scheme for a user--defined measurement and possible ways
+of using this scheme with \texttt{qbench} library. The second example demonstrates the usage of the
+CLI. We show how to prepare the input files for the benchmark and how to run it using the
 \texttt{qbench} tool.
 
-\subsection{Using user-defined measurement with \texttt{qbench} library}
-
-\subsection{Using \texttt{qbench} CLI}
-
-In this example, we will use $U = H$ (the Hadamard gate). Since our aim in this section is to
-demonstrate the use of PyQBench as a library, we leave out the mathematical details, which can be
-found in \ref{app:hadamard}. The explicit formula for discriminator in this example reads:
+\subsection{Using user-defined measurement with \texttt{qbench} package}
+In this example, we will demonstrate how \texttt{qbench} package can be used with user--defined
+measurement. For this purpose, we will use $U = H$ (the Hadamard gate). The detailed calculations
+that lead to the particular form of the discriminator and final measurements can be found in
+\ref{app:hadamard}. 
+\noindent
+The explicit formula for discriminator in this example reads:
 \begin{equation}
 \ket{\psi_0} = \frac{1}{\sqrt{2}} (\ket{00} + \ket{11}),
 \end{equation}
@@ -748,7 +747,8 @@ simulator = Aer.get_backend("aer_simulator")
 
 In the simplest scenario, when one does not want to tweak execution details and simply wishes to run
 the experiment on a given backend, everything that is required is now to run
-\texttt{benchmark\_using\_postselection} function.
+\texttt{benchmark\_using\_postselection} or \texttt{benchmark\_using\_direct\_sum} function,
+depending on the user preference.
 
 \begin{lstlisting}[language=Python, caption=Simulation benchmark by using postselection]
 postselection_result = benchmark_using_postselection(
@@ -774,17 +774,18 @@ direct_sum_result = benchmark_using_direct_sum(
 	num_shots_per_measurement=10000,
 )
 \end{lstlisting}
-Finally, we calculate the empirical probability obtained from postselection and direct sum experiment and calculate the absolute error between analytical and empirical results. 
-\begin{lstlisting}[language=Python, caption=Computation of discrimination probability]
+The \texttt{postselection\_result} and  \texttt{direct\_sum\_result} variables contain now the
+empirical probabilities of correct discrimination. We can compare them to the theoretical value and
+compute the absolute error.
+
+\begin{lstlisting}[language=Python, caption=Examining the benchmark results]
 p_succ = (2 + np.sqrt(2)) / 4
 print(f"Analytical p_succ = {p_succ}")
 print(
 f"Postselection: p_succ = {postselection_result}, abs. error = {p_succ - postselection_result}"
 )
 print(f"Direct sum: p_succ = {direct_sum_result}, abs. error = {p_succ - direct_sum_result}")
-
 \end{lstlisting}
-
 
 \begin{lstlisting}
 Analytical p_succ = 0.8535533905932737
@@ -792,43 +793,45 @@ Postselection: p_succ = 0.8559797193791593, abs. error = -0.0024263287858855564
 Direct sum: p_succ = 0.85605, abs. error = -0.0024966094067262468
 \end{lstlisting}
 
-
-\subsubsection{Gaining more control over the benchmarking process}
-In the example presented above we used functions that automate the whole process - from the circuit assembly, through running the simulations to interpreting the results. But what if we want more control over some parts of this process? 
-One possibility would be to add some additional parameters to \textit{benchmark\_using\_xyz} functions, but this approach is not scalable. Moreover, there is no way we can anticipate all the possible use cases.
- We decided on another approach.  PyQBench provides functions performing:
+In the example presented above we used functions that automate the whole process -- from the circuit assembly, through running the simulations to interpreting the results. But what if we want more control over some parts of this process? 
+One possibility would be to add some additional parameters to \texttt{benchmark\_using\_xyz}
+functions, but this approach is not scalable. Moreover, anticipating all possible uses cases
+isimpossible. Therefore, we decided on another approach. PyQBench provides functions performing:
 \begin{enumerate}
-\item assembly of circuits needed for experiment, provided the components discussed above
-\item interpretation of the obtained measurements
+\item Assembly of circuits needed for experiment, provided the components discussed above.
+\item Interpretation of the obtained measurements.
 \end{enumerate}
- The difference between the two approaches is illustrated on the diagrams below.
+ The difference between the two approaches is illustrated on the diagrams in Fig. \ref{fig:diagrams}.
 
-\begin{figure}[ht!]
+\begin{figure}[ht!]	
 	\centering
-	\begin{subfigure}[b]{\textwidth}
+	\begin{subfigure}[b]{0.9\textwidth}
 		\centering
 		\includegraphics[width=0.8\textwidth]{pics/scheme1}
 %		\caption{$y=x$}
 		\label{fig:simplified}
 	\end{subfigure}
 	\vfill
-	\begin{subfigure}[b]{\textwidth}
+	\begin{subfigure}[b]{0.9\textwidth}
 		\centering
 	\includegraphics[width=0.8\textwidth]{pics/scheme2}
 		\label{fig:execution}
 	\end{subfigure}
+	\caption{Differences between simplified (top) and user--controlled (bottom) execution of
+	benchmarks in PyQBench. Compared to simplified benchmarking, in user--controlled benchmarks the
+	user has direct access to the circuits being run, and hence can alter them (e.g. by adding
+	noise) and/or choose the parameters used for executing them on the backend.}
+	\label{fig:diagrams}
 \end{figure}
 
 \pagebreak
 
-By choosing this approach we need to divide the experiment into two parts:
-assembling  circuits and running  circuits.
-
-Let us focus only on the postselection case, as the direct sum case is analogous. In addition, we need to import two more functions from PyQBench.
+For the rest of this example, Let us focus only on the postselection case, as the direct sum case is
+analogous. We continue by importing two more functions from PyQBench.
 \begin{lstlisting}[language=Python, caption= Assembling circuits]
 from qbench.schemes.postselection import (
-assemble_postselection_circuits,
-compute_probabilities_from_postselection_measurements,
+    assemble_postselection_circuits,
+    compute_probabilities_from_postselection_measurements,
 )
 
 circuits = assemble_postselection_circuits(
@@ -841,11 +844,14 @@ circuits = assemble_postselection_circuits(
 )
 
 \end{lstlisting}
-The function \textit{assemble\_postselection\_circuits} creates all of neceserry circuits as a dictionary. Each informs if the circuit implements $U^\dagger$ or $\Id$ on the target qubit, and which of $V_0$ and
-$V_1$ is used.
+Recall that for a postselection scheme we have two possible choices of the "unknown" measurement and
+two possible choices of a final measurement, which gives a total of four circuits needed to run the
+benchmark. The function \texttt{assemble\_postselection\_circuits} creates all four circuits and
+places them in a dictionary with keys \texttt{"id\_v0"}, \texttt{"id\_v1"}, \texttt{"u\_v0"},
+\texttt{"u\_v1"}.
 
-
-Now we need to run the circuits. We will run a noisy and noiseless simulation of our circuits. 
+We will now run our circuits using noisy and noiseless simulation. We start by creating a noise
+model using Qiskit.
 
 
 \begin{lstlisting}[language=Python, caption=Adding noise model]
@@ -857,21 +863,29 @@ noise_model = noise.NoiseModel()
 noise_model.add_readout_error(error, [0])
 noise_model.add_readout_error(error, [1])
 \end{lstlisting}
-Once we have our noise model ready, we can execute our circuits with and without noise. To this end, we will use Qiskit’s execute function. One caveat is that we have to keep track which measurements correspond to which circuit. We do so by fixing an ordering on the keys in \textit{circuits} dictionary.
+Once we have our noise model ready, we can execute the circuits with and without noise. To this end,
+we will use Qiskit’s \texttt{execute} function. One caveat is that we have to keep track which
+measurements correspond to which circuit. We do so by fixing an ordering on the keys in the \texttt{circuits} dictionary.
 \begin{lstlisting}[language=Python, caption=Running  circuits]
 from qiskit import execute
 
 keys_ordering = ["id_v0", "id_v1", "u_v0", "u_v1"]
 all_circuits = [circuits[key] for key in keys_ordering]
 
-counts_noisy = (
-	execute(all_circuits, backend=simulator, noise_model=noise_model, shots=10000).result().get_counts()
-)
+counts_noisy = execute(
+	all_circuits, 
+	backend=simulator, 
+	noise_model=noise_model, 
+	shots=10000
+).result().get_counts()
 
-counts_noiseless = execute(all_circuits, backend=simulator, shots=10000).result().get_counts()
+counts_noiseless = execute(
+	all_circuits, 
+	backend=simulator, 
+	shots=10000
+).result().get_counts()
 \end{lstlisting}
-Finally, we compute the success probabilities using  \textit{compute\_probabilities\_from\_\\postselection\_measurements} function.
-
+Finally, we use the measurement counts to compute discrimination probabilities using \texttt{compute\_probabilities\_from\_postselection\_measurements} function.
 
 \begin{lstlisting}[language=Python, caption=Computation probabilities]
 prob_succ_noiseless = compute_probabilities_from_postselection_measurements(
@@ -890,15 +904,17 @@ prob_succ_noisy = compute_probabilities_from_postselection_measurements(
 )
 
 \end{lstlisting}
-The success probability is 0.8524401115559386. Whereas if we obtain a readout error, the success probability is equal to 0.5017958400693446. 
-As expected, noisy simulations gave us results that are further away from the exact ones.
-This concludes introduction to PyQBench library.
+We can now examine the results. We expect that for noisy simulations, the result will be further
+away from the target value of \texttt{0.8535533905932737}. For example, in one of our runs we
+obtained \texttt{prob\_succ\_noiseless = 0.8524401115559386} and \texttt{prob\_succ\_noisy =
+0.5017958400693446}. 
+\noindent
+This concludes our example. In the next section, we will show how to use PyQBench's CLI.
 
 
 
  
- 
-\section{PyQBench as a CLI tool}\label{sec:pyqbench-as-cli}
+\subsection{Using \texttt{qbench} CLI} 
 Using PyQBench as a library allows one to conduct arbitrary two-qubit von Neumann measurement experiment. However, as discussed in the previous guide, it requires some amount of boilerplate code.
 For a Fourier parametrized family of measurements, PyQBench offers a simplified way of performing the experiment using a Command Line Interface (CLI).
 The workflow is describe as a list of steps:
