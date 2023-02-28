@@ -176,7 +176,7 @@ C1 & Current code version & 0.1.1 \\
 \hline
 C2 & Permanent link to code/repository used for this code version & \url{https://github.com/iitis/PyQBench} \\
 \hline
-C3 & Code Ocean compute capsule & \todo[inline]{???}\\
+C3 & Code Ocean compute capsule & \texttt{https://codeocean.com/capsule/ 89088992-9a27-4712-8525-} \texttt{d92a9b23060f/tree}\\
 \hline
 C4 & Legal Code License & Apache License 2.0\\
 \hline
@@ -229,7 +229,8 @@ devices can perform meaningful computations? To answer this question, one has to
 methodology for benchmarking them. For gate--based computers, on which this paper focuses, there
 already exist several approaches.
 One could mention randomized benchmarking \cite{liu2022sampling, knill2007randomized, knill2008randomized, wallman2014randomized, helsen2022general,
-	cornelissen2021scalable}, benchmarks based on the quantum volume \cite{cross2019validating, moll2018quantum, pelofske2022volume} or cross-entropy benchmarking \cite{arute2019quantum, neill2018blueprint}.
+	cornelissen2021scalable}, benchmarks based on the quantum volume \cite{cross2019validating, moll2018quantum, pelofske2022volume}. 
+%or cross-entropy benchmarking \cite{arute2019quantum, neill2018blueprint}.
 
 
 In this paper, we introduce yet another method for benchmarking gate--based devices with a simple
@@ -270,11 +271,11 @@ chosen circuits with their inverses (which should yield the identity circuit) an
 concatenated circuits on the device. Libraries implementing this approach include Qiskit \cite{qiskit-randomized} or PyQuil \cite{forest-benchmarking}.
 
 
-\todo[inline]{cos tu dopisac o tych metodach}
+
 Another quantity used for benchmarking NISQ devices is quantum volume. The quantum volume
 characterizes capacity of a device for solving computational problems. It takes into account
 multiple factors like number of qubits, connectivity and measurement errors. The Qiskit library allows one to
-measure quantum volume of a device by using its \texttt{qiskit.ignis.verification.quantum\_volume}.
+measure quantum volume of a device by using its \texttt{qiskit.ignis.verifica \\ tion.quantum\_volume}.
 Other implementations of Quantum Volume can be found as well, see e.g. \cite{volume-in-practice}.
 
 % In
@@ -945,7 +946,7 @@ num_shots: 100
 \end{lstlisting}
 The experiment file contains the following fields:
 \begin{itemize}
-	\item \texttt{type}: a string describing the type of the experiment. Currently, the only option of  \textit{type} is \texttt{discrimination-fourier}.
+	\item \texttt{type}: a string describing the type of the experiment. Currently, the only option of  \texttt{type} is \texttt{discrimination-fourier}.
 	\item \texttt{qubits}: a list enumerating pairs of qubits on which the experiment should be run.
 	For configuration in listing \ref{lst:experiment}, the benchmark will run on two pairs of qubits. The first pair is 0 and 1, and
 	the second one is 1 and 2. We decided to describe a pair by using \texttt{target} and
@@ -959,7 +960,7 @@ The experiment file contains the following fields:
 	three points: 0, $\pi$ and $2\pi$.
  	 \item \texttt{gateset}: a string describing the set of gates used in the decomposition of
  	 circuits in the experiment. The PyQBench contains explicit implementations of circuits The
- 	 possible options are \textit{[ibmq, lucy, rigetti]}, corresponding to decompositions
+ 	 possible options are \texttt{[ibmq, lucy, rigetti]}, corresponding to decompositions
  	 compatible with IBM Q devices, OQC Lucy device, and Rigetti devices. Alternatively, one might
  	 wish to turn off the decomposition by using a special value \texttt{generic}. However, for this
  	 to work a backend used for the experiment must natively implement all the gates needed for the
@@ -1036,15 +1037,15 @@ data:
 	ancilla: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
   mitigated_histogram: {'00': 0.2637212373658018, '01': 0.25865061319892463, '10': 0.2067279352110304, '11': 0.2709002142242433}
 \end{lstlisting}
-	The data includes \textit{target, ancilla, phi},
-	and \textit{results\_per\_circuit}.   The first three pieces of information have already been described. The last data  \textit{results\_per\_circuit} gives us
+	The data includes \texttt{target, ancilla, phi},
+	and \texttt{results\_per\_circuit}.   The first three pieces of information have already been described. The last data  \texttt{results\_per\_circuit} gives us
 	the following additional information:
 	\begin{itemize}
 		\item  \texttt{name}:  the information which measurement is used during experiment, either
 		string \texttt{"u"} for $\PP_{U}$ or string \texttt{"id"} for $\PP_{\Id}$. In this example
 		we consider $\PP_{\Id}$.
 		\item \texttt{histogram}: the dictionary with measurement's outcomes. The keys represent possible bitstrings, whereas the values present number of occurrences.
-		\item \texttt{mitigation\_info}:  \textit{system.properties().qubits} contains information on the physical attributes of the qubits. This includes e.g. information about readout error. As shown below, the \textit{readout\_error} is further partitioned into \textit{prob\_meas0\_prep1} and \textit{prob\_meas1\_prep0}, indicating the probability of preparing a given computational basis state, but measuring the orthogonal state.  The readout error is taken to be the average of these two values. Note that \textit{prob\_meas0\_prep1} is usually the dominant factor in the readout error due to relaxation during the measurement process.  ~\cite{mthree, mthreepublication}
+		\item \texttt{mitigation\_info}:  \texttt{system.properties().qubits} contains information on the physical attributes of the qubits. This includes e.g. information about readout error. As shown below, the \texttt{readout\_error} is further partitioned into \texttt{prob\_meas0\_prep1} and \texttt{prob\_meas1\_prep0}, indicating the probability of preparing a given computational basis state, but measuring the orthogonal state.  The readout error is taken to be the average of these two values. Note that \texttt{prob\_meas0\_prep1} is usually the dominant factor in the readout error due to relaxation during the measurement process.  ~\cite{mthree, mthreepublication}
 		\item mitigated\_histogram:  the histogram with measurement's outcomes after mitigation.
 	\end{itemize}
 
@@ -1056,20 +1057,22 @@ qbench disc-fourier status async_results.yml
 and it will display dictionary with histogram of statuses.
 
 \subsubsection{Resolving asynchronous jobs}
-If the status of jobs is \textit{DONE}, we have to obtain measurements from the submitted jobs. This is done using the following command:
+If the status of jobs is \texttt{DONE}, we have to obtain measurements from the submitted jobs. This is done using the following command:
 \begin{lstlisting}[language=Python]
 qbench disc-fourier resolve async-results.yml resolved.yml
 \end{lstlisting}
-The resolved results, stored in \textit{resolved.yml}, would look just like the experiment was run synchronously. More precisely, we should have a file containing measurement histograms, no matter if we run a synchronous or asynchronous experiment (see \ref{app:example}). Next, we can compute the discrimination probabilities.
+The resolved results, stored in \texttt{resolved.yml}, would look just like the experiment was run synchronously. More precisely, we should have a file containing measurement histograms, no matter if we run a synchronous or asynchronous experiment (see \ref{app:example}). Next, we can compute the discrimination probabilities.
 
 
 \subsubsection{Computing probabilities}
-Regardless of whether we use a synchronous or asynchronous approach, we can convert the resulting YML file \textit{results.yml} to a CSV file by creating a result table in which we place the results of discrimination probabilities.
+Regardless of whether we use a synchronous or asynchronous approach, we can convert the resulting YML file \texttt{results.yml} to a CSV file by creating a result table in which we place the results of discrimination probabilities.
 To construct a table with probabilities, you can use the following command
 \begin{lstlisting}[language=Python]
 qbench disc-fourier tabulate results.yml results.csv
 \end{lstlisting}
-A single row for each tuple of \textit{(target, ancilla, phi)}. The \textit{disc\_prob} column will contain the discrimination probability for given configuration. The \textit{mit\_disc\_prob} column contains discrimination probability if Mthree mitigation was applied~\cite{mthree, mthreepublication}.
+A single row for each tuple of \texttt{(target, ancilla, phi)}.  The \texttt{ideal\_prob} 
+column says the theoretical probability of correct discrimination whereas
+the \texttt{disc\_prob} column contains the empirical discrimination probability. The \texttt{mit\_disc\_prob} column contains discrimination probability if Mthree mitigation was applied~\cite{mthree, mthreepublication}.
 A sample csv file is provided below:
 \begin{figure}[h!]
 	\centering
@@ -1160,9 +1163,9 @@ Cross, A. W., Bishop, L. S., Sheldon, S., Nation, P. D., Gambetta, J. M. (2019).
 \bibitem{moll2018quantum}
 Moll, N., Barkoutsos, P., Bishop, L. S., Chow, J. M., Cross, A., Egger, D. J., ...  Temme, K. (2018). Quantum optimization using variational algorithms on near-term quantum devices. Quantum Science and Technology, 3(3), 030503.
 \bibitem{pelofske2022volume} Pelofske, E., B{\"a}rtschi, A., Eidenbenz, S. (2022). Quantum volume in practice: What users can expect from NISQ devices. arXiv preprint arXiv:2203.03816.
-\bibitem{arute2019quantum} Arute, F., Arya, K., Babbush, R., Bacon, D., Bardin, J. C., Barends, R., ... Martinis, J. M. (2019). Quantum supremacy using a programmable superconducting processor. Nature, 574(7779), 505-510.
-\bibitem{neill2018blueprint}
-Neill, C., Roushan, P., Kechedzhi, K., Boixo, S., Isakov, S. V., Smelyanskiy, V., ...  Martinis, J. M. (2018). A blueprint for demonstrating quantum supremacy with superconducting qubits. Science, 360(6385), 195-199.
+%\bibitem{arute2019quantum} Arute, F., Arya, K., Babbush, R., Bacon, D., Bardin, J. C., Barends, R., ... Martinis, J. M. (2019). Quantum supremacy using a programmable superconducting processor. Nature, 574(7779), 505-510.
+%\bibitem{neill2018blueprint}
+%Neill, C., Roushan, P., Kechedzhi, K., Boixo, S., Isakov, S. V., Smelyanskiy, V., ...  Martinis, J. M. (2018). A blueprint for demonstrating quantum supremacy with superconducting qubits. Science, 360(6385), 195-199.
 	\bibitem{mqt2022} Quetschlich, N., Burgholzer, L., Wille, R. (2022). MQT Bench: Benchmarking software and design automation tools for quantum computing. arXiv preprint arXiv:2204.13719.
 \bibitem{mqt-bench} The web resource at  \url{https://github.com/cda-tum/MQTBench}. Accessed on 2023-02-18.
 	\bibitem{supermarq} Tomesh, T., Gokhale, P., Omole, V., Ravi, G. S., Smith, K. N., Viszlai, J., ...  Chong, F. T. (2022, April). Supermarq: A scalable quantum benchmark suite. In 2022 IEEE International Symposium on High-Performance Computer Architecture (HPCA) (pp. 587-603). IEEE.
@@ -1801,7 +1804,7 @@ data:
 		ancilla: {prob_meas0_prep1: 0.07540000000000002, prob_meas1_prep0: 0.0528}
 	mitigated_histogram: {'00': 0.1187719606657805, '01': 0.1962085394489247, '10': 0.3710195249988589, '11': 0.31399997488643583}
 \end{lstlisting}
-For the same experiment file, we use the flag \textit{asynchronous: true} to define asynchronous experiment.
+For the same experiment file, we use the flag \texttt{asynchronous: true} to define asynchronous experiment.
 
 \begin{lstlisting}[language=Python, caption=Backend file]
 name: ibmq_quito
