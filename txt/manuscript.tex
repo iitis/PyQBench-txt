@@ -170,12 +170,9 @@ Python programming
 \label{}
 
 \begin{table}[H]
-\begin{tabular}{|l|p{6.5cm}|p{6.5cm}|}
+\begin{tabular}{|l|p{5.5cm}|p{7.5cm}|}
 \hline
-\textbf{Nr.} & \textbf{Code metadata description} & \textbf{Please fill in this
-column} \\
-\hline
-C1 & Current code version & 0.1.0 \\
+C1 & Current code version & 0.1.1 \\
 \hline
 C2 & Permanent link to code/repository used for this code version & \url{https://github.com/iitis/PyQBench} \\
 \hline
@@ -213,21 +210,6 @@ C9 & Support email for questions & \url{dexter2206@gmail.com}\\
 
 \linenumbers
 
-%% main text
-
-%The permanent link to code/repository or the zip archive should include the
-%following requirements:
-%
-%README.txt and LICENSE.txt.
-%
-%Source code in a src/ directory, not the root of the repository.
-%
-%Tag corresponding with the version of the software that is reviewed.
-%
-%Documentation in the repository in a docs/ directory, and/or READMEs, as
-%appropriate.
-
-
 \section{Motivation and significance}
 
 Noisy Intermediate-Scale Quantum (NISQ)~\cite{preskill} devices are storming the market,
@@ -239,7 +221,7 @@ annealers, or QuEra devices \cite{quera} based on neural atoms.  Most vendors pr
 application programming interface for accessing their devices. To name a few, Rigetti's computers
 are available through their Forest SDK \cite{sdk} and PyQuil library \cite{pyquil} and IBM Q \cite{ibmq} computers can be accessed
 through Qiskit \cite{qiskit} or IBM Quantum Experience web interface \cite{ibmqplatform}. Some cloud services, like Amazon Braket \cite{amazon}, offer access to several quantum devices under a unified API. On top of that, several
-libraries and frameworks can integrate with different hardware vendors. Examples of such frameworks
+libraries and frameworks can integrate with multiple hardware vendors. Examples of such frameworks
 include IBM Q's Qiskit or Zapata Computing's Orquestra \cite{zapata}.
 
 It is well known that NISQ devices have their limitations \cite{preskillnew}. The question is to what extent those
@@ -251,11 +233,12 @@ One could mention randomized benchmarking \cite{liu2022sampling, knill2007random
 
 
 In this paper, we introduce yet another method for benchmarking gate--based devices with a simple
-operational interpretation. In our method, we test how well the given device can distinguish between
-two von Neumann measurements performed in different bases. We implemented our method in an
-open-source Python library called PyQBench. The library supports any device available through Qiskit
-library, and thus can be used with providers such as IBM Q or Amazon Braket. Along with the library,
-the PyQBench package contains a command line tool for running most common benchmarking scenarios.
+operational interpretation. In our method, we test how well the given device is at guessing which of
+the two known von Neumann measurements were performed during the experiment. We implemented our
+approach in an open-source Python library called PyQBench. The library supports any device available
+through the Qiskit library, and thus can be used with providers such as IBM Q or Amazon Braket.
+Along with the library, the PyQBench package contains a command line tool for running most common
+benchmarking scenarios.
 
 \section{Existing benchmarking methodologies and software}
 Unsurprisingly, PyQBench is not the only software package for benchmarking gate--based devices.
@@ -288,10 +271,18 @@ concatenated circuits on the device. Libraries implementing this approach includ
 
 
 \todo[inline]{cos tu dopisac o tych metodach}
-A further approach used to benchmark NISQ	 devices is
-quantum volume \cite{volume-in-practice}
-or cross-entropy benchmarking \cite{cross-entropy-bench}
-\todo[inline]{summary}
+Another quantity used for benchmarking NISQ devices is quantum volume. The quantum volume
+characterizes capacity of a device for solving computational problems. It takes into account
+multiple factors like number of qubits, connectivity and measurement errors. The Qiskit library allows one to
+measure quantum volume of a device by using its \texttt{qiskit.ignis.verification.quantum\_volume}.
+Other implementations of Quantum Volume can be found as well, see e.g. \cite{volume-in-practice}.
+
+% In
+% cross--entropy benchmarkig a random quantum circuit is executed on a quantum computer multiple
+% times. Then, the obtained measurement outcomes are used for computing cross--entropy fidelity
+% $F_{XEB} \in [0, 1]$. A value of 0 means that results obtained from the device are no better then
+% random guessing, whereas value of 1 correspond to a perfect, noiseless execution of the circuit.
+% Packages implementing cross--entropy benchmarking include e.g. \cite{cross-entropy-bench}.
 
 \section{Preliminaries and discrimination scheme approach}
 
@@ -909,8 +900,6 @@ prob_succ_noisy = compute_probabilities_from_postselection_measurements(
 
 \end{lstlisting}
 
-\todo[inline]{ponizej dokonczycccccc}
-
 We can now examine the results. As an example, in one of our runs, we obtained
 \texttt{prob\_succ\_noiseless = 0.8524401115559386} and \texttt{prob\_succ\_noisy =
 0.5017958400693446}. As expected, for noisy simulations, the result lies further
@@ -1017,19 +1006,19 @@ Since PyQBench cannot determine if the job retrieval works for a given backend, 
 responsibility to ensure that this is the case before setting \texttt{asynchronous} to \texttt{true}.
 
 \subsubsection{Running the experiment and collecting measurements data}
-After preparing YAML files with defined experiment and backend,
-running the experiment is done by using the following command line invocation:
+After preparing YAML files defining experiment and backend,
+running the benchmark can be launched by using the following command line invocation:
 \begin{lstlisting}[language=Python]
 qbench disc-fourier benchmark experiment_file.yml backend_file.yml
 \end{lstlisting}
-The output file will be printed to stdout. Optionally, the \textit{- -output OUTPUT} flag might be provided to write the output to the \textit{OUTPUT} file instead.
+The output file will be printed to stdout. Optionally, the \texttt{- -output OUTPUT} parameter might be provided to write the output to the \texttt{OUTPUT} file instead.
 \begin{lstlisting}[language=Python]
 qbench disc-fourier benchmark experiment_file.yml backend_file.yml --output async_results.yml
 \end{lstlisting}
 The result of running the above command can be twofold:
 \begin{itemize}
-	\item If backend is asynchronous, the output will contain intermediate data containing, amongst others, job$\_$ids correlated with the circuit they correspond to.
-	\item If the backend is synchronous, the output will contain measurement data (bitstrings) for each of the circuits run.
+	\item If backend is asynchronous, the output will contain intermediate data containing, amongst others, \texttt{job\_ids} correlated with the circuit they correspond to.
+	\item If the backend is synchronous, the output will contain measurement outcomes (bitstrings) for each of the circuits run.
 \end{itemize}
 
 For synchronous experiment, the part of output looks similar to the one below. The whole YAML file can be seen in \ref{app:example}.
@@ -1051,9 +1040,11 @@ data:
 	and \textit{results\_per\_circuit}.   The first three pieces of information have already been described. The last data  \textit{results\_per\_circuit} gives us
 	the following additional information:
 	\begin{itemize}
-		\item  name: id:  the information which measurement is used during experiment,   $\PP_{U}$ or $\PP_{\Id}$. In this example we consider  $\PP_{\Id}$.
-		\item histogram: {'00': 28, '01': 26, '10': 21, '11': 25}: the dictionary with measurement's outcomes. The keys represent possible measurement oucomes, whereas the values present number of occurrences.
-		\item mitigation\_info:  \textit{system.properties().qubits} contains information on the physical attributes of the qubits. This includes e.g. information about readout error. As shown below, the \textit{readout\_error} is further partitioned into \textit{prob\_meas0\_prep1} and \textit{prob\_meas1\_prep0}, indicating the probability of preparing a given computational basis state, but measuring the orthogonal state.  The readout error is taken to be the average of these two values. Note that \textit{prob\_meas0\_prep1} is usually the dominant factor in the readout error due to relaxation during the measurement process.  ~\cite{mthree, mthreepublication}
+		\item  \texttt{name}:  the information which measurement is used during experiment, either
+		string \texttt{"u"} for $\PP_{U}$ or string \texttt{"id"} for $\PP_{\Id}$. In this example
+		we consider $\PP_{\Id}$.
+		\item \texttt{histogram}: the dictionary with measurement's outcomes. The keys represent possible bitstrings, whereas the values present number of occurrences.
+		\item \texttt{mitigation\_info}:  \textit{system.properties().qubits} contains information on the physical attributes of the qubits. This includes e.g. information about readout error. As shown below, the \textit{readout\_error} is further partitioned into \textit{prob\_meas0\_prep1} and \textit{prob\_meas1\_prep0}, indicating the probability of preparing a given computational basis state, but measuring the orthogonal state.  The readout error is taken to be the average of these two values. Note that \textit{prob\_meas0\_prep1} is usually the dominant factor in the readout error due to relaxation during the measurement process.  ~\cite{mthree, mthreepublication}
 		\item mitigated\_histogram:  the histogram with measurement's outcomes after mitigation.
 	\end{itemize}
 
