@@ -229,7 +229,7 @@ devices can perform meaningful computations? To answer this question, one has to
 methodology for benchmarking them. For gate--based computers, on which this paper focuses, there
 already exist several approaches.
 One could mention randomized benchmarking \cite{liu2022sampling, knill2007randomized, knill2008randomized, wallman2014randomized, helsen2022general,
-	cornelissen2021scalable}, benchmarks based on the quantum volume \cite{cross2019validating, moll2018quantum, pelofske2022volume}. 
+	cornelissen2021scalable}, benchmarks based on the quantum volume \cite{cross2019validating, moll2018quantum, pelofske2022volume}.
 %or cross-entropy benchmarking \cite{arute2019quantum, neill2018blueprint}.
 
 
@@ -1044,9 +1044,13 @@ data:
 		\item  \texttt{name}:  the information which measurement is used during experiment, either
 		string \texttt{"u"} for $\PP_{U}$ or string \texttt{"id"} for $\PP_{\Id}$. In this example
 		we consider $\PP_{\Id}$.
-		\item \texttt{histogram}: the dictionary with measurement's outcomes. The keys represent possible bitstrings, whereas the values present number of occurrences.
-		\item \texttt{mitigation\_info}:  \texttt{system.properties().qubits} contains information on the physical attributes of the qubits. This includes e.g. information about readout error. As shown below, the \texttt{readout\_error} is further partitioned into \texttt{prob\_meas0\_prep1} and \texttt{prob\_meas1\_prep0}, indicating the probability of preparing a given computational basis state, but measuring the orthogonal state.  The readout error is taken to be the average of these two values. Note that \texttt{prob\_meas0\_prep1} is usually the dominant factor in the readout error due to relaxation during the measurement process.  ~\cite{mthree, mthreepublication}
-		\item mitigated\_histogram:  the histogram with measurement's outcomes after mitigation.
+		\item \texttt{histogram}: the dictionary with measurements' outcomes. The keys represent
+		possible bitstrings, whereas the values are the number of occurrences.
+		\item \texttt{mitigation\_info}:  for some backends (notably for backends corresponding to
+		IBM Q devices), \texttt{backends.properties().qubits} contains information that might be
+		used for error mitigation using the MThree method \cite{mthree, mthreepublication}. If this
+		info is available, it will be stored in the \texttt{mitigation\_info} field, otherwise this field will be absent.
+		\item \texttt{mitigated\_histogram}: the histogram with measurements' outcomes after the error mitigation.
 	\end{itemize}
 
 \subsubsection{(Optional) Getting status of asynchronous jobs}
@@ -1057,27 +1061,35 @@ qbench disc-fourier status async_results.yml
 and it will display dictionary with histogram of statuses.
 
 \subsubsection{Resolving asynchronous jobs}
-If the status of jobs is \texttt{DONE}, we have to obtain measurements from the submitted jobs. This is done using the following command:
+For asynchronous experiments, the stored intermediate data has to be resolved in actual
+measurements' outcomes. The following command will wait until all jobs are completed and then write
+a result file.
 \begin{lstlisting}[language=Python]
 qbench disc-fourier resolve async-results.yml resolved.yml
 \end{lstlisting}
-The resolved results, stored in \texttt{resolved.yml}, would look just like the experiment was run synchronously. More precisely, we should have a file containing measurement histograms, no matter if we run a synchronous or asynchronous experiment (see \ref{app:example}). Next, we can compute the discrimination probabilities.
-
+The resolved results, stored in \texttt{resolved.yml}, would look just like if the experiment was
+run synchronously. Therefore, the final results will look the same no matter in which mode the
+benchmark was run, and hence in both cases the final output file is suitable for being an input for
+the command computing the discrimination probabilities.
 
 \subsubsection{Computing probabilities}
-Regardless of whether we use a synchronous or asynchronous approach, we can convert the resulting YML file \texttt{results.yml} to a CSV file by creating a result table in which we place the results of discrimination probabilities.
-To construct a table with probabilities, you can use the following command
+As a last step in the processing workflow, the results file has to be passed to \texttt{tabulate}
+command:
 \begin{lstlisting}[language=Python]
 qbench disc-fourier tabulate results.yml results.csv
 \end{lstlisting}
-A single row for each tuple of \texttt{(target, ancilla, phi)}.  The \texttt{ideal\_prob} 
-column says the theoretical probability of correct discrimination whereas
-the \texttt{disc\_prob} column contains the empirical discrimination probability. The \texttt{mit\_disc\_prob} column contains discrimination probability if Mthree mitigation was applied~\cite{mthree, mthreepublication}.
-A sample csv file is provided below:
+The resulting CSV file contains table with columns \texttt{target}, \texttt{ancilla}, \texttt{phi},
+\texttt{ideal\_prob}, \texttt{disc\_prob} and, optionally, \texttt{mit\_disc\_prob}. Each row in the
+table describes results for a tuple of \texttt{(target, ancilla, phi)}.  The reference optimal value
+of discrimination probability is present in \texttt{ideal\_prob} column, whereas the obtained,
+empirical discrimination probability can be found in the \texttt{disc\_prob} column. The
+\texttt{mit\_disc\_prob} column contains empirical discrimination probability after applying the
+Mthree error mitigation \cite{mthree, mthreepublication}, if it was applied.
+A sample CSV file is provided below:
 \begin{figure}[h!]
 	\centering
 	\includegraphics[scale=1]{results/async_result}
-	\caption{Tabulate results}
+	\caption{Tabulated results}
 	\label{fig:tabulateresults}
 \end{figure}
 
