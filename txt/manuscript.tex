@@ -245,9 +245,9 @@ include IBM Q's Qiskit or Zapata Computing's Orquestra \cite{zapata}.
 It is well known that NISQ devices have their limitations \cite{preskillnew}. The question is to what extent those
 devices can perform meaningful computations? To answer this question, one has to devise a
 methodology for benchmarking them. For gate--based computers, on which this paper focuses, there
-already exist several approaches. 
+already exist several approaches.
 One could mention randomized benchmarking \cite{liu2022sampling, knill2007randomized, knill2008randomized, wallman2014randomized, helsen2022general,
-	cornelissen2021scalable}, benchmarks based on the quantum volume \cite{cross2019validating, moll2018quantum, pelofske2022volume} or cross-entropy benchmarking \cite{arute2019quantum, neill2018blueprint}.  
+	cornelissen2021scalable}, benchmarks based on the quantum volume \cite{cross2019validating, moll2018quantum, pelofske2022volume} or cross-entropy benchmarking \cite{arute2019quantum, neill2018blueprint}.
 
 
 In this paper, we introduce yet another method for benchmarking gate--based devices with a simple
@@ -255,7 +255,7 @@ operational interpretation. In our method, we test how well the given device can
 two von Neumann measurements performed in different bases. We implemented our method in an
 open-source Python library called PyQBench. The library supports any device available through Qiskit
 library, and thus can be used with providers such as IBM Q or Amazon Braket. Along with the library,
-the PyQBench package contains a command line tool for running most common benchmarking scenarios. 
+the PyQBench package contains a command line tool for running most common benchmarking scenarios.
 
 \section{Existing benchmarking methodologies and software}
 Unsurprisingly, PyQBench is not the only software package for benchmarking gate--based devices.
@@ -268,15 +268,15 @@ deviation between actual and expected outputs distribution provides then a metri
 of a given device.
  Libraries such as Munich Quantum Toolkit (MQT) \cite{mqt2022, mqt-bench}
 or
- SupermarQ \cite{supermarq, supermarkq-github} 
+ SupermarQ \cite{supermarq, supermarkq-github}
   contain
 benchmarks leveraging multiple algorithms, such as Shor's algorithm or Grover's algorithm.
-% or  implementing e.g. GHZ state \cite{ghz}.  
+% or  implementing e.g. GHZ state \cite{ghz}.
 Despite being intuitive and easily interpretable, such benchmarks may have some problems. Most
 importantly, they assess the usefulness of a quantum device only for a very particular algorithm,
 and it might be hard to extrapolate their results to other algorithms and applications. For
 instance, the inability of a device to consistently find factorizations using Shor's algorithms
-does not tell anything about its usefulness in Variational Quantum Algorithm's. 
+does not tell anything about its usefulness in Variational Quantum Algorithm's.
 
 
 
@@ -284,11 +284,11 @@ Another possible approach to benchmarking quantum computers is randomized benchm
 of gates (e.g. from the Clifford group) and tests how much the output distribution obtained from the
 device running these circuits differs from the ideal one. It is also common to concatenate randomly
 chosen circuits with their inverses (which should yield the identity circuit) and run those
-concatenated circuits on the device. Libraries implementing this approach include Qiskit \cite{qiskit-randomized} or PyQuil \cite{forest-benchmarking}. 
+concatenated circuits on the device. Libraries implementing this approach include Qiskit \cite{qiskit-randomized} or PyQuil \cite{forest-benchmarking}.
 
 
 \todo[inline]{cos tu dopisac o tych metodach}
-A further approach used to benchmark NISQ	 devices is  
+A further approach used to benchmark NISQ	 devices is
 quantum volume \cite{volume-in-practice}
 or cross-entropy benchmarking \cite{cross-entropy-bench}
 \todo[inline]{summary}
@@ -304,7 +304,7 @@ into account limitations of the current NISQ devices.
 
 Let us first recall the definition of a von Neumann measurement, which is the only type of
 measurement used in PyQBench. A von Neumann measurement $\PP$ is a collection of rank--one projectors
-$\{\proj{u_0}, \ldots, \proj{u_{d-1}}\}$, called effects, that sum up to identity, 
+$\{\proj{u_0}, \ldots, \proj{u_{d-1}}\}$, called effects, that sum up to identity,
 i.e. $ \, \, \sum_{i=0}^{d-1} \proj{u_i} = \1$. If $U$ is a unitary matrix of size $d$,
 one can construct a von Neumann measurement $\PP_{U}$ by taking projectors onto its columns. In this
 case we say that $\PP_{U}$ is described by the matrix $U$.
@@ -370,7 +370,7 @@ For this purpose, we use two possible options: using a postselection or a direct
 \begin{scheme}(Postselection)
 
 	The first idea uses a postselection scheme. In the original scheme, we measure the first qubit
-	and only then determine which measurement should be performed on the second one. Instead of 
+	and only then determine which measurement should be performed on the second one. Instead of
 	doing this choice, we can run two circuits, one with $\PP_{V_0}$ and one with $\PP_{V_1}$ and
 	measure both qubits. We then discard the results of the circuit for which label $i$ does match
 	measurement label $k$. Hence, the circuit for postselection looks as depicted in Fig.
@@ -421,7 +421,7 @@ For this purpose, we use two possible options: using a postselection or a direct
 
 The second idea uses the direct sum $V_0^\dagger \oplus V_1^\dagger$ implementation.     Here, instead of performing a conditional
 measurement $\PP_{V_k}$, where $k\in \{0,1\}$,  we run circuits presented in
-Fig.~\ref{fig:controlled}. 
+Fig.~\ref{fig:controlled}.
 
 	\begin{figure}[h!]
 		\centering
@@ -433,7 +433,7 @@ Fig.~\ref{fig:controlled}.
 	\end{figure}
 
 	One can see why such a circuit is equivalent to the original discrimination scheme.
-	If we rewrite the $V_0^\dagger \oplus V_1^\dagger$ as follows:	
+	If we rewrite the $V_0^\dagger \oplus V_1^\dagger$ as follows:
 	\begin{equation}
 		\label{eq:directsum}
 		V_0^\dagger \oplus V_1^\dagger = \proj{0}\otimes V_0^\dagger + \proj{1} \otimes V_1^\dagger
@@ -493,7 +493,7 @@ The quantum state $\ket{\psi_0}$ which maximizes the diamond norm is called the
 \emph{discriminator}. Furthermore,  thanks to the proof of the Holevo-Helstrom theorem, it is
 possible to construct corresponding unitaries $V_0$, $V_1$ to create the optimal
 discrimination strategy. For brevity, we do not describe this procedure here. Instead, we refer the
-interested reader to \cite{watrous}. 
+interested reader to \cite{watrous}.
 
 \section{Discrimination scheme for parameterized Fourier family and implementation}
 \label{sec:fourier}
@@ -505,7 +505,7 @@ The parametrized Fourier family of measurements is defined as a set of the measu
 $\{\PP_{U_\phi}\colon \phi \in [0, 2\pi]\}$, where $U_\phi$ is defined as follows:
 \begin{equation}
 U_\phi = H
-\left(\begin{array}{cc}1&0\\0&e^{i \phi}\end{array}\right)  H^\dagger, 
+\left(\begin{array}{cc}1&0\\0&e^{i \phi}\end{array}\right)  H^\dagger,
 \end{equation}
 and $H$ is the Hadamard matrix. For each element of this set, the discriminator is a Bell state:
 \begin{equation}
@@ -529,10 +529,10 @@ measurements $\PP_{U_\phi}$ and $\PP_{\Id}$ is given by
 p_{\text{succ}}(\PP_{U_\phi}, \PP_{\Id}) = \frac{1}{2} + \frac{|1 - e^{i \phi}  |}{4} .
 \end{equation}
 We explore the construction of $\ket{\psi_0}$, $V_0$ and $V_1$ for parametrized Fourier family of measurements in
-\ref{app:optimal-probability}. 
- 
+\ref{app:optimal-probability}.
+
  \section{Software description}
- \label{} 
+ \label{}
  This section is divided into two parts.
  In Section~\ref{sec:sortware-functionalities} we describe functionalities of PyQBench
  package. Next, in Section~\ref{sec:sortware-architecture}, we give a general overview of the
@@ -558,7 +558,7 @@ fine-grained control over the execution of the circuits. For instance, suppose t
 simulate the discrimination experiment on a noisy simulator. In such a case, he or she can define
 the necessary components and assemble the circuits using PyQBench. The circuits can then be altered,
 e.g. to add noise to particular gates, and then run using any Qiskit backend by the user. Finally,
-PyQBench can be used to interpret the measurements to obtain discrimination probability. 
+PyQBench can be used to interpret the measurements to obtain discrimination probability.
 
 The PyQBench library also contains a readily available implementation of all necessary components
 needed to run discrimination experiments for parametrized Fourier family of measurements, defined
@@ -590,7 +590,7 @@ pyqbench}. In a properly configured Python environment the installation process 
 PyQBench is built around the Qiskit \cite{qiskit} ecosystem. Hence, both the CLI tool and the
 \texttt{qbench} library can use any Qiskit--compatible backend. This includes, IBM Q
 backends (available by default in Qiskit) and Amazon Braket devices and simulators (available
-through \texttt{qiskit-braket-provider} package \cite{qiskit-braket-provider, qiskit-braket-provider-github}). 
+through \texttt{qiskit-braket-provider} package \cite{qiskit-braket-provider, qiskit-braket-provider-github}).
 
 When using PyQBench as library, instances of Qiskit backends can be passed to functions that expect
 them as parameters. However, in CLI mode, the user has to provide a YAML file describing the
@@ -657,7 +657,7 @@ CLI. We show how to prepare the input files for the benchmark and how to run it 
 In this example, we will demonstrate how \texttt{qbench} package can be used with user--defined
 measurement. For this purpose, we will use $U = H$ (the Hadamard gate). The detailed calculations
 that lead to the particular form of the discriminator and final measurements can be found in
-\ref{app:hadamard}. 
+\ref{app:hadamard}.
 \noindent
 The explicit formula for discriminator in this example reads:
 \begin{equation}
@@ -698,7 +698,7 @@ V_1 = \operatorname{RY}\left(\frac{3}{4} \pi \right) \cdot \operatorname{X}.
 \end{equation}
 Finally, the optimal probability of correct discrimination is equal to
 \begin{equation}
-p_{\text{succ}}(\PP_{U}, \PP_{\Id}) = \frac{1}{2} + \frac{\sqrt{2}}{4}. 
+p_{\text{succ}}(\PP_{U}, \PP_{\Id}) = \frac{1}{2} + \frac{\sqrt{2}}{4}.
 \end{equation}
 We will now demonstrate how to implement this theoretical scheme in PyQBench. For this example we
 will use the Qiskit Aer simulator \cite{aer}. First, we import the necessary functions and classes from
@@ -797,7 +797,7 @@ Postselection: p_succ = 0.8559797193791593, abs. error = -0.0024263287858855564
 Direct sum: p_succ = 0.85605, abs. error = -0.0024966094067262468
 \end{lstlisting}
 
-In the example presented above we used functions that automate the whole process -- from the circuit assembly, through running the simulations to interpreting the results. But what if we want more control over some parts of this process? 
+In the example presented above we used functions that automate the whole process -- from the circuit assembly, through running the simulations to interpreting the results. But what if we want more control over some parts of this process?
 One possibility would be to add some additional parameters to \texttt{benchmark\_using\_xyz}
 functions, but this approach is not scalable. Moreover, anticipating all possible uses cases
 isimpossible. Therefore, we decided on another approach. PyQBench provides functions performing:
@@ -807,7 +807,7 @@ isimpossible. Therefore, we decided on another approach. PyQBench provides funct
 \end{enumerate}
  The difference between the two approaches is illustrated on the diagrams in Fig. \ref{fig:diagrams}.
 
-\begin{figure}[ht!]	
+\begin{figure}[ht!]
 	\centering
 	\begin{subfigure}[b]{0.9\textwidth}
 		\centering
@@ -877,15 +877,15 @@ keys_ordering = ["id_v0", "id_v1", "u_v0", "u_v1"]
 all_circuits = [circuits[key] for key in keys_ordering]
 
 counts_noisy = execute(
-	all_circuits, 
-	backend=simulator, 
-	noise_model=noise_model, 
+	all_circuits,
+	backend=simulator,
+	noise_model=noise_model,
 	shots=10000
 ).result().get_counts()
 
 counts_noiseless = execute(
-	all_circuits, 
-	backend=simulator, 
+	all_circuits,
+	backend=simulator,
 	shots=10000
 ).result().get_counts()
 \end{lstlisting}
@@ -911,33 +911,35 @@ prob_succ_noisy = compute_probabilities_from_postselection_measurements(
 
 \todo[inline]{ponizej dokonczycccccc}
 
-We can now examine the results. We expect that for noisy simulations, the result will be further
-away from the target value of \texttt{0.8535533905932737}. For example, in one of our runs we
-obtained \texttt{prob\_succ\_noiseless = 0.8524401115559386} and \texttt{prob\_succ\_noisy =
-0.5017958400693446}. 
-\noindent
+We can now examine the results. As an example, in one of our runs, we obtained
+\texttt{prob\_succ\_noiseless = 0.8524401115559386} and \texttt{prob\_succ\_noisy =
+0.5017958400693446}. As expected, for noisy simulations, the result lies further
+away from the target value of \texttt{0.8535533905932737}.
+
 This concludes our example. In the next section, we will show how to use PyQBench's CLI.
 
-
- 
-\subsection{Using \texttt{qbench} CLI} 
-Using PyQBench as a library allows one to conduct arbitrary two-qubit von Neumann measurement experiment. However, as discussed in the previous guide, it requires some amount of boilerplate code.
-For a Fourier parametrized family of measurements, PyQBench offers a simplified way of performing the experiment using a Command Line Interface (CLI).
-The workflow is describe as a list of steps:
+\subsection{Using \texttt{qbench} CLI}
+Using PyQBench as a library allows one to conduct a two--qubits benchmark with arbitrary von Neumann
+measurement. However, as discussed in the previous guide, it requires writing some amount of code.
+For a Fourier parametrized family of measurements, PyQBench offers a simplified way of conducting
+benchmarks using a Command Line Interface (CLI). The workflow with PyQBench's CLI can be summarized
+as the following list of steps::
 
 \begin{enumerate}
 
-\item Preparing configuration files describing backend and the experiment scenario.
+\item Preparing configuration files describing the backend and the experiment scenario.
 \item Submitting/running experiments. Depending on the experiment scenario, execution can be synchronous, or asynchronous.
-\item (optional) Checking status of the submitted jobs if the execution is asynchronous.
-\item For asynchronous jobs, 
-resolve jobs into actual measurements.
-\item Computing discrimination probabilities and outputting the resulting table.
-\end{enumerate} 
+\item (optional) Checking the status of the submitted jobs if the execution is asynchronous.
+\item Resolving asynchronous jobs into the actual measurement outcomes.
+\item Converting obtained measurement outcomes into tabulated form.
+\end{enumerate}
 \subsubsection{Preparing configuration files}
-To prepare configuration files we need to define the experiment and the   backend 
-which we want to benchmark. Experiments and backends are defined in YAML files. An example experiment definition looks as follows.
-\begin{lstlisting}[language=Python, caption=Defining the experiment]
+The configuration of PyQBench CLI is driven by YAML files. The first configuration file
+describes the experiment scenario to be executed. The second file describes the backend.
+Typically, this backend will correspond to the physical device to be benchmarked, but for testing
+purposes one might as well use any other Qiskit--compatible backend including simulators.
+Let us first describe the experiment configuration file, which might look as follow.
+\begin{lstlisting}[language=Python, caption=Defining the experiment, label=lst:experiment]
 type: discrimination-fourier
 qubits:
 	- target: 0
@@ -952,49 +954,46 @@ gateset: ibmq
 method: direct_sum
 num_shots: 100
 \end{lstlisting}
-
-
-The components of the experiment is as follows:
+The experiment file contains the following fields:
 \begin{itemize}
-	\item The \textit{type} describes type of the experiment. Currently, the only option of  \textit{type} is \textit{discrimination-fourier}. 
-	\begin{lstlisting}[language=Python]
-type: discrimination-fourier
-	\end{lstlisting}
-	\item The \textit{qubits} list describes pair of qubits on which the experiment should be run. In this example, the benchmark will run on two pairs of qubits. First pair is 0 and 1, second pair is 1 and 2.
-\begin{lstlisting}[language=Python]
-qubits:
-	- target: 0
-	  ancilla: 1
-	- target: 1
-	  ancilla: 2
-	\end{lstlisting}
-\item The \textit{angles} key describe range of angles for Fourier parameterized family. The range is always uniform, starts at the \textit{start}, ends at \textit{stop} and contains \textit{num\_steps} points, including both start and stop. The start and stop can be arithmetic expressions using \textit{pi} literal. For instance range defined as:  
-\begin{lstlisting}[language=Python]
-angles:
-	start: 0
-	stop: 2 *pi
-	num_steps: 3
-\end{lstlisting}
- would contain three angles $0, \pi$  and $2\pi$.
- \item 
- The \textit{gateset} key describes the gate decomposition of the experiment. The possible options are \textit{[ibmq, lucy, rigetti, generic]}. If the user choose the device-dependent key, that is one of the options \textit{ibmq, lucy, rigetti}, then the experiment will be implemented by using predefined sequence of native gates. If the user choose the \textit{generic} key, then the compiler  will automatically decompose given circuit in the way that is suitable for the device in use.
- \begin{lstlisting}[language=Python]
-gateset: ibmq
- \end{lstlisting}
- \item The \textit{method} can take one of two values: \textit{direct\_sum} or \textit{postselection}, and as the name suggests, defines which method is used to implement the experiment.
- \begin{lstlisting}[language=Python]
-method: direct_sum
- \end{lstlisting}
- \item The \textit{num\_shots} defines how many shots are performed in the experiment for particular angle, qubit pair and circuit. For the purpose of calculating possible costs, this is how you compute total number of shots and executed circuits. Let $N$ be the number of qubit pairs in \textit{qubits} key and let $M$ be the number of steps defined in the \textit{angles} key. Then number of executed circuits is $2MN$ for the \textit{direct\_sum} method and $4MN$ for the \textit{postselection} method. Each of those circuits is executed \textit{num\_shots} times.
- \begin{lstlisting}[language=Python]
-num_shots: 100
- \end{lstlisting}
+	\item \texttt{type}: a string describing the type of the experiment. Currently, the only option of  \textit{type} is \texttt{discrimination-fourier}.
+	\item \texttt{qubits}: a list enumerating pairs of qubits on which the experiment should be run.
+	For configuration in listing \ref{lst:experiment}, the benchmark will run on two pairs of qubits. The first pair is 0 and 1, and
+	the second one is 1 and 2. We decided to describe a pair by using \texttt{target} and
+	\texttt{ancilla} keys rather than using a plain list to emphasize that the role of qubits in the
+	experiment is not symmetric.
+	\item \texttt{angles}: an object describing the range of angles for Fourier parameterized
+	family. The described range is always uniform, starts at the \texttt{start}, ends at
+	\texttt{stop} and contains \texttt{num\_steps} points, including both \texttt{start} and
+	\texttt{stop}. The \texttt{start} and \texttt{stop} can be arithmetic expressions using
+	\texttt{pi} literal. For instance, the range defined in listing \ref{lst:experiment} contains
+	three points: 0, $\pi$ and $2\pi$.
+ 	 \item \texttt{gateset}: a string describing the set of gates used in the decomposition of
+ 	 circuits in the experiment. The PyQBench contains explicit implementations of circuits The
+ 	 possible options are \textit{[ibmq, lucy, rigetti]}, corresponding to decompositions
+ 	 compatible with IBM Q devices, OQC Lucy device, and Rigetti devices. Alternatively, one might
+ 	 wish to turn off the decomposition by using a special value \texttt{generic}. However, for this
+ 	 to work a backend used for the experiment must natively implement all the gates needed for the
+ 	 experiment, as described in \ref{sec:fourier}.
+ 	\item \texttt{method}: a string, either \texttt{postselection} or \texttt{direct\_sum}
+ 	determining which implementation of the conditional measurement is used.
+ 	\item \texttt{num\_shots}: an integer defines how many shots are performed in the experiment for
+ 	a particular angle, qubit pair and circuit. Note that if one wishes to compute the total number
+ 	of shots in the experiment, it is necessary to take into account that the \texttt{postselection}
+ 	method uses twice as many circuits as the \texttt{direct\_sum} method.
 \end{itemize}
 
-Observe that the experiment file does not specify what backend to use. This way, the same experiment file can be used on multiple backends.
- Different backends may require different information to be used. For instance, IBMQ backends might require hub, group and project, whereas backends from the \textit{Aer} package do not. Hence, the exact format of the YAML file depends on what backend one wants to use. Below we present 
- YAML file defining the IMBQ backend named Quito. 
-\begin{lstlisting}[language=Python, caption=IBMQ backend]
+The second configuration file describes the backend. We decided to decouple the
+experiment and the backend files because it facilitates their reuse. For instance, the same
+experiment file can be used to run benchmarks on multiple backends, and the same backend description
+file can be used with multiple experiments.
+
+Different Qiskit backends typically require different data for their initialization. Hence, there
+are multiple possible formats of the backend configuration files understood by PyQBench. We refer
+the interested reader to the PyQBench's documentation. Below we describe an example YAML file
+describing IBM Q backend named
+Quito.
+\begin{lstlisting}[language=Python, caption=IBMQ backend, label=lst:backend]
 name: ibmq_quito
 asynchronous: false
 provider:
@@ -1002,28 +1001,23 @@ provider:
 	group: open
 	project: main
 \end{lstlisting}
+IBMQ backends typically require an access token to IBM Quantum Experience. Since it would be unsafe
+to store it in plain text, the token has to be configured separately in \texttt{IBMQ\_TOKEN}
+environmental variable.
 
-IBMQ backends typically require and access token to IBM Quantum Experience. It would be unsafe to store them in plain text, and therefore the token is configured separately. Before running the experiment, you should place your token in the \textit{IBMQ\_TOKEN} environmental variable.
-
-
-\subsubsection{Notes on using the asynchronous flag}
-In this example, the only key that requires the explanation is \textit{asynchronous} which determines whether experiments will be run asynchronously  (\textit{true}) or not (\textit{false}).
-% We recommend setting it to true, unless your experiment is really small (several circuits total). However, some backends may not support asynchronous execution. This might be especially the case with local simulators. 
-
+\subsubsection{Remarks on using the asynchronous flag}
+For backends supporting asynchronous execution, the \texttt{asynchronous} setting can be configured
+to toggle it.
 For asynchronous execution to work, the following conditions have to be met:
 \begin{itemize}
-\item Jobs returned by the backend have unique \textit{job\_id}, 
-\item Job object is retrievable from the backend using \textit{backend.retrieve\_job} method, even from another process (e.g. if the original process running the experiment has finished).
+\item Jobs returned by the backend have unique \texttt{job\_id}.
+\item Jobs are retrievable from the backend using the \texttt{backend.retrieve\_job} method, even from another process (e.g. if the original process running the experiment has finished).
 \end{itemize}
-Since PyQBench cannot determine if the job retrieval works for given backend, the user is responsible for checking it yourself. 
-
-\todo[inline]{co z tymi sekcjami?}
-\subsubsection{Backends obtainable from simple providers???}
-\subsubsection{Backends constructed from a simple function call???}
-\todo[inline]{co z tymi sekcjami?}
+Since PyQBench cannot determine if the job retrieval works for a given backend, it is the user's
+responsibility to ensure that this is the case before setting \texttt{asynchronous} to \texttt{true}.
 
 \subsubsection{Running the experiment and collecting measurements data}
-After preparing YAML files with defined experiment and backend, 
+After preparing YAML files with defined experiment and backend,
 running the experiment is done by using the following command line invocation:
 \begin{lstlisting}[language=Python]
 qbench disc-fourier benchmark experiment_file.yml backend_file.yml
@@ -1054,11 +1048,11 @@ data:
   mitigated_histogram: {'00': 0.2637212373658018, '01': 0.25865061319892463, '10': 0.2067279352110304, '11': 0.2709002142242433}
 \end{lstlisting}
 	The data includes \textit{target, ancilla, phi},
-	and \textit{results\_per\_circuit}.   The first three pieces of information have already been described. The last data  \textit{results\_per\_circuit} gives us 
-	the following additional information: 
+	and \textit{results\_per\_circuit}.   The first three pieces of information have already been described. The last data  \textit{results\_per\_circuit} gives us
+	the following additional information:
 	\begin{itemize}
-		\item  name: id:  the information which measurement is used during experiment,   $\PP_{U}$ or $\PP_{\Id}$. In this example we consider  $\PP_{\Id}$. 
-		\item histogram: {'00': 28, '01': 26, '10': 21, '11': 25}: the dictionary with measurement's outcomes. The keys represent possible measurement oucomes, whereas the values present number of occurrences. 
+		\item  name: id:  the information which measurement is used during experiment,   $\PP_{U}$ or $\PP_{\Id}$. In this example we consider  $\PP_{\Id}$.
+		\item histogram: {'00': 28, '01': 26, '10': 21, '11': 25}: the dictionary with measurement's outcomes. The keys represent possible measurement oucomes, whereas the values present number of occurrences.
 		\item mitigation\_info:  \textit{system.properties().qubits} contains information on the physical attributes of the qubits. This includes e.g. information about readout error. As shown below, the \textit{readout\_error} is further partitioned into \textit{prob\_meas0\_prep1} and \textit{prob\_meas1\_prep0}, indicating the probability of preparing a given computational basis state, but measuring the orthogonal state.  The readout error is taken to be the average of these two values. Note that \textit{prob\_meas0\_prep1} is usually the dominant factor in the readout error due to relaxation during the measurement process.  ~\cite{mthree, mthreepublication}
 		\item mitigated\_histogram:  the histogram with measurement's outcomes after mitigation.
 	\end{itemize}
@@ -1082,7 +1076,7 @@ The resolved results, stored in \textit{resolved.yml}, would look just like the 
 Regardless of whether we use a synchronous or asynchronous approach, we can convert the resulting YML file \textit{results.yml} to a CSV file by creating a result table in which we place the results of discrimination probabilities.
 To construct a table with probabilities, you can use the following command
 \begin{lstlisting}[language=Python]
-qbench disc-fourier tabulate results.yml results.csv 
+qbench disc-fourier tabulate results.yml results.csv
 \end{lstlisting}
 A single row for each tuple of \textit{(target, ancilla, phi)}. The \textit{disc\_prob} column will contain the discrimination probability for given configuration. The \textit{mit\_disc\_prob} column contains discrimination probability if Mthree mitigation was applied~\cite{mthree, mthreepublication}.
 A sample csv file is provided below:
@@ -1147,12 +1141,12 @@ PL is also a holder of European Union scholarship through the European Social Fu
 grant InterPOWER (POWR.03.05.00-00-Z305).
 
 
-\begin{thebibliography}{00}	
+\begin{thebibliography}{00}
 \bibitem{preskill} Preskill, John. "Quantum Computing in the NISQ era and beyond." Quantum 2 (2018): 79.
 \bibitem{rigetti} The web resource at \url{https://www.rigetti.com/}. Accessed on 2023-02-18.
 \bibitem{ibmq} The web resource at \url{https://www.ibm.com/quantum}. Accessed on 2023-02-18.
 \bibitem{oxforf} The web resource at \url{http://oxfordquantum.org/}. Accessed on 2023-02-18.
-\bibitem{ionq} The web resource at \url{https://ionq.com/}. Accessed on 2023-02-18. 
+\bibitem{ionq} The web resource at \url{https://ionq.com/}. Accessed on 2023-02-18.
 \bibitem{xanadu} The web resource at \url{https://www.xanadu.ai/}. Accessed on 2023-02-18.
 \bibitem{dwave} The web resource at \url{https://www.dwavesys.com/}. Accessed on 2023-02-18.
 \bibitem{quera} The web resource at \url{https://www.quera.com/}. Accessed on 2023-02-18.
@@ -1166,14 +1160,14 @@ grant InterPOWER (POWR.03.05.00-00-Z305).
 \bibitem{liu2022sampling} 	Liu, Y., Otten, M., Bassirianjahromi, R., Jiang, L.,  Fefferman, B. (2021). Benchmarking near-term quantum computers via random circuit sampling. arXiv preprint arXiv:2105.05232.
 \bibitem{knill2007randomized} Knill, E., Leibfried, D., Reichle, R., Britton, J., Blakestad, R. B., Jost, J. D., ... Wineland, D. J. (2008). Randomized benchmarking of quantum gates. Physical Review A, 77(1), 012307.
 \bibitem{knill2008randomized}
-Knill, E., Leibfried, D., Reichle, R., Britton, J., Blakestad, R. B., Jost, J. D., ...  Wineland, D. J. (2008). Randomized benchmarking of quantum gates. Physical Review A, 77(1), 012307.	
+Knill, E., Leibfried, D., Reichle, R., Britton, J., Blakestad, R. B., Jost, J. D., ...  Wineland, D. J. (2008). Randomized benchmarking of quantum gates. Physical Review A, 77(1), 012307.
 \bibitem{wallman2014randomized} Wallman, J. J.,  Flammia, S. T. (2014). Randomized benchmarking with confidence. New Journal of Physics, 16(10), 103032.
 \bibitem{helsen2022general} Helsen, J., Roth, I., Onorati, E., Werner, A. H.,  Eisert, J. (2022). General framework for randomized benchmarking. PRX Quantum, 3(2), 020357.
 \bibitem{cornelissen2021scalable} Cornelissen, A., Bausch, J.,  Gilyén, A. (2021). Scalable benchmarks for gate-based quantum computers. arXiv preprint arXiv:2104.10698.
 \bibitem{cross2019validating}
 Cross, A. W., Bishop, L. S., Sheldon, S., Nation, P. D., Gambetta, J. M. (2019). Validating quantum computers using randomized model circuits. Physical Review A, 100(3), 032328.
 \bibitem{moll2018quantum}
-Moll, N., Barkoutsos, P., Bishop, L. S., Chow, J. M., Cross, A., Egger, D. J., ...  Temme, K. (2018). Quantum optimization using variational algorithms on near-term quantum devices. Quantum Science and Technology, 3(3), 030503. 
+Moll, N., Barkoutsos, P., Bishop, L. S., Chow, J. M., Cross, A., Egger, D. J., ...  Temme, K. (2018). Quantum optimization using variational algorithms on near-term quantum devices. Quantum Science and Technology, 3(3), 030503.
 \bibitem{pelofske2022volume} Pelofske, E., B{\"a}rtschi, A., Eidenbenz, S. (2022). Quantum volume in practice: What users can expect from NISQ devices. arXiv preprint arXiv:2203.03816.
 \bibitem{arute2019quantum} Arute, F., Arya, K., Babbush, R., Bacon, D., Bardin, J. C., Barends, R., ... Martinis, J. M. (2019). Quantum supremacy using a programmable superconducting processor. Nature, 574(7779), 505-510.
 \bibitem{neill2018blueprint}
@@ -1189,8 +1183,8 @@ Neill, C., Roushan, P., Kechedzhi, K., Boixo, S., Isakov, S. V., Smelyanskiy, V.
 \bibitem{cross-entropy-bench} The web resource at
 \url{https://quantumai.google/cirq/noise/qcvv/xeb_theory}.  Accessed on 2023-02-18.
 %
-%\bibitem{ghz} 
-%Greenberger, D. M., Horne, M. A., Zeilinger, A. (1989). Bell’s theorem, Quantum Theory, and Conceptions of the Universe. 
+%\bibitem{ghz}
+%Greenberger, D. M., Horne, M. A., Zeilinger, A. (1989). Bell’s theorem, Quantum Theory, and Conceptions of the Universe.
 \bibitem{puchala2018strategies} Puchała, Zbigniew, et al. "Strategies for
 optimal single-shot discrimination of quantum measurements." Physical Review A
 98.4 (2018): 042103.
@@ -1289,7 +1283,7 @@ In PyQBench, we are interested only in von Neumann measurements, that is measure
 for which all the effects are rank-one projectors. Every such measurement can be
 parameterized by a unitary matrix $U \in \mathcal{U}_d$ with effects $\{\proj{u_0}, \ldots, \proj{u_{d-1}}\}$,
 are created by taking $\ket{u_i}$ as  $(i+1)$-th column of the unitary matrix $U$.
-We will denote von Neumann measurements described by the matrix $U$ by $\PP_{U}$. 
+We will denote von Neumann measurements described by the matrix $U$ by $\PP_{U}$.
 The action of
 von Neumann measurement $\PP_{U}$ on some state $\rho \in \Omega_d$ can be
 seen as  a measure-and-prepare quantum channel as follows \begin{equation}
@@ -1319,42 +1313,42 @@ where $\nu = \min_{x \in W(U^\dagger)} |x|  $.
 
 
 \section{Discrimination task for Hadamard gate}\label{app:hadamard}
-For the discrimination task between von Neumann measurements $\PP_{U}$ and $\PP_\Id$, where $U = H$ (the Hadamard gate),  the key is to calculate the diamond norm $\| \mathcal{P}_H - \PP_\Id \|_\diamond$ and 
+For the discrimination task between von Neumann measurements $\PP_{U}$ and $\PP_\Id$, where $U = H$ (the Hadamard gate),  the key is to calculate the diamond norm $\| \mathcal{P}_H - \PP_\Id \|_\diamond$ and
 determine the discriminator $\ket{\psi_0}$.
-Using semidefinite programming \cite{watrous2021simplier}, we obtain 
+Using semidefinite programming \cite{watrous2021simplier}, we obtain
 \begin{equation}
-\| \mathcal{P}_H - \PP_\Id \|_\diamond = \sqrt{2}. 
+\| \mathcal{P}_H - \PP_\Id \|_\diamond = \sqrt{2}.
 \end{equation}
-From \cite{lewandowska2021certification} we have 
+From \cite{lewandowska2021certification} we have
 \begin{equation}
 \| \PP_{H} - \PP_{\Id} \|_\diamond = \| \Phi_{HE_0} - \Phi_{\Id}\|_\diamond,
 \end{equation}
-where $\Phi_{U}$ is a unitary channel and 
- $E_0$ 
+where $\Phi_{U}$ is a unitary channel and
+ $E_0$
 is of the form
 \begin{equation}
-E_0 = \frac{1}{\sqrt{2}} \left( \begin{matrix} 
-1 + i & 0  \\  0 & -1-i 
-\end{matrix} \right). 
+E_0 = \frac{1}{\sqrt{2}} \left( \begin{matrix}
+1 + i & 0  \\  0 & -1-i
+\end{matrix} \right).
 \end{equation}
-Next, in order to construct the discriminator $\ket{\psi_0}$ we use Lemma 5 and the proof of Theorem 1 in \cite{puchala2018strategies}. We show that there exist states 
- $\rho_1 $  and $\rho_2$ of the form $ \rho_1  = \frac{1}{2} \left( \begin{matrix} 
+Next, in order to construct the discriminator $\ket{\psi_0}$ we use Lemma 5 and the proof of Theorem 1 in \cite{puchala2018strategies}. We show that there exist states
+ $\rho_1 $  and $\rho_2$ of the form $ \rho_1  = \frac{1}{2} \left( \begin{matrix}
  1  & i  \\  -i & 1
- \end{matrix} \right)  $  and $\rho_2 = \frac{1}{2} \left( \begin{matrix} 
- 1 & -i \\  i & 1 
+ \end{matrix} \right)  $  and $\rho_2 = \frac{1}{2} \left( \begin{matrix}
+ 1 & -i \\  i & 1
  \end{matrix} \right), $ respectively. Thus, we construct the quantum state $\rho_0$ as follows:
  \begin{equation}
- \rho_0 = \frac{1}{2} \rho_1 + \frac{1}{2} \rho_2 = \frac{1}{2} \left( \begin{matrix} 
+ \rho_0 = \frac{1}{2} \rho_1 + \frac{1}{2} \rho_2 = \frac{1}{2} \left( \begin{matrix}
  1  &  0  \\  0  & 1
  \end{matrix} \right).
  \end{equation}
  According to the Lemma 5 and the proof of Theorem 1 in \cite{puchala2018strategies} we assume that \begin{equation}
- \ket{\psi_0} = \left.\left| \sqrt{\rho_0^\top}\right\rangle \right\rangle. 
+ \ket{\psi_0} = \left.\left| \sqrt{\rho_0^\top}\right\rangle \right\rangle.
  \end{equation}
- It directly implies that 
+ It directly implies that
  \begin{equation}
  \ket{\psi_0} = \frac{1}{\sqrt{2}}(\ket{00} + \ket{11}).  \end{equation}
- Next, from Holevo-Helstrom theorem~\cite{watrous}, we determine the final measurement $\PP_{V_i}$. 
+ Next, from Holevo-Helstrom theorem~\cite{watrous}, we determine the final measurement $\PP_{V_i}$.
  Let us consider \begin{equation}
  X = \left(\PP_{H} \otimes \Id \right)(\proj{\psi_0}) - \left(\PP_{\Id} \otimes \Id \right) (\proj{\psi_0}).
   \end{equation}
@@ -1400,7 +1394,7 @@ Next, in order to construct the discriminator $\ket{\psi_0}$ we use Lemma 5 and 
  \begin{equation}
  \beta  = \frac{\sqrt{2  + \sqrt{2}}}{2} = \sin\left( \frac{3}{8} \pi \right).
  \end{equation}
- 
+
 \section{Optimal probability for parameterized Fourier family} \label{app:optimal-probability}
 Let us focus on single-qubit von Neumann measurements $\PP_\1$ and $\PP_U$.
 Assume that the unitary matrix $U$ is of the form
@@ -1458,7 +1452,7 @@ discrimination between these measurements. To do that, we will present an auxili
 	\end{equation}
 	For that, our task is reduced to show that for every  $E \in \diaguni_2$ there exists $\rho \in \Omega_2$ such that
 	\begin{equation}
- | \tr \left(\rho U E\right) | \le \frac{|1 + e^{i \phi} | }{2}. 
+ | \tr \left(\rho U E\right) | \le \frac{|1 + e^{i \phi} | }{2}.
 	\end{equation}
 
 
@@ -1479,15 +1473,15 @@ discrimination between these measurements. To do that, we will present an auxili
 	\begin{equation}
 	\begin{split}
  | \tr (\rho U E) | & =   \frac{1}{2}  \left| \tr \left(
-	H \diag(1, e^{i\phi}) H^\dagger E \right) \right| =  
+	H \diag(1, e^{i\phi}) H^\dagger E \right) \right| =
 	\frac{1}{2} \left| \tr\left((   \proj{x_0} +e^{i \phi}\proj{x_1} ) E \right)
 	\right| \\& =
 	\frac{1}{2} \left|  \bra{x_0} E \ket{x_0} +  e^{i \phi}\bra{x_1} E \ket{x_1}
-	\right| = 
+	\right| =
 	\frac{1}{2} \left| \frac{E_0 + E_1}{2} + e^{i \phi } \frac{E_0+E_1}{2} \right|
 	\\& =
 	\frac{\left| 1+ e^{i \phi } \right|}{2} \left| \frac{E_0 + E_1}{2} \right| \le
-\frac{|1 + e^{i \phi} | }{2}, 
+\frac{|1 + e^{i \phi} | }{2},
 	\end{split}
 	\end{equation}
 	which completes the proof.
@@ -1575,7 +1569,7 @@ To indicate the optimal strategy, we will present two propositions. The first on
 	\sqrt{\rho}  \left( \proj{u_i} - \proj{i} \right)^\top \sqrt{\rho}  \right\|_1
 	\\
 	& = \max_{\rho \in \Omega_2} \sum_{i=0}^{1} \left\| \sqrt{\rho}  \left(
-	\proj{u_i} - \proj{i} \right)^\top \sqrt{\rho}  \right\|_1. 
+	\proj{u_i} - \proj{i} \right)^\top \sqrt{\rho}  \right\|_1.
 	\end{split}
 	\end{equation}
 	One can prove that for all $\alpha, \beta \ge 0 $, and unit vectors $\ket{x},
@@ -1602,7 +1596,7 @@ To indicate the optimal strategy, we will present two propositions. The first on
 		4|\bra{i}\rho_0\ket{\bar{u_i}}|^2}  \\
 	&= \sum_{i=0}^1  \sqrt{ 1 -  \left| \bra{i}  U \ket{i }\right|^2}
 	\\
-	&=\sum_{i=0}^1  \sqrt{1 -  \left| 1 \cdot \braket{i}{u_0} 
+	&=\sum_{i=0}^1  \sqrt{1 -  \left| 1 \cdot \braket{i}{u_0}
 		\braket{u_0}{i} + e^{i \phi} \cdot\braket{i}{u_1} \braket{u_1}{i}\right|^2} \\
 	&= \sum_{i=0}^1
 	\sqrt{1 -\left| \frac{1+ e^{i \phi}}{2}\right|^2 }
@@ -1615,7 +1609,7 @@ To indicate the optimal strategy, we will present two propositions. The first on
 	\begin{split}
  \| \left( \Id \otimes \sqrt{\rho} \right) J(\PP_{U} - \PP_{\Id} )  \left(
 	\Id \otimes \sqrt{\rho} \right) \|_1 = \left\| ( (\PP_{U} - \PP_\Id) \otimes \Id) \left(  | \sqrt{\rho}^\top
-	\rangle \rangle \langle \langle \sqrt{\rho}^\top | \right) \right\|_1, 
+	\rangle \rangle \langle \langle \sqrt{\rho}^\top | \right) \right\|_1,
 	\end{split}
 	\end{equation}
 the discriminator $\ket{\psi_0}$
