@@ -1096,28 +1096,27 @@ A sample CSV file is provided below:
 
 
 \section{Impact}
-\todo[inline]{OJCIEC WYKAZ SIE, bo trzeba to dobrze sprzedac, nizej tekst z formatki softwarex co powinna zawierac ta sekcja}
-This software has two main contributions.
+With the surge of availability of quantum computing architectures in recent
+years it becomes increasingly difficult to keep track of their relative
+performance. To make this case even more difficult, various providers give
+access to different figures of merit for their architectures. Our package allows
+the user to test various architectures, available through \texttt{qiskit} and
+Amazon BraKet using problems with simple operational interpretation. We provide
+one example built-in in the package. Furthermore, we provide a powerful tool for
+the users to extend the range of available problems in a way that suits their
+needs. 
 
+Due to this possibility of extension, the users are able to test specific
+aspects of their architecture of interest. For example, if their problem is
+related to the amount of coherence (the sum of absolute value of off-diagonal
+elements) of the states present during computation, they are able to quickly
+prepare a custom experiment, launch it on desired architectures, gather the
+result, based on which they can decide which specific architecture they should
+use.
 
-
-\textbf{This is the main section of the article and the reviewers weight the
-description here appropriately}
-
-Indicate in what way new research questions can be pursued as a result of the
-software (if any).
-
-Indicate in what way, and to what extent, the pursuit of existing research
-questions is improved (if so).
-
-Indicate in what way the software has changed the daily practice of its users
-(if so).
-
-Indicate how widespread the use of the software is within and outside the
-intended user group.
-
-Indicate in what way the software is used in commercial settings and/or how it
-led to the creation of spin-off companies (if so).
+Finally, we provide the source code of PyQBench on GitHub~\cite{} under on open
+source license which will allow users to utilize and extend our package in their
+specific applications.
 
 \section{Conclusions}
 \label{}
