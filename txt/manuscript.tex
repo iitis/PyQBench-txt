@@ -141,6 +141,7 @@
 	of Sciences, Ba{\l}tycka~5, 44-100 Gliwice, Poland}
 
 \begin{abstract}
+	\todo[inline]{kod w mathematice final measurement.nb --> zczekałtować}
 We introduce PyQBench, an innovative open-source framework for benchmarking
 gate-based quantum computers. PyQBench can benchmark NISQ devices by verifying their capability of
 discriminating between two von Neumann measurements. PyQBench offers a simplified, ready-to-use,
@@ -233,7 +234,7 @@ One could mention randomized benchmarking \cite{liu2022sampling, knill2007random
 %or cross-entropy benchmarking \cite{arute2019quantum, neill2018blueprint}.
 
 
-In this paper, we introduce yet another method for benchmarking gate--based devices with a simple
+In this paper, we introduce a different approach to benchmarking gate--based devices with a simple
 operational interpretation. In our method, we test how well the given device is at guessing which of
 the two known von Neumann measurements were performed during the experiment. We implemented our
 approach in an open-source Python library called PyQBench. The library supports any device available
@@ -323,20 +324,19 @@ Benchmarks in PyQBench work by experimentally determining the probability of cor
 between two von Neumann measurements by the device under test and comparing the result with the
 ideal, theoretical predictions.
 
-Without loss of generality\footnote{Explaining why we can consider only discrimination scheme between $\PP_{\Id}$ and $\PP_{U}$ is beyond the scope of this paper. See \cite{puchala2018strategies} if you are
-interested in the explanation.}, we consider discrimination task between single qubit measurements
+Without loss of generality\footnote{Explaining why we can consider only discrimination scheme between $\PP_{\Id}$ and $\PP_{U}$ is beyond the scope of this paper. See \cite{puchala2018strategies} for a in depth explanation.}, we consider discrimination task between single qubit measurements
 $\PP_\Id$, performed in the computational Z-basis, and an alternative measurement $\PP_U$ performed
 in the basis $U$. Note, however, that the discrimination scheme described below can work
 regardless of dimensionality of the system, see \cite{puchala2018strategies} for details.
 
-In general, the discrimination scheme, presented in Fig.~\ref{fig:theoretical_scheme}, requires an
-auxiliary qubit. First, the joint system is prepared in some state $\ket{\psi_0}$. Then, one of
-measurements,   $\PP_U$ or $\PP_\1$, is performed on the first part of the system. Based on its
-outcome $i$, one chooses another POVM $\mathcal{P}_{V_i}$ and performs it on the second
-qubit, storing the output in $j$. Finally, if $j=0$, we guess that the performed measurement is
-$\mathcal{P}_U$, otherwise we guess that it was $\mathcal{P}_\Id$. Naturally, one have to repeat the
+In general, the discrimination scheme presented in Fig.~\ref{fig:theoretical_scheme}, requires an
+auxiliary qubit. First, the joint system is prepared in some state $\ket{\psi_0}$. Then, one of the 
+measurements,  either $\PP_U$ or $\PP_\1$, is performed on the first part of the system. Based on its
+outcome $i$, we choose another POVM $\mathcal{P}_{V_i}$ and perform it on the second
+qubit, obtaining the output in $j$. Finally, if $j=0$, we say that the performed measurement is
+$\mathcal{P}_U$, otherwise we say that it was $\mathcal{P}_\Id$. Naturally, we need to repeat the
 same procedure multiple times for both measurements to obtain a reliable estimate of the underlying
-probability distribution. In PyQBench, we assume that experiment is repeated the same number of
+probability distribution. In PyQBench, we assume that the experiment is repeated the same number of
 times for both $\PP_U$ and $\PP_\Id$.
 
 Unsurprisingly, both the
@@ -364,7 +364,7 @@ For this purpose, we use two possible options: using a postselection or a direct
 	The first idea uses a postselection scheme. In the original scheme, we measure the first qubit
 	and only then determine which measurement should be performed on the second one. Instead of
 	doing this choice, we can run two circuits, one with $\PP_{V_0}$ and one with $\PP_{V_1}$ and
-	measure both qubits. We then discard the results of the circuit for which label $i$ does match
+	measure both qubits. We then discard the results of the circuit for which label $i$ does not match
 	measurement label $k$. Hence, the circuit for postselection looks as depicted in Fig.
 	\ref{fig:postselection}.
 
@@ -382,7 +382,7 @@ For this purpose, we use two possible options: using a postselection or a direct
 
 	To perform the benchmark, one needs to run multiple copies of the postselection circuit,
 	with both $\PP_U$ and $\PP_\1$. Each circuit has to be run in both variants, one with final
-	measurement $\PP_{V_0}$ and the second with final measurement $\PP_{V_1}$.
+	measurement $\PP_{V_0}$ and the second with the final measurement $\PP_{V_1}$.
 	The experiments can thus be grouped into classes identified by tuples of the form
 	$(\mathcal{Q}, k, i, j)$, where $\mathcal{Q} \in \{\PP_U, \PP_\Id\}$ denotes the chosen
 	measurement, $k \in \{0,1\}$ designates the final measurement used, and $i \in \{0,1\}$ and $j
@@ -415,6 +415,7 @@ The second idea uses the direct sum $V_0^\dagger \oplus V_1^\dagger$ implementat
 measurement $\PP_{V_k}$, where $k\in \{0,1\}$,  we run circuits presented in
 Fig.~\ref{fig:controlled}.
 
+\todo[inline]{ja rysunki zrobie}
 	\begin{figure}[h!]
 		\centering
 		\includegraphics[scale=1.5]{pics/controlled_unitary}
@@ -459,19 +460,21 @@ Fig.~\ref{fig:controlled}.
 	where $N_{\text{total}}$ is the number of trials.
 \end{scheme}
 
-\subsubsection{Constructing optimal discrimination scheme}
 
+\todo[inline]{Konrad + ta nazwa sekcji}
+\subsubsection{Importance of the optimal discrimination scheme}
 In principle, the schemes described in the previous section could be used with any choice of
 $\ket{\psi_0}$ and final measurements $\PP_{V_i}$. However, we argue that it is best to choose those
 components in such a way that they maximize the probability of correct discrimination. To see that,
 suppose that some choice of $\ket{\psi_0}, \PP_{V_0}, \PP_{V_1}$ yields the theoretical upper bound
-of discriminating between two measurements of 1, i.e. on a perfect quantum computer you will always
-make a correct guess. Then, on real hardware, we might obtain any empirical value in range $[0.5,
-1]$. On the other hand, if we choose the components of our scheme such that the successful
-discrimination probability is only 0.6, the possible range of empirically obtainable probabilities
-is only $[0.5, 0.6]$. Hence, in the second case, the discrepancy between theoretical and empirical
+of discriminating between two measurements of one, i.e. on a perfect quantum computer you will always
+make a correct guess. Then, on real hardware, we might obtain any empirical value in range $\left[\frac{1}{2},
+1\right]$. On the other hand, if we choose the components of our scheme such that the successful
+discrimination probability is only $\frac{3}{5}$, the possible range of empirically obtainable probabilities
+is only $\left[\frac{1}{2}, \frac{3}{5}\right]$. Hence, in the second case, the discrepancy between theoretical and empirical
 results will be less pronounced.
 
+\subsubsection{Constructing optimal discrimination scheme}
 The celebrated result by Helstrom~\cite{helstrom1976quantum} gives the optimal  probability of correct discrimination between two quantum measurements, $\PP$  and $\mathcal{Q}$,
 in terms of their distance with the use of the diamond norm
 \begin{equation}
@@ -479,7 +482,7 @@ p_{\text{succ}}(\PP, \mathcal{Q}) =  \frac12 + \frac14 \| \PP - \mathcal{Q} \|_\
 \end{equation}
 where
 \begin{equation}
-\|\PP\|_\diamond = \max_{\| \ket{\psi}\|_1=1} \| \left(\PP \otimes \1\right) (\proj{\psi}) \|_1.
+\|\PP - \QQ\|_\diamond = \max_{\| \ket{\psi}\|_1=1} \| \left( (\PP - \QQ) \otimes \1\right) (\proj{\psi}) \|_1.
 \end{equation}
 The quantum state $\ket{\psi_0}$ which maximizes the diamond norm is called the
 \emph{discriminator}. Furthermore,  thanks to the proof of the Holevo-Helstrom theorem, it is
@@ -494,12 +497,12 @@ $\ket{\psi_0}$, $V_0$, and $V_1$ are known. In this section, we provide a concre
 parametrized Fourier family of measurements.
 
 The parametrized Fourier family of measurements is defined as a set of the measurements
-$\{\PP_{U_\phi}\colon \phi \in [0, 2\pi]\}$, where $U_\phi$ is defined as follows:
+$\{\PP_{U_\phi}\colon \phi \in [0, 2\pi]\}$, where 
 \begin{equation}
 U_\phi = H
 \left(\begin{array}{cc}1&0\\0&e^{i \phi}\end{array}\right)  H^\dagger,
 \end{equation}
-and $H$ is the Hadamard matrix. For each element of this set, the discriminator is a Bell state:
+and $H$ is the Hadamard matrix od dimension two. For each element of this set, the discriminator is a Bell state:
 \begin{equation}
 \ket{\psi_{0}} = \frac{1}{\sqrt{2}} \left( \ket{00} + \ket{11} \right).
 \end{equation}
@@ -547,7 +550,7 @@ the following functionalities.
 \end{enumerate}
 Note that the execution of circuits by PyQBench is optional. Instead, the user might want to opt in for
 fine-grained control over the execution of the circuits. For instance, suppose the user wants to
-simulate the discrimination experiment on a noisy simulator. In such a case, he or she can define
+simulate the discrimination experiment on a noisy simulator. In such a case, they can define
 the necessary components and assemble the circuits using PyQBench. The circuits can then be altered,
 e.g. to add noise to particular gates, and then run using any Qiskit backend by the user. Finally,
 PyQBench can be used to interpret the measurements to obtain discrimination probability.
@@ -586,7 +589,7 @@ through \texttt{qiskit-braket-provider} package \cite{qiskit-braket-provider, qi
 
 When using PyQBench as library, instances of Qiskit backends can be passed to functions that expect
 them as parameters. However, in CLI mode, the user has to provide a YAML file describing the
-backend. An example of such file can be found in \ref{sec:examples}, and the detailed description of
+backend. An example of such file can be found in Section \ref{sec:examples}, and the detailed description of
 the expected format can be found at PyQBench's documentation.
 
 \subsubsection{Command Line Interface}
@@ -672,11 +675,12 @@ where \begin{equation}
 \end{equation}
 To use the above benchmarking scheme in PyQBench, we first need to decompose the unitary matrices
 above into sequences of gates.
+In standard approach, a circuit \todo[inline]{napisac ze circuit zaczyna w stanie 00, lukasz chcial cos o bramkach dosteonych na urzadzeniach, ktore sa typowe itd}
 The circuit taking $\ket{00}$ to the Bell state $\ket{\psi_0}$  comprises the Hadamard gate followed by CNOT gate on both qubits (see Fig.~\ref{fig:discriminator}).
 \begin{figure}[h!]
 	\centering
 	\includegraphics[scale=1.7]{pics/discriminator}
-	\caption{Decomposition of the discriminator $\ket{\psi_0}$. }
+	\caption{Decomposition of the Bell state $\ket{\psi_0}$. }
 	\label{fig:discriminator}
 \end{figure}
 For $V_0$ and $V_1$ observe that $V_0 = \operatorname{RY}\left(\frac{3}{4} \pi \right) $, where $\operatorname{RY}$ is rotation gate around the $Y$ axis defined by
@@ -686,7 +690,7 @@ For $V_0$ and $V_1$ observe that $V_0 = \operatorname{RY}\left(\frac{3}{4} \pi \
 \end{equation}
 To obtain $V_1$  we need only to swap the columns, i.e.
 \begin{equation}
-V_1 = \operatorname{RY}\left(\frac{3}{4} \pi \right) \cdot \operatorname{X}.
+V_1 = \operatorname{RY}\left(\frac{3}{4} \pi \right) \operatorname{X}.
 \end{equation}
 Finally, the optimal probability of correct discrimination is equal to
 \begin{equation}
@@ -822,7 +826,7 @@ isimpossible. Therefore, we decided on another approach. PyQBench provides funct
 
 \pagebreak
 
-For the rest of this example, Let us focus only on the postselection case, as the direct sum case is
+For the rest of this example we focus only on the postselection case, as the direct sum case is
 analogous. We continue by importing two more functions from PyQBench.
 \begin{lstlisting}[language=Python, caption= Assembling circuits]
 from qbench.schemes.postselection import (
@@ -1078,20 +1082,36 @@ command:
 \begin{lstlisting}[language=Python]
 qbench disc-fourier tabulate results.yml results.csv
 \end{lstlisting}
-The resulting CSV file contains table with columns \texttt{target}, \texttt{ancilla}, \texttt{phi},
-\texttt{ideal\_prob}, \texttt{disc\_prob} and, optionally, \texttt{mit\_disc\_prob}. Each row in the
-table describes results for a tuple of \texttt{(target, ancilla, phi)}.  The reference optimal value
-of discrimination probability is present in \texttt{ideal\_prob} column, whereas the obtained,
-empirical discrimination probability can be found in the \texttt{disc\_prob} column. The
-\texttt{mit\_disc\_prob} column contains empirical discrimination probability after applying the
-Mthree error mitigation \cite{mthree, mthreepublication}, if it was applied.
 A sample CSV file is provided below:
-\begin{figure}[h!]
-	\centering
-	\includegraphics[scale=1]{results/async_result}
-	\caption{Tabulated results}
-	\label{fig:tabulateresults}
-\end{figure}
+\begin{table}[ht!]
+\begin{center}
+	\begin{tabular}{|c c c c c c|} 
+		\hline
+		target & ancilla & phi & ideal$\_$prob  & disc$\_$prob & mit$\_$disc$\_$prob \\ [0.5ex] 
+		\hline\hline
+		0 & 1 & 0 & 0.5 & 0.46 & 0.45  \\ 
+		\hline
+		0 & 1 & 3.14 & 1 & 0.95 & 0.98  \\
+		\hline
+		0 & 1 & 6.28 & 0.5 & 0.57 & 0.58  \\
+		\hline
+		1 & 2 & 0 & 0.5  & 0.57 & 0.57 \\
+		\hline
+		1 & 2 & 3.14 & 1 & 0.88 & 0.94  \\ 
+		\hline
+		1 & 2 & 6.28 & 0.5 & 0.55 & 0.56  \\ 
+		\hline
+	\end{tabular}
+\caption{The resulting CSV file contains table with columns \texttt{target}, \texttt{ancilla}, \texttt{phi},
+	\texttt{ideal\_prob}, \texttt{disc\_prob} and, optionally, \texttt{mit\_disc\_prob}. Each row in the
+	table describes results for a tuple of \texttt{(target, ancilla, phi)}.  The reference optimal value
+	of discrimination probability is present in \texttt{ideal\_prob} column, whereas the obtained,
+	empirical discrimination probability can be found in the \texttt{disc\_prob} column. The
+	\texttt{mit\_disc\_prob} column contains empirical discrimination probability after applying the
+	Mthree error mitigation \cite{mthree, mthreepublication}, if it was applied.}
+\label{fig:tabulateresults}
+\end{center}
+\end{table}
 
 
 
@@ -1114,7 +1134,7 @@ prepare a custom experiment, launch it on desired architectures, gather the
 result, based on which they can decide which specific architecture they should
 use.
 
-Finally, we provide the source code of PyQBench on GitHub~\cite{} under on open
+Finally, we provide the source code of PyQBench on GitHub~\cite{pyqbenchgithub} under on open
 source license which will allow users to utilize and extend our package in their
 specific applications.
 
@@ -1147,7 +1167,7 @@ grant InterPOWER (POWR.03.05.00-00-Z305).
 
 
 \begin{thebibliography}{00}
-\bibitem{preskill} Preskill, John. "Quantum Computing in the NISQ era and beyond." Quantum 2 (2018): 79.
+\bibitem{preskill} Preskill, J. "Quantum Computing in the NISQ era and beyond." Quantum 2 (2018): 79.
 \bibitem{rigetti} The web resource at \url{https://www.rigetti.com/}. Accessed on 2023-02-18.
 \bibitem{ibmq} The web resource at \url{https://www.ibm.com/quantum}. Accessed on 2023-02-18.
 \bibitem{oxforf} The web resource at \url{http://oxfordquantum.org/}. Accessed on 2023-02-18.
@@ -1173,10 +1193,7 @@ Knill, E., Leibfried, D., Reichle, R., Britton, J., Blakestad, R. B., Jost, J. D
 Cross, A. W., Bishop, L. S., Sheldon, S., Nation, P. D., Gambetta, J. M. (2019). Validating quantum computers using randomized model circuits. Physical Review A, 100(3), 032328.
 \bibitem{moll2018quantum}
 Moll, N., Barkoutsos, P., Bishop, L. S., Chow, J. M., Cross, A., Egger, D. J., ...  Temme, K. (2018). Quantum optimization using variational algorithms on near-term quantum devices. Quantum Science and Technology, 3(3), 030503.
-\bibitem{pelofske2022volume} Pelofske, E., B{\"a}rtschi, A., Eidenbenz, S. (2022). Quantum volume in practice: What users can expect from NISQ devices. arXiv preprint arXiv:2203.03816.
-%\bibitem{arute2019quantum} Arute, F., Arya, K., Babbush, R., Bacon, D., Bardin, J. C., Barends, R., ... Martinis, J. M. (2019). Quantum supremacy using a programmable superconducting processor. Nature, 574(7779), 505-510.
-%\bibitem{neill2018blueprint}
-%Neill, C., Roushan, P., Kechedzhi, K., Boixo, S., Isakov, S. V., Smelyanskiy, V., ...  Martinis, J. M. (2018). A blueprint for demonstrating quantum supremacy with superconducting qubits. Science, 360(6385), 195-199.
+\bibitem{pelofske2022volume} Pelofske, E., Bärtschi, A.,  Eidenbenz, S. (2022). Quantum volume in practice: What users can expect from nisq devices. IEEE Transactions on Quantum Engineering, 3, 1-19.
 	\bibitem{mqt2022} Quetschlich, N., Burgholzer, L., Wille, R. (2022). MQT Bench: Benchmarking software and design automation tools for quantum computing. arXiv preprint arXiv:2204.13719.
 \bibitem{mqt-bench} The web resource at  \url{https://github.com/cda-tum/MQTBench}. Accessed on 2023-02-18.
 	\bibitem{supermarq} Tomesh, T., Gokhale, P., Omole, V., Ravi, G. S., Smith, K. N., Viszlai, J., ...  Chong, F. T. (2022, April). Supermarq: A scalable quantum benchmark suite. In 2022 IEEE International Symposium on High-Performance Computer Architecture (HPCA) (pp. 587-603). IEEE.
@@ -1187,13 +1204,10 @@ Moll, N., Barkoutsos, P., Bishop, L. S., Chow, J. M., Cross, A., Egger, D. J., .
 \bibitem{volume-in-practice} The web resource at\url{https://github.com/lanl/Quantum-Volume-in-Practice}. Accessed on 2023-02-18.
 \bibitem{cross-entropy-bench} The web resource at
 \url{https://quantumai.google/cirq/noise/qcvv/xeb_theory}.  Accessed on 2023-02-18.
-%
-%\bibitem{ghz}
-%Greenberger, D. M., Horne, M. A., Zeilinger, A. (1989). Bell’s theorem, Quantum Theory, and Conceptions of the Universe.
-\bibitem{puchala2018strategies} Puchała, Zbigniew, et al. "Strategies for
+\bibitem{puchala2018strategies} Puchała, Z.,  Pawela, Ł.,  Krawiec, A.,  Kukulski, R. "Strategies for
 optimal single-shot discrimination of quantum measurements." Physical Review A
 98.4 (2018): 042103.
-\bibitem{watrous} Watrous, John (2018). The theory of quantum information. Cambridge university press.
+\bibitem{watrous} Watrous, J. (2018). The theory of quantum information. Cambridge university press.
 \bibitem{helstrom1976quantum} Helstrom, C. W. (1969). "Quantum detection and estimation theory." Journal of Statistical Physics, 1(2), 231-252.
 \bibitem{yaml} The web resource at \url{https://yaml.org/spec/1.2.2/}. Accessed on 2023-02-18.
 \bibitem{pyqbenchgithub} The web resource at \url{https://github.com/iitis/PyQBench}. Accessed on 2023-02-18.
@@ -1208,40 +1222,14 @@ optimal single-shot discrimination of quantum measurements." Physical Review A
 \bibitem{nr} The web resource at \url{https://numericalshadow.org/}. Accessed on 2022-10-02.
 \bibitem{watrous2021simplier} Watrous, J. (2012). Simpler semidefinite programs for completely bounded norms. arXiv preprint arXiv:1207.5726.
 \bibitem{lewandowska2021certification} Lewandowska, P., Krawiec, A., Kukulski, R., Pawela, Ł.,  Puchała, Z. (2021). On the optimal certification of von Neumann measurements. Scientific Reports, 11(1), 3623.
-\bibitem{hausdorff} Hausdorff, Felix. "Der wertvorrat einer bilinearform." Mathematische Zeitschrift 3.1 (1919): 314-316.
-\bibitem{toeplitz} Toeplitz, Otto. "Das algebraische Analogon zu einem Satze von Fejér." Mathematische Zeitschrift 2.1 (1918): 187-197.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-\bibitem{michielsen2017benchmarking} Michielsen, Kristel, et al. "Benchmarking
-gate-based quantum computers." Computer Physics Communications 220 (2017):
-44-55.
-
-\bibitem{zhukov2019quantum} Zhukov, A. A., et al. "Quantum communication
-protocols as a benchmark for programmable quantum computers." Quantum
-Information Processing 18.1 (2019): 1-23.
+\bibitem{hausdorff} Hausdorff, F. "Der wertvorrat einer bilinearform." Mathematische Zeitschrift 3.1 (1919): 314-316.
+\bibitem{toeplitz} Toeplitz, O. "Das algebraische Analogon zu einem Satze von Fejér." Mathematische Zeitschrift 2.1 (1918): 187-197.
+\bibitem{michielsen2017benchmarking} Michielsen, K., Nocon, M., Willsch, D., Jin, F., Lippert, T.,  De Raedt, H. (2017). Benchmarking gate-based quantum computers. Computer Physics Communications, 220, 44-55.
+\bibitem{zhukov2019quantum} Zhukov, A. A., Kiktenko, E. O., Elistratov, A. A., Pogosov, W. V.,  Lozovik, Y. E. (2019). Quantum communication protocols as a benchmark for programmable quantum computers. Quantum Information Processing, 18(1), 31.
 \bibitem{hamilton2018generative} Hamilton, Kathleen E., Eugene F. Dumitrescu,
 and Raphael C. Pooser. "Generative model benchmarks for superconducting
 qubits." Physical Review A 99.6 (2019): 062323.
-\bibitem{benedetti2018generative} Benedetti, Marcello, et al. "A generative
-modeling approach for benchmarking and training shallow quantum circuits." npj
-Quantum Information 5.1 (2019): 1-9.
-
+\bibitem{benedetti2018generative} BBenedetti, M., Garcia-Pintos, D., Perdomo, O., Leyton-Ortega, V., Nam, Y.,  Perdomo-Ortiz, A. (2019). A generative modeling approach for benchmarking and training shallow quantum circuits. npj Quantum Information, 5(1), 45.
 
 \end{thebibliography}
 
@@ -1826,7 +1814,7 @@ provider:
 	project: main
 
 \end{lstlisting}
-If backend is asynchronous, the output will contain intermediate data
+If the backend is asynchronous, the output will contain intermediate data
 containing, amongst others, job ids correlated with the circuit they
 correspond to.
 

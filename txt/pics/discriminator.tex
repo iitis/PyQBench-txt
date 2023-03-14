@@ -14,9 +14,9 @@
 
 \Qcircuit @C=2em @R=1em  {
 \lstick{} & \gate{H} & 
-\multigate{1}{CNOT} & \qw
+\ctrl{1} & \qw
 \\
-\lstick{} & \qw & \ghost{CNOT} & \qw
+\lstick{} & \qw & \targ & \qw
 \inputgrouph{1}{2}{1.1em}{\ket{00}}{1.5em}  \\ 
 }
 
