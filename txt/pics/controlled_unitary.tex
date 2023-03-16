@@ -1,8 +1,9 @@
-\documentclass[border={28pt 0pt 1pt 0pt} ]{standalone}
+\documentclass[border={28pt 10pt -1pt 10pt} ]{standalone}
 
 %\usepackage{tikz}
 \usepackage{qcircuit}
-
+\usepackage{tabularx}
+\usepackage{amsmath}
 \newcommand{\Id}{{\rm 1\hspace{-0.9mm}l}}
 \newcommand{\PP}{\mathcal{P}}
 \newcommand{\ket}[1]{\ensuremath{|#1\rangle}}
@@ -11,16 +12,46 @@
 \newcommand{\proj}[1]{\ensuremath{\ketbra{#1}{#1}}}
 
 \begin{document}
-
-\Qcircuit @C=2em @R=1em  {
-\lstick{} & \gate{U^\dagger / \Id} & 
-\multigate{1}{V_0^\dagger \oplus V_1^\dagger} & 
-\meter  &  \measure{\mathrm{i}}[0]   \cw  
+%$
+%\Qcircuit @C=2em @R=1em  {
+%\lstick{} & \gate{U^\dagger / \Id} & 
+%\multigate{1}{\!\!\!\substack{ | \\[-5pt] \begin{array}{c|c}
+%	V_0^\dagger & \\
+%	\hline
+%	& V_1^\dagger 
+%	\end{array}\\[-3pt] |}\!\!\!} & 
+%\meter  &  \measure{\mathrm{i}}[0]   \cw  
+%\\
+%\lstick{} & \qw & \ghost{\!\!\!\substack{|\\[-5pt]\begin{array}{c|c}
+%		V_0^\dagger & \\
+%		\hline
+%		& V_1^\dagger 
+%		\end{array}\\[-3pt] |}\!\!\!} &
+%\meter  &  \measure{\mathrm{j}}[0] \cw
+%\inputgrouph{1}{2}{1.4em}{\ket{\psi_{0}}}{1.5em}  \\ 
+%}
+%$
 \\
-\lstick{} & \qw & \ghost{V_0^\dagger \oplus V_1^\dagger} &
-\meter  &  \measure{\mathrm{j}}[0] \cw
-\inputgrouph{1}{2}{1.4em}{\ket{\psi_{0}}}{1.5em}  \\ 
+$
+\Qcircuit @C=2em @R=1em  {
+	& & \mbox{$V_0^\dagger \oplus V_1^\dagger$}\\
+	\lstick{} & \gate{U^\dagger / \Id} & 
+	\multigate{1}{\!\!\!\substack{\begin{array}{c|c}
+			V_0^\dagger & \\
+			\hline
+			& V_1^\dagger 
+			\end{array}\\}\!\!\!} & 
+	\meter  &  \measure{\mathrm{i}}[0]   \cw  
+	\\
+	\lstick{} & \qw & \ghost{\!\!\!\substack{\begin{array}{c|c}
+			V_0^\dagger & \\
+			\hline
+			& V_1^\dagger 
+			\end{array}\\}\!\!\!} &
+	\meter  &  \measure{\mathrm{j}}[0] \cw
+	\inputgrouph{2}{3}{1.4em}{\ket{\psi_{0}}}{1.5em}  
+	\gategroup{2}{3}{3}{3}{.7em}{--} \\ 
 }
-
+$ 
 
 \end{document}

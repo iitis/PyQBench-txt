@@ -415,7 +415,6 @@ The second idea uses the direct sum $V_0^\dagger \oplus V_1^\dagger$ implementat
 measurement $\PP_{V_k}$, where $k\in \{0,1\}$,  we run circuits presented in
 Fig.~\ref{fig:controlled}.
 
-\todo[inline]{ja rysunki zrobie}
 	\begin{figure}[h!]
 		\centering
 		\includegraphics[scale=1.5]{pics/controlled_unitary}
@@ -426,12 +425,12 @@ Fig.~\ref{fig:controlled}.
 	\end{figure}
 
 	One can see why such a circuit is equivalent to the original discrimination scheme.
-	If we rewrite the $V_0^\dagger \oplus V_1^\dagger$ as follows:
+	If we rewrite the block-diagonal matrix $V_0^\dagger \oplus V_1^\dagger$ as follows:
 	\begin{equation}
 		\label{eq:directsum}
-		V_0^\dagger \oplus V_1^\dagger = \proj{0}\otimes V_0^\dagger + \proj{1} \otimes V_1^\dagger
+		V_0^\dagger \oplus V_1^\dagger = \proj{0}\otimes V_0^\dagger + \proj{1} \otimes V_1^\dagger,
 	\end{equation}
-	We can see that the direct sum in Eq. \eqref{eq:directsum} commutes with the measurement on the
+	we can see that the direct sum in Eq. \eqref{eq:directsum} commutes with the measurement on the
 	first qubit. Thanks to this, we can switch the order of operations to obtain the circuit from
 	Fig. \ref{fig:directsum}. Now, depending on the outcome $i$, one of the summands in
 	Eq. \eqref{eq:directsum} vanishes, and we end up performing exactly the same operations as in the
