@@ -460,8 +460,7 @@ Fig.~\ref{fig:controlled}.
 \end{scheme}
 
 
-\todo[inline]{Konrad + ta nazwa sekcji}
-\subsubsection{Importance of the optimal discrimination scheme}
+\subsubsection{Importance of choosing the optimal discrimination scheme}
 In principle, the schemes described in the previous section could be used with any choice of
 $\ket{\psi_0}$ and final measurements $\PP_{V_i}$. However, we argue that it is best to choose those
 components in such a way that they maximize the probability of correct discrimination. To see that,
@@ -474,8 +473,7 @@ is only $\left[\frac{1}{2}, \frac{3}{5}\right]$. Hence, in the second case, the 
 results will be less pronounced.
 
 \subsubsection{Constructing optimal discrimination scheme}
-The celebrated result by Helstrom~\cite{helstrom1976quantum} gives the optimal  probability of correct discrimination between two quantum measurements, $\PP$  and $\mathcal{Q}$,
-in terms of their distance with the use of the diamond norm
+To construct the optimal discrimination scheme, one starts by calculating the probability of correct discrimination. Using the celebrated result by Helstrom~\cite{helstrom1976quantum}, one finds that the  optimal probability of correct discrimination between two quantum measurements, $\PP$  and $\mathcal{Q}$, is
 \begin{equation}
 p_{\text{succ}}(\PP, \mathcal{Q}) =  \frac12 + \frac14 \| \PP - \mathcal{Q} \|_\diamond,
 \end{equation}
@@ -483,8 +481,9 @@ where
 \begin{equation}
 \|\PP - \QQ\|_\diamond = \max_{\| \ket{\psi}\|_1=1} \| \left( (\PP - \QQ) \otimes \1\right) (\proj{\psi}) \|_1.
 \end{equation}
-The quantum state $\ket{\psi_0}$ which maximizes the diamond norm is called the
-\emph{discriminator}. Furthermore,  thanks to the proof of the Holevo-Helstrom theorem, it is
+The quantum state $\ket{\psi_0}$ maximizing the diamond norm above is called the
+\emph{discriminator}, and can be computed e.g. using semidefinite programming (SDP)
+\cite{watrous,watrous2021simplier}. Furthermore,  using the proof of the Holevo-Helstrom theorem, it is
 possible to construct corresponding unitaries $V_0$, $V_1$ to create the optimal
 discrimination strategy. For brevity, we do not describe this procedure here. Instead, we refer the
 interested reader to \cite{watrous}.
@@ -672,10 +671,7 @@ where \begin{equation}
 \begin{equation}
 \beta  = \frac{\sqrt{2  + \sqrt{2}}}{2} = \sin\left( \frac{3}{8} \pi \right).
 \end{equation}
-To use the above benchmarking scheme in PyQBench, we first need to decompose the unitary matrices
-above into sequences of gates.
-In standard approach, a circuit \todo[inline]{napisac ze circuit zaczyna w stanie 00, lukasz chcial cos o bramkach dosteonych na urzadzeniach, ktore sa typowe itd}
-The circuit taking $\ket{00}$ to the Bell state $\ket{\psi_0}$  comprises the Hadamard gate followed by CNOT gate on both qubits (see Fig.~\ref{fig:discriminator}).
+To use the above benchmarking scheme in PyQBench, we first need to construct circuits that can be executed by actual hardware. To this end, we need to represent each of the unitaries as a sequence of standard gates, keeping in mind that quantum circuits start execution from  $\ket{00}$ state. The circuit taking $\ket{00}$ to the Bell state $\ket{\psi_0}$  comprises the Hadamard gate followed by CNOT gate on both qubits (see Fig.~\ref{fig:discriminator}).
 \begin{figure}[h!]
 	\centering
 	\includegraphics[scale=1.7]{pics/discriminator}
