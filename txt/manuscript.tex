@@ -229,10 +229,8 @@ It is well known that NISQ devices have their limitations \cite{preskillnew}. Th
 devices can perform meaningful computations? To answer this question, one has to devise a
 methodology for benchmarking them. For gate--based computers, on which this paper focuses, there
 already exist several approaches.
-One could mention randomized benchmarking \cite{liu2022sampling, knill2007randomized, knill2008randomized, wallman2014randomized, helsen2022general,
+One could mention randomized benchmarking \cite{liu2022sampling, knill2008randomized, wallman2014randomized, helsen2022general,
 	cornelissen2021scalable}, benchmarks based on the quantum volume \cite{cross2019validating, moll2018quantum, pelofske2022volume}.
-%or cross-entropy benchmarking \cite{arute2019quantum, neill2018blueprint}.
-
 
 In this paper, we introduce a different approach to benchmarking gate--based devices with a simple
 operational interpretation. In our method, we test how well the given device is at guessing which of
@@ -500,7 +498,7 @@ $\{\PP_{U_\phi}\colon \phi \in [0, 2\pi]\}$, where
 U_\phi = H
 \left(\begin{array}{cc}1&0\\0&e^{i \phi}\end{array}\right)  H^\dagger,
 \end{equation}
-and $H$ is the Hadamard matrix od dimension two. For each element of this set, the discriminator is a Bell state:
+and $H$ is the Hadamard matrix of dimension two. For each element of this set, the discriminator is a Bell state:
 \begin{equation}
 \ket{\psi_{0}} = \frac{1}{\sqrt{2}} \left( \ket{00} + \ket{11} \right).
 \end{equation}
@@ -1101,7 +1099,7 @@ A sample CSV file is provided below:
 	of discrimination probability is present in \texttt{ideal\_prob} column, whereas the obtained,
 	empirical discrimination probability can be found in the \texttt{disc\_prob} column. The
 	\texttt{mit\_disc\_prob} column contains empirical discrimination probability after applying the
-	Mthree error mitigation \cite{mthree, mthreepublication}, if it was applied.}
+	\texttt{Mthree} error mitigation \cite{mthree, mthreepublication}, if it was applied.}
 \label{fig:tabulateresults}
 \end{center}
 \end{table}
@@ -1176,20 +1174,19 @@ grant InterPOWER (POWR.03.05.00-00-Z305).
 \bibitem{zapata} The web resource at \url{https://www.zapatacomputing.com/orquestra-platform/}. Accessed on 2023-02-18.
 \bibitem{preskillnew} Preskill, J. (2021). Quantum computing 40 years later. arXiv preprint arXiv:2106.10522.
 \bibitem{liu2022sampling} 	Liu, Y., Otten, M., Bassirianjahromi, R., Jiang, L.,  Fefferman, B. (2021). Benchmarking near-term quantum computers via random circuit sampling. arXiv preprint arXiv:2105.05232.
-\bibitem{knill2007randomized} Knill, E., Leibfried, D., Reichle, R., Britton, J., Blakestad, R. B., Jost, J. D., ... Wineland, D. J. (2008). Randomized benchmarking of quantum gates. Physical Review A, 77(1), 012307.
 \bibitem{knill2008randomized}
-Knill, E., Leibfried, D., Reichle, R., Britton, J., Blakestad, R. B., Jost, J. D., ...  Wineland, D. J. (2008). Randomized benchmarking of quantum gates. Physical Review A, 77(1), 012307.
+Knill, E., Leibfried, D., Reichle, R., Britton, J., Blakestad, R. B., Jost, J. D., Langer, C., Ozeri, R., Seidelin, S.,  Wineland, D. J. (2008). Randomized benchmarking of quantum gates. Physical Review A, 77(1), 012307.
 \bibitem{wallman2014randomized} Wallman, J. J.,  Flammia, S. T. (2014). Randomized benchmarking with confidence. New Journal of Physics, 16(10), 103032.
 \bibitem{helsen2022general} Helsen, J., Roth, I., Onorati, E., Werner, A. H.,  Eisert, J. (2022). General framework for randomized benchmarking. PRX Quantum, 3(2), 020357.
 \bibitem{cornelissen2021scalable} Cornelissen, A., Bausch, J.,  Gilyén, A. (2021). Scalable benchmarks for gate-based quantum computers. arXiv preprint arXiv:2104.10698.
 \bibitem{cross2019validating}
 Cross, A. W., Bishop, L. S., Sheldon, S., Nation, P. D., Gambetta, J. M. (2019). Validating quantum computers using randomized model circuits. Physical Review A, 100(3), 032328.
 \bibitem{moll2018quantum}
-Moll, N., Barkoutsos, P., Bishop, L. S., Chow, J. M., Cross, A., Egger, D. J., ...  Temme, K. (2018). Quantum optimization using variational algorithms on near-term quantum devices. Quantum Science and Technology, 3(3), 030503.
-\bibitem{pelofske2022volume} Pelofske, E., Bärtschi, A.,  Eidenbenz, S. (2022). Quantum volume in practice: What users can expect from nisq devices. IEEE Transactions on Quantum Engineering, 3, 1-19.
+Moll, N., Barkoutsos, P., Bishop, L. S., Chow, J. M., Cross, A., Egger, D. J., Filipp, S., Fuhrer, A., Gambetta, J. M., Ganzhorn, M., Kandala, A., Mezzacapo, A., M{\"u}ller, P., Riess, W., Salis, G., Smolin, J., Tavernelli, I.,  Temme, K. (2018). Quantum optimization using variational algorithms on near-term quantum devices. Quantum Science and Technology, 3(3), 030503.
+\bibitem{pelofske2022volume} Pelofske, E., Bärtschi, A.,  Eidenbenz, S. (2022). Quantum volume in practice: What users can expect from NISQ devices. IEEE Transactions on Quantum Engineering, 3, 1-19.
 	\bibitem{mqt2022} Quetschlich, N., Burgholzer, L., Wille, R. (2022). MQT Bench: Benchmarking software and design automation tools for quantum computing. arXiv preprint arXiv:2204.13719.
 \bibitem{mqt-bench} The web resource at  \url{https://github.com/cda-tum/MQTBench}. Accessed on 2023-02-18.
-	\bibitem{supermarq} Tomesh, T., Gokhale, P., Omole, V., Ravi, G. S., Smith, K. N., Viszlai, J., ...  Chong, F. T. (2022, April). Supermarq: A scalable quantum benchmark suite. In 2022 IEEE International Symposium on High-Performance Computer Architecture (HPCA) (pp. 587-603). IEEE.
+	\bibitem{supermarq} Tomesh, T., Gokhale, P., Omole, V., Ravi, G. S., Smith, K. N., Viszlai, J., Wu, X.,  Hardavellas, N., Martonosi, M.R.,  Chong, F. T. (2022). Supermarq: A scalable quantum benchmark suite. In 2022 IEEE International Symposium on High-Performance Computer Architecture (HPCA) (pp. 587-603). IEEE.
 \bibitem{supermarkq-github} The web resource at \url{https://github.com/SupertechLabs/SupermarQ}. Accessed on 2023-02-18.
 \bibitem{qiskit-randomized} The web resource at
 \url{https://github.com/qiskit-community/qiskit-benchmarks}. Accessed on 2023-02-18.
@@ -1221,8 +1218,8 @@ optimal single-shot discrimination of quantum measurements." Physical Review A
 \bibitem{zhukov2019quantum} Zhukov, A. A., Kiktenko, E. O., Elistratov, A. A., Pogosov, W. V.,  Lozovik, Y. E. (2019). Quantum communication protocols as a benchmark for programmable quantum computers. Quantum Information Processing, 18(1), 31.
 \bibitem{hamilton2018generative} Hamilton, Kathleen E., Eugene F. Dumitrescu,
 and Raphael C. Pooser. "Generative model benchmarks for superconducting
-qubits." Physical Review A 99.6 (2019): 062323.
-\bibitem{benedetti2018generative} BBenedetti, M., Garcia-Pintos, D., Perdomo, O., Leyton-Ortega, V., Nam, Y.,  Perdomo-Ortiz, A. (2019). A generative modeling approach for benchmarking and training shallow quantum circuits. npj Quantum Information, 5(1), 45.
+qubits." Physical Review A 99.6 (2019).
+\bibitem{benedetti2018generative} BBenedetti, M., Garcia-Pintos, D., Perdomo, O., Leyton-Ortega, V., Nam, Y.,  Perdomo-Ortiz, A. (2019). A generative modeling approach for benchmarking and training shallow quantum circuits. Quantum Information, 5(1), 45.
 
 \end{thebibliography}
 
@@ -1363,7 +1360,7 @@ Next, in order to construct the discriminator $\ket{\psi_0}$ we use Lemma 5 and 
   \ket{y_q} = V_1  \ket{1}
  \end{cases}.
  \end{equation}
- For the discrimination task between $\PP_{H}$ and $\PP_{\Id}$ the explicit form of $V_0$ and $V_1$ is given as follows (see also \texttt{mathematics/optimal\_final\_measurement\_discrimination.nb} in the source code repository):
+ For the discrimination task between $\PP_{H}$ and $\PP_{\Id}$ the explicit form of $V_0$ and $V_1$ is given as follows (see also \texttt{mathematics/optimal\_final\_measurement\_ \\ discrimination.nb} in the source code repository):
  \begin{equation}
  V_0 =
  \left(\begin{array}{cc} \alpha & -\beta\\ \beta & \alpha \end{array}\right),
@@ -1842,7 +1839,7 @@ data:
   - [1, 2, u, 6.283185307179586]
 
 \end{lstlisting}
-Finally, if the status of jobs is DONE, we resolve the measurements from the
+Finally, if the status of jobs is \texttt{DONE}, we resolve the measurements from the
 submitted jobs obtaining the following file.
 \begin{lstlisting}[language=Python, caption=Results (asynchronous)]
 metadata:
