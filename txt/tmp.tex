@@ -1,0 +1,21 @@
+With the surge of availability of quantum computing architectures in recent
+years it becomes increasingly difficult to keep track of their relative
+performance. To make this case even more difficult, various providers give
+access to different figures of merit for their architectures. Our package allows
+the user to test various architectures, available through \texttt{qiskit} and
+Amazon BraKet using problems with simple operational interpretation. We provide
+one example built-in in the package. Furthermore, we provide a powerful tool for
+the users to extend the range of available problems in a way that suits their
+needs.
+
+Due to this possibility of extension, the users are able to test specific
+aspects of their architecture of interest. For example, if their problem is
+related to the amount of coherence (the sum of absolute value of off-diagonal
+elements) of the states present during computation, they are able to quickly
+prepare a custom experiment, launch it on desired architectures, gather the
+result, based on which they can decide which specific architecture they should
+use.
+
+Finally, we provide the source code of PyQBench on GitHub~\cite{pyqbenchgithub} under an open
+source license which will allow users to utilize and extend our package in their
+specific applications.
