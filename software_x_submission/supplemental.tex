@@ -1,0 +1,967 @@
+\documentclass[preprint,12pt, a4paper, dvipsnames]{elsarticle}
+
+\usepackage{amssymb}
+
+\usepackage{amsthm}
+\usepackage{mathtools}
+
+\usepackage{lineno}
+\usepackage{listings}
+
+\usepackage{float}
+
+\usepackage{todonotes}
+\usepackage{url}
+
+\usepackage{xcolor}
+
+\usepackage{caption}
+\usepackage{subcaption}
+
+\newcommand{\eg}{{\emph{e.g.\/}}}
+\newcommand{\ie}{{\emph{i.e.\/}}}
+\newcommand{\ket}[1]{\ensuremath{|#1\rangle}}
+\newcommand{\bra}[1]{\ensuremath{\langle#1|}}
+\newcommand{\ketbra}[2]{\ensuremath{\ket{#1}\bra{#2}}}
+\newcommand{\proj}[1]{\ensuremath{\ketbra{#1}{#1}}}
+\newcommand{\braket}[2]{\ensuremath{\langle{#1}|{#2}\rangle}}
+\newcommand{\floor}[1]{\ensuremath{\lfloor #1 \rfloor}}
+\newcommand{\complexity}[1]{\ensuremath{\mathbf{#1}}}
+\newcommand{\new}[1]{ \textcolor{red}{#1} }
+\newcommand{\1}{{\rm 1\hspace{-0.9mm}l}}
+\newcommand{\Id}{{\rm 1\hspace{-0.9mm}l}}
+\newcommand{\connected}{\sim}
+\newcommand{\SPAN}{\mathrm{span}}
+\newcommand{\Lrm}{\ensuremath{\mathrm{L}}}
+\newcommand{\Urm}{\ensuremath{\mathrm{U}}}
+\newcommand{\ee}{\ensuremath{\mathrm{e}}}
+\newcommand{\dd}{\ensuremath{\mathrm{d}}}
+\newcommand{\ii}{\ensuremath{\mathrm{i}}}
+\newcommand{\EE}{\mathcal{E}}
+\newcommand{\XX}{\mathcal{X}}
+\newcommand{\MM}{\mathcal{M}}
+\newcommand{\NN}{\mathcal{N}}
+\newcommand{\DD}{\mathcal{D}}
+\newcommand{\TT}{\mathcal{T}}
+\newcommand{\PP}{\mathcal{P}}
+\newcommand{\QQ}{\mathcal{Q}}
+\renewcommand{\SS}{\mathcal{S}}
+\newcommand{\UU}{\mathcal{U}}
+\newcommand{\HH}{\mathcal{H}}
+\newcommand{\DU}{\mathcal{DU}}
+\newcommand{\NOT}{\sigma_x}
+\newcommand{\idop}[1][\XX]{\ensuremath{\1_{#1}}}
+\newcommand{\diaguni}{\ensuremath{\mathcal{DU}}}
+\newcommand{\diag}{\mathrm{diag}}
+\newcommand{\tr}{\mathrm{tr}}
+\newcommand{\textapprox}{\raisebox{0.5ex}{\texttildelow}}
+\journal{SoftwareX}
+
+\usepackage{amsmath}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{remark}{Remark}
+\newtheorem{lemma}{Lemma}
+\theoremstyle{definition}
+\newtheorem{scheme}{Scheme}
+
+
+
+\begin{document}
+
+\begin{frontmatter}
+
+  \title{
+    PyQBench: a Python library for benchmarking gate-based quantum computers\\
+    Supplemental material
+  }
+
+\author{Konrad Jałowiecki\corref{cor1}}
+\ead{dexter2206@gmail.com}
+\cortext[cor1]{Corresponding author}
+
+\author{Paulina Lewandowska}
+\author{\L ukasz Pawela}
+
+\address{Institute of Theoretical and Applied Informatics, Polish Academy
+	of Sciences, Ba{\l}tycka~5, 44-100 Gliwice, Poland}
+
+\end{frontmatter}
+
+\section{Mathematical preliminaries} \label{app:preliminaries}
+
+Let $\mathcal{M}_{d_1,d_2}$ be the set of all matrices of dimension $d_1 \times d_2$ over
+the field $\mathbb{C}$. For  simplicity, square matrices will be denoted by
+$\mathcal{M}_d$.
+By $\Omega_d$, we will denote the set of quantum states, that is
+positive semidefinite operators having trace equal to one.
+The subset of $\mathcal{M}_d$ consisting of unitary matrices will be denoted
+by $\UU_d$, while its subgroup of diagonal unitary operators will be denoted by
+$\DD \UU_d$.
+
+
+We will also need a linear mapping transforming $\mathcal{M}_{d_1}$ into
+$\mathcal{M}_{d_2}$, which will be denoted
+\begin{equation}
+\Phi: \mathcal{M}_{d_1 } \rightarrow \mathcal{M}_{d_2}.
+\end{equation}
+There
+exists a bijection between the set of linear mappings $\Phi$ and the set of matrices $\mathcal{M}_{d_1d_2}$,  known as the Choi-Jamio{\l}kowski isomorphism.
+For a given linear mapping $\Phi$ the corresponding Choi operator $J(\Phi)$ is explicitly written as
+\begin{equation}
+J(\Phi) \coloneqq \sum_{i,j=0}^{d- 1} \Phi(\ketbra{i}{j}) \otimes \ketbra{i}{j}. \end{equation}
+
+We also introduce a special subset of all mappings $\Phi$, called quantum channels, which are completely positive
+and trace preserving (CPTP).
+In this work we will consider a special class of quantum channels, called unitary channels.  A
+quantum channel
+$\Phi_{U}$ is said to be a unitary channel if it has the following form $\Phi_U(\cdot) = U \cdot U^\dagger$ for any $U \in
+\UU_d$.
+
+
+Let us recall a  general form of a quantum measurement, so called Positive Operator Valued
+Measure (POVM). A POVM $\PP$ is a collection of positive semidefinite operators $\{E_1, \ldots, E_m
+\}$, called effects, that sum up to the identity operator, \ie $ \, \, \sum_{i=1}^m E_i = \1$.
+In PyQBench, we are interested only in von Neumann measurements, that is measurements
+for which all the effects are rank-one projectors. Every such measurement can be
+parameterized by a unitary matrix $U \in \mathcal{U}_d$ with effects $\{\proj{u_0}, \ldots, \proj{u_{d-1}}\}$,
+are created by taking $\ket{u_i}$ as  $(i+1)$-th column of the unitary matrix $U$.
+We will denote von Neumann measurements described by the matrix $U$ by $\PP_{U}$.
+The action of
+von Neumann measurement $\PP_{U}$ on some state $\rho \in \Omega_d$ can be
+seen as  a measure-and-prepare quantum channel as follows \begin{equation}
+\PP_{U} : \rho \rightarrow \sum_{i=0}^{d-1} \bra{u_i} \rho \ket{u_i} \proj{i}.
+\end{equation}
+Moreover, observe that each von Neumann measurement $\PP_{U}$ poses a  composition of a unitary channel $\Phi_{U^\dagger}$ and the maximally dephasing channel $\Delta$, that means $\PP_{U} = \Delta \circ \Phi_{U^\dagger}$.
+
+We need to also briefly discuss about the distance between quantum operations. From \cite[Theorem 1]{puchala2018strategies}, the distance between measurements $\PP_U$ and
+$\PP_\Id$ can be expressed in the notion of diamond norm, that is
+\begin{equation}
+\|\PP_U - \PP_\Id\|_\diamond = \min_{E \in \diaguni_d} \|\Phi_{UE} -
+\Phi_\Id\|_\diamond.
+\end{equation} To express the distance between unitary channels, we need to introduce the definition of numerical range \cite{numericalrangle}. The set \begin{equation}
+W(A) =\{\bra{x}A\ket{x}: \ket{x} \in
+\mathbb{C}^d, \;
+\;\braket{x}{x}=1\}
+\end{equation}
+is called the numerical range of  a given matrix $A \in \mathcal{M}_d$.
+The detailed properties of the numerical range and its generalizations we can read on the website~\cite{nr}.
+
+Due to the definition of $W(A)$, the distance between two unitary channels $\Phi_{U} $ and $\Phi_\Id$
+can be written as
+\begin{equation}
+\| \Phi_U  - \Phi_{\1} \|_\diamond = 2 \sqrt{1-\nu^2},
+\end{equation}
+where $\nu = \min_{x \in W(U^\dagger)} |x|  $.
+
+
+\section{Discrimination task for Hadamard gate}\label{app:hadamard}
+For the discrimination task between von Neumann measurements $\PP_{U}$ and $\PP_\Id$, where $U = H$ (the Hadamard gate),  the key is to calculate the diamond norm $\| \mathcal{P}_H - \PP_\Id \|_\diamond$ and
+determine the discriminator $\ket{\psi_0}$.
+Using semidefinite programming \cite{watrous2021simplier}, we obtain
+\begin{equation}
+\| \mathcal{P}_H - \PP_\Id \|_\diamond = \sqrt{2}.
+\end{equation}
+From \cite{lewandowska2021certification} we have
+\begin{equation}
+\| \PP_{H} - \PP_{\Id} \|_\diamond = \| \Phi_{HE_0} - \Phi_{\Id}\|_\diamond,
+\end{equation}
+where $\Phi_{U}$ is a unitary channel and
+ $E_0$
+is of the form
+\begin{equation}
+E_0 = \frac{1}{\sqrt{2}} \left( \begin{matrix}
+1 + i & 0  \\  0 & -1-i
+\end{matrix} \right).
+\end{equation}
+Next, in order to construct the discriminator $\ket{\psi_0}$ we use Lemma 5 and the proof of Theorem 1 in \cite{puchala2018strategies}. We show that there exist states
+ $\rho_1 $  and $\rho_2$ of the form $ \rho_1  = \frac{1}{2} \left( \begin{matrix}
+ 1  & i  \\  -i & 1
+ \end{matrix} \right)  $  and $\rho_2 = \frac{1}{2} \left( \begin{matrix}
+ 1 & -i \\  i & 1
+ \end{matrix} \right), $ respectively. Thus, we construct the quantum state $\rho_0$ as follows:
+ \begin{equation}
+ \rho_0 = \frac{1}{2} \rho_1 + \frac{1}{2} \rho_2 = \frac{1}{2} \left( \begin{matrix}
+ 1  &  0  \\  0  & 1
+ \end{matrix} \right).
+ \end{equation}
+ According to the Lemma 5 and the proof of Theorem 1 in \cite{puchala2018strategies} we assume that \begin{equation}
+ \ket{\psi_0} = \left.\left| \sqrt{\rho_0^\top}\right\rangle \right\rangle.
+ \end{equation}
+ It directly implies that
+ \begin{equation}
+ \ket{\psi_0} = \frac{1}{\sqrt{2}}(\ket{00} + \ket{11}).  \end{equation}
+ Next, from Holevo-Helstrom theorem~\cite{watrous}, we determine the final measurement $\PP_{V_i}$.
+ Let us consider \begin{equation}
+ X = \left(\PP_{H} \otimes \Id \right)(\proj{\psi_0}) - \left(\PP_{\Id} \otimes \Id \right) (\proj{\psi_0}).
+  \end{equation}
+ From the Hahn-Jordan decomposition \cite{watrous}, let us note
+ \begin{equation}
+ X = P - Q,
+ \end{equation}
+ where $P, Q \ge 0 $.
+ Let us define projectors $\Pi_P$ and $\Pi_Q$ onto  $\text{im}(P)$ and $\text{im}(Q)$,
+ respectively. Observe, that $P $ and $Q$ are block-diagonal.  Then,  $\Pi_P$ and $\Pi_Q$ have the following forms
+ \begin{equation}
+ \Pi_P = \left(\begin{array}{cc}\proj{x_p}&0\\0&\proj{y_p}\end{array}\right),
+ \end{equation}
+ and
+ \begin{equation}
+ \Pi_Q = \left(\begin{array}{cc}\proj{x_q}&0\\0&\proj{y_q}\end{array}\right).
+ \end{equation}
+ Hence, we define $V_0$ as
+ \begin{equation}
+ \begin{cases} \ket{x_p} =  V_0  \ket{0} \\  \ket{x_q} =  V_0 \ket{1} \end{cases}
+ \end{equation}
+ and $V_1$ as
+ \begin{equation}
+ \begin{cases}
+ \ket{y_p} =   V_1 \ket{0} \\
+  \ket{y_q} = V_1  \ket{1}
+ \end{cases}.
+ \end{equation}
+ For the discrimination task between $\PP_{H}$ and $\PP_{\Id}$ the explicit form of $V_0$ and $V_1$ is given as follows (see also \texttt{mathematics/optimal\_final\_measurement\_ \\ discrimination.nb} in the source code repository):
+ \begin{equation}
+ V_0 =
+ \left(\begin{array}{cc} \alpha & -\beta\\ \beta & \alpha \end{array}\right),
+ \end{equation}
+ and \begin{equation}
+ V_1 =
+ \left(\begin{array}{cc} -\beta & \alpha \\ \alpha & \beta \end{array}\right),
+ \end{equation}
+ where \begin{equation}
+ \alpha = \frac{\sqrt{2 - \sqrt{2}}}{2} = \cos\left( \frac{3}{8} \pi \right),
+ \end{equation}
+ and
+ \begin{equation}
+ \beta  = \frac{\sqrt{2  + \sqrt{2}}}{2} = \sin\left( \frac{3}{8} \pi \right).
+ \end{equation}
+
+\section{Optimal probability for parameterized Fourier family} \label{app:optimal-probability}
+Let us focus on single-qubit von Neumann measurements $\PP_\1$ and $\PP_U$.
+Assume that the unitary matrix $U$ is of the form
+\begin{equation}
+U = H
+\left(\begin{array}{cc}1&0\\0&e^{i \phi}\end{array}\right)  H^\dagger
+\end{equation}
+where $H$ is the Hadamard matrix of dimension two and $\phi \in [0, 2 \pi)$.
+In this section we present theoretical probability of correct
+discrimination between these measurements. To do that, we will present an auxiliary lemma.
+\begin{lemma}\label{lemma:min-e-optimal}
+	Let $U = H \diag(1, e^{i \phi}) H^\dagger$, $\phi \in [0, 2\pi)$ and	let
+	$\Phi_U$ and $\Phi_\Id$ be two unitary channels. Then, the following equation holds
+	\begin{equation}
+	\min_{E \in \diaguni_2} \|\Phi_{UE} -
+	\Phi_\Id\|_\diamond = \|\Phi_{U} -
+	\Phi_\Id\|_\diamond,
+	\end{equation}
+\end{lemma}
+
+\begin{proof} Recall that the distance between two unitary channels is given by
+	$
+	\| \Phi_U  - \Phi_{\1} \|_\diamond = 2 \sqrt{1-\nu^2},
+	$
+	where $\nu = \min_{x \in W(U^\dagger)} |x|  $ for any $U \in \mathcal{U}_d$.
+	For $U = H
+	\left(\begin{array}{cc}1&0\\0&e^{i \phi}\end{array}\right)  H^\dagger$ the readers briefly observe that  $\nu^2 = 1 - \frac{|1 - e^{-i \phi} |^2 }{4} = 1 - \frac{|1 - e^{i \phi} |^2 }{4}$. So,
+	\begin{equation}
+	\|  \Phi_U  - \Phi_{\1} \|_\diamond = | 1 - e^{i \phi} |.
+	\end{equation}
+	It implies that it is enough to prove  \begin{equation}
+	\min_{E \in \diaguni_2} \|\Phi_{UE} -
+	\Phi_\Id\|_\diamond  = | 1 - e^{i \phi} |.
+	\end{equation}
+	This condition is equivalent to show that for every $E \in \diaguni_2$
+	\begin{equation}
+	 \nu_{E} \le  \frac{|1 + e^{i \phi} | }{2},
+	\end{equation}
+	where $\nu_E = \min_{x \in W(U^\dagger E)} |x|. $
+
+	The celebrated Hausdorff-T{\"o}plitz theorem~\cite{hausdorff, toeplitz} states that
+	$W(A)$ of any matrix $A \in \mathcal{M}_d$ is a convex set, and therefore we have
+	\begin{equation}
+	W(A) = \{ \tr(A \rho): \rho \in \Omega_d\}.
+	\end{equation}
+	So, we can assume that
+	\begin{equation}
+	\min_{\ket{x} \in \mathbb{C}^2:   \proj{x} = 1} |\bra{x}U^\dagger\ket{x}| =
+	\min_{\rho \in \Omega_2} |\tr(U^\dagger\rho)|.
+	\end{equation}
+	Then, we have
+	\begin{equation}
+	 \nu_{E}  =   \min_{\rho \in
+		\Omega_2} \left| \tr \left( \rho U E \right) \right|.
+	\end{equation}
+	For that, our task is reduced to show that for every  $E \in \diaguni_2$ there exists $\rho \in \Omega_2$ such that
+	\begin{equation}
+ | \tr \left(\rho U E\right) | \le \frac{|1 + e^{i \phi} | }{2}.
+	\end{equation}
+
+
+	Let us define $E = \left(\begin{array}{cc}E_0&0\\0&E_1\end{array}\right)  $
+	and take $\rho =
+	\left(\begin{array}{cc}\frac{1}{2}&0\\0&\frac{1}{2}\end{array}\right) $.
+	From spectral theorem, let us decompose $U$ as
+	\begin{equation}
+	U= \lambda_0 \ketbra{x_0}{x_0} + \lambda_1 \ketbra{x_1}{x_1},
+	\end{equation}
+	where  for eigenvalue $\lambda_0 = 1$, the corresponding
+	eigenvector is
+	of the form $\ket{x_0} = \left[\begin{array}{c}\frac{1}{\sqrt{2}}\\\frac{1}{\sqrt{2}}\end{array}\right]
+	$,
+	whereas for  $\lambda_1= e^{i \phi}$ we have $\ket{x_1} = \left[\begin{array}{c}\frac{1}{\sqrt{2}}\\-\frac{1}{\sqrt{2}}\end{array}\right]
+	$.
+	Then, for every $ E \in \diaguni_2 $ we have
+	\begin{equation}
+	\begin{split}
+ | \tr (\rho U E) | & =   \frac{1}{2}  \left| \tr \left(
+	H \diag(1, e^{i\phi}) H^\dagger E \right) \right| =
+	\frac{1}{2} \left| \tr\left((   \proj{x_0} +e^{i \phi}\proj{x_1} ) E \right)
+	\right| \\& =
+	\frac{1}{2} \left|  \bra{x_0} E \ket{x_0} +  e^{i \phi}\bra{x_1} E \ket{x_1}
+	\right| =
+	\frac{1}{2} \left| \frac{E_0 + E_1}{2} + e^{i \phi } \frac{E_0+E_1}{2} \right|
+	\\& =
+	\frac{\left| 1+ e^{i \phi } \right|}{2} \left| \frac{E_0 + E_1}{2} \right| \le
+\frac{|1 + e^{i \phi} | }{2},
+	\end{split}
+	\end{equation}
+	which completes the proof.
+\end{proof}
+
+
+\begin{theorem}\label{th:probability}
+	The optimal probability of correct discrimination between von Neumann
+	measurements $\PP_U$ and $\PP_{\Id}$ for $U = H \diag(1, e^{i \phi}) H^\dagger$,
+	where $\phi \in [0, 2\pi)$ is given by
+	\begin{equation}
+	p_{\text{succ}}(\PP_{U}, \PP_{\Id}) = \frac{1}{2} + \frac{|1 - e^{i \phi}  |}{4} .
+	\end{equation}
+\end{theorem}
+
+
+\begin{proof}
+	From Holevo-Helstrom theorem, we obtain
+	\begin{equation}
+	p_{\text{succ}}(\PP_{U}, \PP_{\Id}) = \frac{1}{2} + \frac{1}{4} \| \PP_{U} - \PP_{\Id} \|_\diamond.
+	\end{equation}
+	From~\cite[Theorem 1]{puchala2018strategies}, we have
+	\begin{equation}
+	\|\PP_U - \PP_\Id\|_\diamond = \min_{E \in \diaguni_d} \|\Phi_{UE} -
+	\Phi_\Id\|_\diamond.
+	\end{equation}
+	From Lemma~\ref{lemma:min-e-optimal},  we know that for
+	$U =  H \diag(1, e^{i \phi}) H^\dagger$,  it also holds that
+	\begin{equation}
+	\min_{E \in \diaguni_2} \|\Phi_{UE} -
+	\Phi_\Id\|_\diamond = \|\Phi_{U} -
+	\Phi_\Id\|_\diamond,
+	\end{equation} which is exactly equal to
+	\begin{equation}
+	\|\Phi_{U} -
+	\Phi_\Id\|_\diamond = 2\sqrt{1 - \nu^2} = |1-e^{i   \phi }|.
+	\end{equation}
+	It implies that
+	\begin{equation}
+	p_{\text{succ}}(\PP_{U}, \PP_{\Id}) = \frac{1}{2} + \frac{|1-e^{i \phi}|}{4},
+	\end{equation} which completes the proof.
+\end{proof}
+
+\section{Optimal discrimination strategy for parameterized Fourier family} \label{app:optimal-strategy}
+
+In this Appendix we create the optimal
+theoretical strategy of  discrimination between $\PP_{U}$ and $\PP_{\Id}$.
+To indicate the optimal strategy, we will present two propositions. The first one is concentrated around the discriminator as the optimal input state of discrimination strategy, whereas the second one describes the optimal final measurement.
+
+\begin{proposition}\label{prop-discrim}
+	Consider the problem of discrimination between von Neumann measurements $\PP_U$
+	and $\PP_\1$, $U = H\diag(1, e^{i \phi}) H^\dagger $ and $\phi \in [0,
+	2\pi)$.  The  discriminator has the form
+	\begin{equation}
+	\ket{\psi_{0}} = \frac{1}{\sqrt{2}} |\Id_2 \rangle \rangle.
+	\end{equation}
+\end{proposition}
+
+\begin{proof}
+	Let $U = H\diag(1, e^{i \phi}) H^\dagger, \phi \in [0,
+	2\pi)$ be decomposed as
+	\begin{equation}
+	U= \lambda_0 \ketbra{x_0}{x_0} + \lambda_1 \ketbra{x_1}{x_1},
+	\end{equation}
+	where  for eigenvalue $\lambda_0 = 1$, the corresponding
+	eigenvector is
+	of the form $\ket{x_0} = \left[\begin{array}{c}\frac{1}{\sqrt{2}}\\\frac{1}{\sqrt{2}}\end{array}\right]
+	$,
+	whereas for  $\lambda_1 = e^{i \phi}$ we have $\ket{x_1} = \left[\begin{array}{c}\frac{1}{\sqrt{2}}\\-\frac{1}{\sqrt{2}}\end{array}\right]
+	$.
+	For Hermitian-preserving maps \cite{watrous} the diamond norm may be expressed as
+	\begin{equation}
+	\| \Phi  \|_\diamond =  \max_{\rho \in \Omega_d} \| \left( \Id \otimes \sqrt{\rho} \right) J(\Phi)  \left( \Id \otimes \sqrt{\rho} \right)  \|_1.  \end{equation}
+	Hence, we obtain
+	\begin{equation}
+	\begin{split}
+	\| \PP_{U} - \PP_{\Id}  \|_\diamond
+	& =  \max_{\rho \in \Omega_2} \left\| \left( \Id \otimes \sqrt{\rho} \right)
+	J(\PP_{U} - \PP_{\Id} )  \left( \Id \otimes \sqrt{\rho} \right)  \right\|_1
+	\\
+	& =  \max_{\rho \in \Omega_2} \left\| \left( \Id \otimes \sqrt{\rho} \right)
+	\sum_{i=0}^{1} \proj{i} \otimes \left( \proj{u_i} - \proj{i} \right)^\top
+\left( \Id \otimes \sqrt{\rho} \right) 	\right\|_1  \\
+	& = \max_{\rho \in \Omega_2} \left\| \sum_{i=0}^{1} \proj{i} \otimes
+	\sqrt{\rho}  \left( \proj{u_i} - \proj{i} \right)^\top \sqrt{\rho}  \right\|_1
+	\\
+	& = \max_{\rho \in \Omega_2} \sum_{i=0}^{1} \left\| \sqrt{\rho}  \left(
+	\proj{u_i} - \proj{i} \right)^\top \sqrt{\rho}  \right\|_1.
+	\end{split}
+	\end{equation}
+	One can prove that for all $\alpha, \beta \ge 0 $, and unit vectors $\ket{x},
+	\ket{y}$ the following equation holds~\cite{watrous}
+	\begin{equation}
+	\| \alpha \proj{x} - \beta\proj{y} \|_1 = \sqrt{(\alpha + \beta)^2 - 4\alpha
+		\beta |\braket{x}{y}|^2}.
+	\end{equation}
+	By taking $\ket{x} = \frac{\sqrt{\rho} \ket{\bar{u_i}}}{\| \sqrt{\rho}
+		\ket{\bar{u_i}} \|}$ and $ \ket{y} = \frac{\sqrt{\rho} \ket{i}}{\|\sqrt{\rho}
+		\ket{i} \|}$ we have
+	\begin{equation}
+	\| \PP_{U} - \PP_{\Id}  \|_\diamond  = \max_{\rho \in \Omega_2}
+	\sum_{i=0}^{1} \sqrt{\left( \bra{\bar{u_i}} \rho \ket{\bar{u_i}} + \bra{i} \rho \ket{i
+		}\right)^2 - 4 | \bra{\bar{u_i}} \rho \ket{i} |^2}.
+	\end{equation}
+	Let us take  $\rho_0 =   \frac{1}{2}
+	\left(\begin{array}{cc}1&0\\0&1\end{array}\right)  $,   we obtain
+	\begin{equation}
+	\begin{split}
+	||\mathcal{P}_U - \mathcal{P}_{\1}||_\diamond
+	&\ge \sum_{i=0}^1
+	\sqrt{\left(\bra{\bar{u_i}}\rho_0\ket{\bar{u_i}} + \bra{i} \rho_0 \ket{i} \right)^2 -
+		4|\bra{i}\rho_0\ket{\bar{u_i}}|^2}  \\
+	&= \sum_{i=0}^1  \sqrt{ 1 -  \left| \bra{i}  U \ket{i }\right|^2}
+	\\
+	&=\sum_{i=0}^1  \sqrt{1 -  \left| 1 \cdot \braket{i}{u_0}
+		\braket{u_0}{i} + e^{i \phi} \cdot\braket{i}{u_1} \braket{u_1}{i}\right|^2} \\
+	&= \sum_{i=0}^1
+	\sqrt{1 -\left| \frac{1+ e^{i \phi}}{2}\right|^2 }
+	= 2 \sqrt{1 -\left| \frac{1+e^{i \phi}}{2}\right|^2 } \\
+	&= |1-e^{i \phi }|.
+	\end{split}
+	\end{equation}
+	Due to Theorem \ref{th:probability} and the following equality
+	\begin{equation}
+	\begin{split}
+ \| \left( \Id \otimes \sqrt{\rho} \right) J(\PP_{U} - \PP_{\Id} )  \left(
+	\Id \otimes \sqrt{\rho} \right) \|_1 = \left\| ( (\PP_{U} - \PP_\Id) \otimes \Id) \left(  | \sqrt{\rho}^\top
+	\rangle \rangle \langle \langle \sqrt{\rho}^\top | \right) \right\|_1,
+	\end{split}
+	\end{equation}
+the discriminator $\ket{\psi_0}$
+ is equal to  \begin{equation}
+	\ket{\psi_{0}} =  | \sqrt{\rho_0}^\top
+	\rangle \rangle  = \frac{1}{\sqrt{2} } |
+	\Id_2 \rangle \rangle,
+	\end{equation}
+	which completes the proof.
+\end{proof}
+
+
+\begin{proposition}\label{prop:optimal-measurement}
+	Consider the problem of discrimination between von Neumann measurements $\PP_U$
+	and $\PP_\1$, $U = H\diag(1, e^{i \phi}) H^\dagger $ and $\phi \in [0,
+	2\pi)$.
+	The   controlled unitaries $V_0$ and $V_1$
+	have the form
+	\begin{equation}
+	V_0 = \left(\begin{array}{cc}i \sin\left( \frac{\pi - \phi}{4} \right)&-i
+	\cos\left( \frac{\pi - \phi}{4} \right)\\ \cos\left( \frac{\pi -
+		\phi}{4}\right)& \sin\left( \frac{\pi - \phi}{4} \right)\end{array}\right),
+	\end{equation}
+	and
+	\begin{equation}
+	V_1 = \left(\begin{array}{cc}-i \cos\left(\frac{\pi - \phi}{4}\right) &i
+	\sin\left( \frac{\pi - \phi}{4}\right)\\\sin\left( \frac{\pi - \phi}{4} \right)
+	&  \cos\left( \frac{\pi - \phi}{4} \right) \end{array}\right).
+	\end{equation}
+\end{proposition}
+
+\begin{proof}
+	From Proposition~\ref{prop-discrim} we obtain the exact form of discriminator given by
+	\begin{equation}
+	\ket{\psi_0}  = \frac{1}{\sqrt{2}} |\Id_2
+	\rangle \rangle.
+	\end{equation}
+	Repeating the procedure used to distinguish the von Neumann measurements in the Hadamard basis (see \ref{app:hadamard}), we use the Hahn-Jordan decomposition and then we create the projective operators into the positive and negative part of $X$ matrix.
+	Hence, the explicit form of $V_0$ and $V_1$ is given as
+	follows:
+	\begin{equation}
+	V_0 = \left(
+	\begin{array}{cc}i \sin\left( \frac{\pi - \phi}{4} \right)&-i
+	\cos\left( \frac{\pi - \phi}{4} \right)\\ \cos\left( \frac{\pi -
+		\phi}{4}\right)& \sin\left( \frac{\pi - \phi}{4} \right)
+	\end{array}
+	\right),
+	\end{equation}
+and
+	\begin{equation}
+	V_1 = \left(\begin{array}{cc}-i \cos\left(\frac{\pi - \phi}{4}\right) &i
+	\sin\left( \frac{\pi - \phi}{4}\right)\\\sin\left( \frac{\pi - \phi}{4}
+	\right) &  \cos\left( \frac{\pi - \phi}{4} \right) \end{array}\right),
+	\end{equation}
+	where $\phi \in [0,2\pi)$.
+\end{proof}
+
+
+\section{Output YAML files} \label{app:example}
+In this appendix we present examples of YAML's files obtained from synchronous ans asynchronous experiments. We will start at synchronous case.
+
+\begin{lstlisting}[language=Python, caption=Defining experiment file]
+type: discrimination-fourier
+qubits:
+	- target: 0
+	  ancilla: 1
+	- target: 1
+	  ancilla: 2
+angles:
+	start: 0
+	stop: 2 * pi
+	num_steps: 3
+gateset: ibmq
+method: direct_sum
+num_shots: 100
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python, caption=Defining backend file]
+name: ibmq_quito
+asynchronous: false
+provider:
+	hub: ibm-q
+	group: open
+	project: main
+
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python, caption=Results (synchronous)]
+metadata:
+	experiments:
+		type: discrimination-fourier
+		qubits:
+		- {target: 0, ancilla: 1}
+		- {target: 1, ancilla: 2}
+		angles: {start: 0.0, stop: 6.283185307179586, num_steps: 3}
+		gateset: ibmq
+		method: direct_sum
+		num_shots: 100
+	backend_description:
+		name: ibmq_quito
+		asynchronous: false
+		provider: {group: open, hub: ibm-q, project: main}
+data:
+- target: 0
+  ancilla: 1
+  phi: 0.0
+  results_per_circuit:
+  - name: id
+	histogram: {'00': 28, '01': 26, '10': 21, '11': 25}
+	mitigation_info:
+		target: {prob_meas0_prep1: 0.052200000000000024, prob_meas1_prep0: 0.0172}
+		ancilla: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
+	mitigated_histogram: {'00': 0.2637212373658018, '01': 0.25865061319892463, '10': 0.2067279352110304, '11': 0.2709002142242433}
+  - name: u
+	histogram: {'00': 30, '01': 16, '10': 28, '11': 26}
+	mitigation_info:
+		target: {prob_meas0_prep1: 0.052200000000000024, prob_meas1_prep0: 0.0172}
+		ancilla: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
+	mitigated_histogram: {'00': 0.2857378991684036, '01': 0.14975297832942433, '10': 0.28142307224788693, '11': 0.2830860502542851}
+- target: 0
+  ancilla: 1
+  phi: 3.141592653589793
+  results_per_circuit:
+  - name: id
+	histogram: {'00': 4, '01': 5, '10': 45, '11': 46}
+	mitigation_info:
+		target: {prob_meas0_prep1: 0.052200000000000024, prob_meas1_prep0: 0.0172}
+		ancilla: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
+	mitigated_histogram: {'00': 0.011053610583159325, '01': 0.02261276648026373, '10': 0.4593955619936729, '11': 0.5069380609429042}
+  - name: u
+	histogram: {'00': 56, '01': 43, '10': 1}
+	mitigation_info:
+		target: {prob_meas0_prep1: 0.052200000000000024, prob_meas1_prep0: 0.0172}
+		ancilla: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
+	mitigated_histogram: {'00': 0.5573987337172156, '01': 0.44424718645642625, '10': -0.0016459201736417181}
+- target: 0
+  ancilla: 1
+  phi: 6.283185307179586
+  results_per_circuit:
+  - name: id
+	histogram: {'00': 36, '01': 18, '10': 25, '11': 21}
+	mitigation_info:
+		target: {prob_meas0_prep1: 0.052200000000000024, prob_meas1_prep0: 0.0172}
+		ancilla: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
+	mitigated_histogram: {'00': 0.3488190312089973, '01': 0.17355281935572894, '10': 0.2505792064871127, '11': 0.22704894294816103}
+  - name: u
+	histogram: {'00': 32, '01': 27, '10': 24, '11': 17}
+	mitigation_info:
+		target: {prob_meas0_prep1: 0.052200000000000024, prob_meas1_prep0: 0.0172}
+		ancilla: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
+	mitigated_histogram: {'00': 0.3025357275361897, '01': 0.27413673119534815, '10': 0.24313373302688793, '11': 0.18019380824157433}
+- target: 1
+  ancilla: 2
+  phi: 0.0
+  results_per_circuit:
+  - name: id
+	histogram: {'00': 27, '01': 20, '10': 24, '11': 29}
+	mitigation_info:
+		target: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
+		ancilla: {prob_meas0_prep1: 0.07540000000000002, prob_meas1_prep0: 0.0528}
+	mitigated_histogram: {'00': 0.2594378169217188, '01': 0.19318893233269735, '10': 0.23035366874292057, '11': 0.3170195820026633}
+  - name: u
+	histogram: {'00': 31, '01': 24, '10': 23, '11': 22}
+	mitigation_info:
+		target: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
+		ancilla: {prob_meas0_prep1: 0.07540000000000002, prob_meas1_prep0: 0.0528}
+	mitigated_histogram: {'00': 0.30056875246775644, '01': 0.2438221628798003, '10': 0.22180309809696985, '11': 0.23380598655547338}
+- target: 1
+  ancilla: 2
+  phi: 3.141592653589793
+  results_per_circuit:
+  - name: id
+	histogram: {'00': 5, '01': 4, '10': 50, '11': 41}
+	mitigation_info:
+		target: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
+		ancilla: {prob_meas0_prep1: 0.07540000000000002, prob_meas1_prep0: 0.0528}
+	mitigated_histogram: {'00': 0.009552870928837118, '01': 0.007194089383161034, '10': 0.5236791012692514, '11': 0.4595739384187503}
+  - name: u
+	histogram: {'00': 41, '01': 51, '10': 3, '11': 5}
+	mitigation_info:
+		target: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
+		ancilla: {prob_meas0_prep1: 0.07540000000000002, prob_meas1_prep0: 0.0528}
+	mitigated_histogram: {'00': 0.4073387714165384, '01': 0.5614614121117936, '10': 0.006431862814564833, '11': 0.024767953657102992}
+- target: 1
+  ancilla: 2
+  phi: 6.283185307179586
+  results_per_circuit:
+  - name: id
+	histogram: {'00': 30, '01': 28, '10': 23, '11': 19}
+	mitigation_info:
+		target: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
+		ancilla: {prob_meas0_prep1: 0.07540000000000002, prob_meas1_prep0: 0.0528}
+	mitigated_histogram: {'00': 0.2868459834940102, '01': 0.2919564941384742, '10': 0.22466574543735374, '11': 0.19653177693016174}
+  - name: u
+	histogram: {'00': 15, '01': 20, '10': 36, '11': 29}
+	mitigation_info:
+		target: {prob_meas0_prep1: 0.05900000000000005, prob_meas1_prep0: 0.0202}
+		ancilla: {prob_meas0_prep1: 0.07540000000000002, prob_meas1_prep0: 0.0528}
+	mitigated_histogram: {'00': 0.1187719606657805, '01': 0.1962085394489247, '10': 0.3710195249988589, '11': 0.31399997488643583}
+\end{lstlisting}
+For the same experiment file, we use the flag \texttt{asynchronous: true} to define asynchronous experiment.
+
+\begin{lstlisting}[language=Python, caption=Backend file]
+name: ibmq_quito
+asynchronous: true
+provider:
+	hub: ibm-q
+	group: open
+	project: main
+
+\end{lstlisting}
+If the backend is asynchronous, the output will contain intermediate data
+containing, amongst others, job ids correlated with the circuit they
+correspond to.
+
+\begin{lstlisting}[language=Python, caption=Resolved results]
+metadata:
+	experiments:
+		type: discrimination-fourier
+		qubits:
+		- {target: 0, ancilla: 1}
+		- {target: 1, ancilla: 2}
+		angles: {start: 0.0, stop: 6.283185307179586, num_steps: 3}
+		gateset: ibmq
+		method: direct_sum
+		num_shots: 100
+	backend_description:
+		name: ibmq_quito
+		asynchronous: true
+		provider: {group: open, hub: ibm-q, project: main}
+data:
+- job_id: 63e7f17a17b7ed49ca24e05b
+  keys:
+  - [0, 1, id, 0.0]
+  - [0, 1, u, 0.0]
+  - [0, 1, id, 3.141592653589793]
+  - [0, 1, u, 3.141592653589793]
+  - [0, 1, id, 6.283185307179586]
+  - [0, 1, u, 6.283185307179586]
+  - [1, 2, id, 0.0]
+  - [1, 2, u, 0.0]
+  - [1, 2, id, 3.141592653589793]
+  - [1, 2, u, 3.141592653589793]
+  - [1, 2, id, 6.283185307179586]
+  - [1, 2, u, 6.283185307179586]
+
+\end{lstlisting}
+Finally, if the status of jobs is \texttt{DONE}, we resolve the measurements from the
+submitted jobs obtaining the following file.
+\begin{lstlisting}[language=Python, caption=Results (asynchronous)]
+metadata:
+  experiments:
+	type: discrimination-fourier
+	qubits:
+	- target: 0
+	  ancilla: 1
+	- target: 1
+	  ancilla: 2
+	angles:
+	  start: 0.0
+	  stop: 6.283185307179586
+	  num_steps: 3
+	gateset: ibmq
+	method: direct_sum
+	num_shots: 100
+  backend_description:
+	name: ibmq_quito
+	asynchronous: true
+	provider:
+		group: open
+		hub: ibm-q
+		project: main
+data:
+- target: 0
+  ancilla: 1
+  phi: 0.0
+  results_per_circuit:
+  - name: id
+	histogram:
+		'00': 27
+		'01': 28
+		'10': 18
+		'11': 27
+	mitigation_info:
+	  target:
+		prob_meas0_prep1: 0.052200000000000024
+		prob_meas1_prep0: 0.0172
+	  ancilla:
+		prob_meas0_prep1: 0.05900000000000005
+		prob_meas1_prep0: 0.0202
+	mitigated_histogram:
+		'00': 0.254196166145997
+		'01': 0.2790358060520916
+		'10': 0.1732699847244092
+		'11': 0.29349804307750227
+  - name: u
+	histogram:
+		'00': 29
+		'01': 17
+		'10': 30
+		'11': 24
+	mitigation_info:
+	  target:
+		prob_meas0_prep1: 0.052200000000000024
+		prob_meas1_prep0: 0.0172
+	  ancilla:
+		prob_meas0_prep1: 0.05900000000000005
+		prob_meas1_prep0: 0.0202
+	mitigated_histogram:
+		'00': 0.2733793468261183
+		'01': 0.1621115306717096
+		'10': 0.3045273800167787
+		'11': 0.2599817424853933
+- target: 0
+  ancilla: 1
+  phi: 3.141592653589793
+  results_per_circuit:
+  - name: id
+	histogram:
+		'00': 3
+		'01': 5
+		'10': 37
+		'11': 55
+	mitigation_info:
+	  target:
+		prob_meas0_prep1: 0.052200000000000024
+		prob_meas1_prep0: 0.0172
+	  ancilla:
+		prob_meas0_prep1: 0.05900000000000005
+		prob_meas1_prep0: 0.0202
+	mitigated_histogram:
+		'00': 0.006189545789708441
+		'01': 0.016616709640352317
+		'10': 0.3675478279476653
+		'11': 0.6096459166222741
+  - name: u
+	histogram:
+		'00': 56
+		'01': 42
+		'10': 2
+	mitigation_info:
+	  target:
+		prob_meas0_prep1: 0.052200000000000024
+		prob_meas1_prep0: 0.0172
+	  ancilla:
+		prob_meas0_prep1: 0.05900000000000005
+		prob_meas1_prep0: 0.0202
+	mitigated_histogram:
+		'00': 0.55731929321128
+		'01': 0.43367489257574243
+		'10': 0.009005814212977551
+- target: 0
+  ancilla: 1
+  phi: 6.283185307179586
+  results_per_circuit:
+  - name: id
+	histogram:
+		'00': 18
+		'01': 28
+		'10': 30
+		'11': 24
+	mitigation_info:
+	  target:
+		prob_meas0_prep1: 0.052200000000000024
+		prob_meas1_prep0: 0.0172
+	  ancilla:
+		prob_meas0_prep1: 0.05900000000000005
+		prob_meas1_prep0: 0.0202
+	mitigated_histogram:
+		'00': 0.15258295844557557
+		'01': 0.2829079190522524
+		'10': 0.3071204587046501
+		'11': 0.25738866379752195
+  - name: u
+	histogram:
+		'00': 32
+		'01': 28
+		'10': 23
+		'11': 17
+	mitigation_info:
+	  target:
+		prob_meas0_prep1: 0.052200000000000024
+		prob_meas1_prep0: 0.0172
+	  ancilla:
+		prob_meas0_prep1: 0.05900000000000005
+		prob_meas1_prep0: 0.0202
+	mitigated_histogram:
+		'00': 0.3026150836796529
+		'01': 0.28491749668524724
+		'10': 0.23230862145681827
+		'11': 0.18015879817828173
+- target: 1
+  ancilla: 2
+  phi: 0.0
+  results_per_circuit:
+  - name: id
+	histogram:
+		'00': 27
+		'01': 16
+		'10': 30
+		'11': 27
+	mitigation_info:
+	  target:
+		prob_meas0_prep1: 0.05900000000000005
+		prob_meas1_prep0: 0.0202
+	  ancilla:
+		prob_meas0_prep1: 0.07540000000000002
+		prob_meas1_prep0: 0.0528
+	mitigated_histogram:
+		'00': 0.256742095057232
+		'01': 0.15000257115061383
+		'10': 0.29821012040758116
+		'11': 0.29504521338457296
+  - name: u
+	histogram:
+		'00': 34
+		'01': 22
+		'10': 25
+		'11': 19
+	mitigation_info:
+	 target:
+		prob_meas0_prep1: 0.05900000000000005
+		prob_meas1_prep0: 0.0202
+	  ancilla:
+		prob_meas0_prep1: 0.07540000000000002
+		prob_meas1_prep0: 0.0528
+	mitigated_histogram:
+		'00': 0.3325088211394024
+		'01': 0.22335261496979697
+		'10': 0.2441636375921354
+		'11': 0.19997492629866526
+- target: 1
+  ancilla: 2
+  phi: 3.141592653589793
+  results_per_circuit:
+  - name: id
+	histogram:
+		'00': 3
+		'01': 9
+		'10': 51
+		'11': 37
+	mitigation_info:
+	  target:
+		prob_meas0_prep1: 0.05900000000000005
+		prob_meas1_prep0: 0.0202
+	  ancilla:
+		prob_meas0_prep1: 0.07540000000000002
+		prob_meas1_prep0: 0.0528
+	mitigated_histogram:
+		'00': -0.016627023111853642
+		'01': 0.06778554570877951
+		'10': 0.53899887367658
+		'11': 0.40984260372649417
+  - name: u
+	histogram:
+		'00': 43
+		'01': 45
+		'10': 7
+		'11': 5
+	mitigation_info:
+	  target:
+		prob_meas0_prep1: 0.05900000000000005
+		prob_meas1_prep0: 0.0202
+	  ancilla:
+		prob_meas0_prep1: 0.07540000000000002
+		prob_meas1_prep0: 0.0528
+	mitigated_histogram:
+		'00': 0.42955729968594086
+		'01': 0.49336080079582095
+		'10': 0.04937406434533623
+		'11': 0.02770783517290191
+- target: 1
+  ancilla: 2
+  phi: 6.283185307179586
+  results_per_circuit:
+  - name: id
+	histogram:
+		'00': 22
+		'01': 19
+		'10': 35
+		'11': 24
+	mitigation_info:
+	  target:
+		prob_meas0_prep1: 0.05900000000000005
+		prob_meas1_prep0: 0.0202
+	  ancilla:
+		prob_meas0_prep1: 0.07540000000000002
+		prob_meas1_prep0: 0.0528
+	mitigated_histogram:
+		'00': 0.19592641048040849
+		'01': 0.18787721420415215
+		'10': 0.3590258049844047
+		'11': 0.25717057033103463
+  - name: u
+		histogram:
+		'00': 27
+		'01': 24
+		'10': 25
+		'11': 24
+	mitigation_info:
+	  target:
+		prob_meas0_prep1: 0.05900000000000005
+		prob_meas1_prep0: 0.0202
+	  ancilla:
+		prob_meas0_prep1: 0.07540000000000002
+		prob_meas1_prep0: 0.0528
+	mitigated_histogram:
+		'00': 0.25555866817587225
+		'01': 0.2429501641251142
+		'10': 0.24509293912212946
+		'11': 0.2563982285768841
+\end{lstlisting}
+\end{document}
