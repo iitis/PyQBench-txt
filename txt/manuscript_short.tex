@@ -114,7 +114,6 @@
 \newcommand{\textapprox}{\raisebox{0.5ex}{\texttildelow}}
 \journal{SoftwareX}
 
-
 \usepackage{amsmath}
 \newtheorem{theorem}{Theorem}
 \newtheorem{proposition}{Proposition}
@@ -123,6 +122,8 @@
 \theoremstyle{definition}
 \newtheorem{scheme}{Scheme}
 
+\usepackage{xr}
+\externaldocument{supplemental}
 
 \begin{document}
 
@@ -280,7 +281,9 @@ tion.quantum\_volume}. Other implementations of Quantum Volume can be found as w
 In this section, we describe how the benchmarking process in PyQBench works. We start by
 discussing necessary mathematical preliminaries. Then, we present the general form of the
 discrimination scheme used in PyQBench and practical considerations on how to implement it taking
-into account the limitations of the current NISQ devices.
+into account the limitations of the current NISQ devices. We encourage the readers interested
+in a more in--depth discussion of the mathematical foundations behind our discrimination scheme to read
+Section \ref{app:preliminaries} in the supplemental materials.
 
 \subsection{Von Neumann Measurements}\label{sec:maths}
 
@@ -329,11 +332,6 @@ $\mathcal{P}_U$, otherwise we say that it was $\mathcal{P}_\Id$. Naturally, we n
 same procedure multiple times for both measurements to obtain a reliable estimate of the underlying
 probability distribution. In PyQBench, we assume that the experiment is repeated the same number of
 times for both $\PP_U$ and $\PP_\Id$.
-
-Unsurprisingly, both the $\ket{\psi_0}$ and the final measurements $\mathcal{P}_{V_i}$ have to be
-chosen specifically for given $U$ to maximize the probability of a correct guess. The detailed
-description how these choices are made in \cite{watrous}, and for now we will focus only how this
-scheme can be implemented on the actual devices, assuming that all the components are known.
 
 In principle, our discrimination scheme could be used with any choice of
 $\ket{\psi_0}$ and final measurements $\PP_{V_i}$. However, we argue that it is best to choose those
@@ -507,12 +505,12 @@ PyQBench can be used to interpret the measurements to obtain discrimination prob
 
 The PyQBench library also contains a readily available implementation of all necessary components
 needed to run discrimination experiments for parametrized Fourier family of measurements (see
-\cite{appendix}). However, if one only wishes to use this particular family of measurements in their
-benchmarks, then using PyQBench as a command line tool might be more straightforward. PyQBench's
-command line interface allows running the benchmarking process without writing Python code. The
-configuration of CLI is done by YAML \cite{yaml} files describing the benchmark to be performed and
-the description of the backend on which the benchmark should be run. The same benchmark can be used
-with different backends and vice versa.
+Section \ref{app:optimal-probability} in supplemental material). However, if one only wishes to use
+this particular family of measurements in their benchmarks, then using PyQBench as a command line tool
+might be more straightforward. PyQBench's command line interface allows running the benchmarking process
+without writing Python code. The configuration of CLI is done by YAML \cite{yaml} files describing the
+benchmark to be performed and the description of the backend on which the benchmark should be run.
+The same benchmark can be used with different backends and vice versa.
 
 \subsection{Software Architecture}\label{sec:sortware-architecture}
 
@@ -590,18 +588,16 @@ intermediate results will be lost. Therefore, we recommend using asynchronous mo
 possible.
 
 \section{Illustrative examples}
-\label{sec:examples} In this section, we present two examples demonstrating the usage of PyQBench.
-In the first example, we show how to implement a discrimination scheme for a user--defined
-measurement and possible ways of using this scheme with \texttt{qbench} library. The second example
-demonstrates the usage of the CLI. We show how to prepare the input files for the benchmark and how
-to run it using the \texttt{qbench} tool.
+\label{sec:examples} In this section, we demonstrate the usage of PyQBench.
+For brevity, we decided to present only the usage of the CLI tool, as it is likely to be the most
+popular use case. We refer readers interested in implementing their discrimination schemes using
+custom measurements to PyQBench's documentation \cite{pyqbenchdocs}, where we describe the whole
+process, and to the Section \ref{app:hadamard} in the supplemental material, where we discuss
+the relevant mathematical details.
 
 \subsection{Using \texttt{qbench} CLI}
-Using PyQBench as a library allows one to conduct a two--qubits benchmark with arbitrary von Neumann
-measurement. However, as discussed in the previous guide, it requires writing some amount of code.
-For a Fourier parametrized family of measurements, PyQBench offers a simplified way of conducting
-benchmarks using a Command Line Interface (CLI). The workflow with PyQBench's CLI can be summarized
-as the following list of steps:
+PyQBench offers a simplified way of conducting benchmarks using a Command Line Interface (CLI).
+The workflow with PyQBench's CLI can be summarized as the following list of steps:
 
 \begin{enumerate}
   \item Preparing configuration files describing the backend and the experiment scenario.
@@ -673,8 +669,8 @@ The result of running the above command can be twofold:
 		for each of the circuits run.
 \end{itemize}
 
-For the synchronous experiment, the part of output looks similar to the one below. The whole YAML
-file can be seen in \ref{app:example}.
+For the synchronous experiment, the part of the output looks similar to the one below. The whole YAML
+file can be seen in Section \ref{app:example.} in the supplemental material.
 %Consider the particular experiment data
 \begin{lstlisting}[language=Python]
 data:
@@ -715,7 +711,7 @@ command:
 \begin{lstlisting}[language=Python]
 qbench disc-fourier tabulate results.yml results.csv
 \end{lstlisting}
-A sample CSV file is provided below:
+A sample CSV file is provided in Table \ref{fig:tabulateresults}.
 \begin{table}[ht!]
 \begin{center}
 	\begin{tabular}{|c c c c c c|} 
@@ -769,15 +765,14 @@ license which will allow users to utilize and extend our package in their specif
 \section{Conclusions}
 \label{}
 
-In this study, we develop a Python library PyQBench, an innovative open-source framework for
+In this paper, we presented a Python library PyQBench, an innovative open-source framework for
 benchmarking gate-based quantum computers.
-
-%%%%%%%%%%%%%%
 PyQBench can benchmark NISQ devices by verifying their capability of discriminating between two von
 Neumann measurements. PyQBench offers a simplified, ready-to-use, command line interface (CLI) for
 running benchmarks using a predefined parameterized Fourier family of measurements. For more
 advanced scenarios, PyQBench offers a way of employing user-defined measurements instead of
 predefined ones.
+
 \section{Conflict of Interest}
 We wish to confirm that there are no known conflicts of interest associated with this publication
 and there has been no significant financial support for this work that could have influenced its
