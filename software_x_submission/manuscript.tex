@@ -324,7 +324,7 @@ ideal, theoretical predictions.
 Without loss of generality\footnote{Explaining why we can consider only discrimination scheme between $\PP_{\Id}$ and $\PP_{U}$ is beyond the scope of this paper. See \cite{puchala2018strategies} for a in depth explanation.}, we consider discrimination task between single qubit measurements
 $\PP_\Id$, performed in the computational Z-basis, and an alternative measurement $\PP_U$ performed
 in the basis $U$. Note, however, that the discrimination scheme described below can work
-regardless of dimensionality of the system, see \cite{puchala2018strategies} for details.
+regardless of dimensionality of the system, see \cite{puchala2018strategies} for details. 
 
 In general, the discrimination scheme presented in Fig.~\ref{fig:theoretical_scheme}, requires an
 auxiliary qubit. First, the joint system is prepared in some state $\ket{\psi_0}$. Then, one of the 
@@ -335,6 +335,7 @@ $\mathcal{P}_U$, otherwise we say that it was $\mathcal{P}_\Id$. Naturally, we n
 same procedure multiple times for both measurements to obtain a reliable estimate of the underlying
 probability distribution. In PyQBench, we assume that the experiment is repeated the same number of
 times for both $\PP_U$ and $\PP_\Id$.
+
 
 Unsurprisingly, both the
 $\ket{\psi_0}$ and the final measurements $\mathcal{P}_{V_i}$ have to be chosen specifically for
