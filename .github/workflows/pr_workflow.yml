@@ -25,21 +25,11 @@ jobs:
             latexdiff
             ulem
       - name: Install necessary dependencies needed for PyQBench manuscript
-        run: cd txt && texliveonfly manuscript.tex && echo $?
+        run: cd txt && texliveonfly manuscript_short.tex && texliveonfly supplemental.tex
       - name: Build manuscript
         run: make pdf
       - name: Build diff
         run: make diff rev=${{ github.event.pull_request.base.sha }}
-      - name: Archive manuscript
-        uses: actions/upload-artifact@v3
-        with:
-          name: manuscript
-          path: build/omnisolver.pdf
-      - name: Archive diff
-        uses: actions/upload-artifact@v3
-        with:
-          name: diff
-          path: build/${{ github.event.pull_request.base.sha }}-diff.pdf      
       - name: Add pull request artifacts
         uses: gavv/pull-request-artifacts@v1.0.0
         with:
