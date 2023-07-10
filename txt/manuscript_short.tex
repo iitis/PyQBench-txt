@@ -1,49 +1,21 @@
 \documentclass[preprint,12pt, a4paper, dvipsnames]{elsarticle}
 
-\usepackage{amssymb}
-
-\usepackage{amsthm}
-\usepackage{mathtools}
-
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{caption}
+\usepackage{float}
 \usepackage{lineno}
 \usepackage{listings}
-
-\usepackage{float}
-
+\usepackage{mathtools}
+\usepackage{subcaption}
 \usepackage{todonotes}
 \usepackage{url}
-
 \usepackage{xcolor}
-
-\usepackage{caption}
-\usepackage{subcaption}
 
 \definecolor{codegreen}{rgb}{0.25,0.93,0.31}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
 \definecolor{codepurple}{rgb}{0.58,0,0.82}
 \definecolor{backcolour}{rgb}{0.95,0.95,0.92}
 
-%
-%\lstdefinestyle{mystyle}{
-%	backgroundcolor=\color{backcolour},
-%	commentstyle=\color{codegreen},
-%	keywordstyle=\color{magenta},
-%	numberstyle=\tiny\color{codegray},
-%	stringstyle=\color{codepurple},
-%	basicstyle=\ttfamily\footnotesize,
-%	breakatwhitespace=false,
-%	breaklines=true,
-%	captionpos=b,
-%	keepspaces=true,
-%	numbers=left,
-%	numbersep=5pt,
-%	showspaces=false,
-%	showstringspaces=false,
-%	showtabs=false,
-%	tabsize=2
-%}
-%
-%\lstset{style=mystyle}
 \lstset{frame=tb,
 	language=Python,
 	aboveskip=3mm,
@@ -51,27 +23,10 @@
 	showstringspaces=false,
 	columns=flexible,
 	basicstyle={\small\ttfamily},
-%	numberstyle=\color{blue},
-%	keywordstyle=\color{blue},
-%	commentstyle=\color{PineGreen},
-%	stringstyle=\color{ForestGreen},
 	breaklines=true,
 	breakatwhitespace=true,
 	tabsize=3,
 	escapeinside={@}{@},
-%	literate=
-%	{0}{{{\color{red}0}}}1
-%	{1}{{{\color{red}1}}}1
-%	{2}{{{\color{red}2}}}1
-%	{3}{{{\color{red}3}}}1
-%	{4}{{{\color{red}4}}}1
-%	{5}{{{\color{red}5}}}1
-%	{6}{{{\color{red}6}}}1
-%	{7}{{{\color{red}7}}}1
-%	{8}{{{\color{red}8}}}1
-%	{9}{{{\color{red}9}}}1
-%    {v0}{{{\color{black}v0}}}1 %% we can not style only numeric literals
-%    {v1}{{{\color{black}v1}}}1
 }
 \restylefloat{table}
 
@@ -114,7 +69,6 @@
 \newcommand{\textapprox}{\raisebox{0.5ex}{\texttildelow}}
 \journal{SoftwareX}
 
-\usepackage{amsmath}
 \newtheorem{theorem}{Theorem}
 \newtheorem{proposition}{Proposition}
 \newtheorem{remark}{Remark}
@@ -670,7 +624,7 @@ The result of running the above command can be twofold:
 \end{itemize}
 
 For the synchronous experiment, the part of the output looks similar to the one below. The whole YAML
-file can be seen in Section \ref{app:example.} in the supplemental material.
+file can be seen in Section \ref{app:example} in the supplemental material.
 %Consider the particular experiment data
 \begin{lstlisting}[language=Python]
 data:
