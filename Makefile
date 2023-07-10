@@ -10,7 +10,7 @@ clean:
 diff:
 	@echo "Parsing git revision..."
 	git rev-parse ${rev}
-	@echo "Creating diffs with revision ${rev}"
+	@echo "Creating diff with revision ${rev}"
 	@$(eval MY_MANUSCRIPT_DIFF_FILE_NAME :=  "${rev}-manuscript-diff.tex")
 	@$(eval ORIGINAL_MANUSCRIPT_DIFF_FILE_NAME :=  "manuscript_short-diff${rev}.tex")
 	@$(eval MY_SUPPLEMENTAL_DIFF_FILE_NAME :=  "${rev}-supplemental-diff.tex")
