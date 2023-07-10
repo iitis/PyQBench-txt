@@ -277,3 +277,4 @@ TSWLatexianTemp*
 
 # Build directory
 build/
+/txt/*.pdf
