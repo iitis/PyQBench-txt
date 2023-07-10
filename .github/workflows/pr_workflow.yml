@@ -47,8 +47,8 @@ jobs:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           artifacts-branch: artifacts
           artifacts-dir: artifacts
-
-
           artifacts: |
             build/manuscript.pdf
-            build/${{ github.event.pull_request.base.sha }}-diff.pdf
+            build/supplemental.pdf
+            build/${{ github.event.pull_request.base.sha }}-manuscript-diff.pdf
+            build/${{ github.event.pull_request.base.sha }}-supplemental-diff.pdf
