@@ -1,0 +1,54 @@
+name: Build manuscript and diff
+
+on: [pull_request]
+
+jobs:
+  build_manuscript_and_diff:
+    permissions:
+      contents: write
+      pull-requests: write
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout manuscript source
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Setup TeX Live
+        uses: teatimeguest/setup-texlive-action@v2
+        with:
+          packages: >-
+            scheme-basic
+            texliveonfly
+            latexmk
+            latexdiff
+            ulem
+      - name: Install necessary dependencies needed for PyQBench manuscript
+        run: cd txt && texliveonfly manuscript.tex && echo $?
+      - name: Build manuscript
+        run: make pdf
+      - name: Build diff
+        run: make diff rev=${{ github.event.pull_request.base.sha }}
+      - name: Archive manuscript
+        uses: actions/upload-artifact@v3
+        with:
+          name: manuscript
+          path: build/omnisolver.pdf
+      - name: Archive diff
+        uses: actions/upload-artifact@v3
+        with:
+          name: diff
+          path: build/${{ github.event.pull_request.base.sha }}-diff.pdf      
+      - name: Add pull request artifacts
+        uses: gavv/pull-request-artifacts@v1.0.0
+        with:
+          commit: ${{ github.event.pull_request.head.sha }}
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          artifacts-branch: artifacts
+          artifacts-dir: artifacts
+
+
+          artifacts: |
+            build/manuscript.pdf
+            build/${{ github.event.pull_request.base.sha }}-diff.pdf
