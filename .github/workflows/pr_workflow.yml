@@ -25,7 +25,9 @@ jobs:
             latexdiff
             ulem
       - name: Install necessary dependencies needed for PyQBench manuscript
-        run: cd txt && texliveonfly manuscript_short.tex && texliveonfly supplemental.tex && texliveonfly reviews/softwarex/reviews_1/response/response.tex
+        run: cd txt && texliveonfly manuscript_short.tex && texliveonfly supplemental.tex 
+      - name: Install necessary dependencies for response file
+        run: texliveonfly reviews/softwarex/reviews_1/response/response.tex
       - name: Build manuscript, diff and response
         run: make pdf && make response
       - name: Build diff
