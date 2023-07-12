@@ -26,7 +26,7 @@ jobs:
             ulem
       - name: Install necessary dependencies needed for PyQBench manuscript
         run: cd txt && texliveonfly manuscript_short.tex && texliveonfly supplemental.tex
-      - name: Build manuscript
+      - name: Build manuscript, diff and response
         run: make pdf
       - name: Build diff
         run: make diff rev=${{ github.event.pull_request.base.sha }}
@@ -42,3 +42,4 @@ jobs:
             build/supplemental.pdf
             build/${{ github.event.pull_request.base.sha }}-manuscript-diff.pdf
             build/${{ github.event.pull_request.base.sha }}-supplemental-diff.pdf
+            build/response.pdf
