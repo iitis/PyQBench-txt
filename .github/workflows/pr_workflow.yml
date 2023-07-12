@@ -25,9 +25,9 @@ jobs:
             latexdiff
             ulem
       - name: Install necessary dependencies needed for PyQBench manuscript
-        run: cd txt && texliveonfly manuscript_short.tex && texliveonfly supplemental.tex
+        run: cd txt && texliveonfly manuscript_short.tex && texliveonfly supplemental.tex && texliveonfly reviews/softwarex/reviews_1/response/response.tex
       - name: Build manuscript, diff and response
-        run: make pdf
+        run: make pdf && make response
       - name: Build diff
         run: make diff rev=${{ github.event.pull_request.base.sha }}
       - name: Add pull request artifacts
