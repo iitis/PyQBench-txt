@@ -5,7 +5,7 @@ pdf:
 	latexmk -pdf -synctex=1 -aux-directory=../build -output-directory=../build -cd ./txt/supplemental.tex
 	latexmk -pdf -synctex=1 -output-directory=../build -cd ./txt/manuscript_short.tex
 response:
-        @echo "Compiling response"
+	@echo "Compiling response"
 	latexmk -pdf -synctex=1 -output-directory=../../../../build -cd ./reviews/softwarex/reviews_1/response/response.tex
 clean:
 	@echo "Removing build directory if it exists..."
