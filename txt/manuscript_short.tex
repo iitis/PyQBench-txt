@@ -281,8 +281,12 @@ outcome $i$, we choose another binary measurement $\mathcal{P}_{V_i}$ and perfor
 obtaining the outcome $j$. Finally, if $j=0$, we say that the performed measurement is
 $\mathcal{P}_U$, otherwise we say that it was $\mathcal{P}_\Id$. 
 
-Note, however, that the discrimination scheme
-described above can work regardless of dimensionality of the unitary $U$ with such a difference that the size of auxiliary system can be larger than the qubit. This size depends on the input state which was taken, explicitly on the Schmidt rank of the optimal input state. However, for most discrimination schemes, the  Schmidt rank equals at most two, hence the size of auxiliary system remains qubit, see \cite{puchala2018strategies} for details. It is also worth mentioning that despite of the size of auxiliary system, the final measurement $\PP_{V_i}$ is always binary. 
+Note, however, that the discrimination scheme described above can work regardless of dimensionality 
+of the unitary $U$. The main difference is the dimension of the auxiliary system, which in general
+can be larger than two. This dimension depends on the Schmidt rank of the optimal input state. However, 
+for most discrimination schemes, the  Schmidt rank equals at most two, and hence the auxiliary system
+is also a qubit, see \cite{puchala2018strategies} for details. Note that the final measurement $\PP_{V_i}$ 
+is always binary, independently of the dimension of auxiliary system.
 
 Naturally, we need to repeat the
 same procedure multiple times for both measurements to obtain a reliable estimate of the underlying
