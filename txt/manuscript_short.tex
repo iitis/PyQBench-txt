@@ -492,9 +492,14 @@ The same benchmark can be used with different backends and vice versa.
 \subsubsection{Overview of the software structure}
 As already described, PyQBench can be used both as a library and a CLI. Both functionalities are
 implemented as a part of \texttt{qbench} Python package. The exposed CLI tool is also named
-\texttt{qbench}. For brevity, we do not discuss the exact structure of the package here, and instead
-refer an interested reader to the source code available at GitHub \cite{pyqbenchgithub} or at the
+\texttt{qbench}. For brevity, we do not discuss the exact structure of the package here, and instead limit ourselves to summarizing the architecture on the diagram in Fig. \ref{fig:architecture}. For further details, we refer an interested reader to the source code available at GitHub \cite{pyqbenchgithub} or at the
 reference manual \cite{pyqbenchdocs}.
+
+\begin{figure}
+  \includegraphics[width=\textwidth]{pics/architecture.pdf}
+  \caption{Overview of PyQBench's architecture.}
+  \label{fig:architecture}
+\end{figure}
 
 PyQBench can be installed from official Python Package Index (PyPI) by running \texttt{pip install
 pyqbench}. In a properly configured Python environment the installation process should also make the
