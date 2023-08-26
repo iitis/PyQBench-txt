@@ -1,7 +1,7 @@
 \documentclass[a4paper,12pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage{enumitem}
-
+\usepackage[hyphens]{url}
 \newcommand{\1}{{\rm 1\hspace{-0.9mm}l}}
 
 \newenvironment{response}{\vspace{1em}\noindent\textbf{Response}}{\vspace{1em}}
@@ -13,19 +13,42 @@ a response to their specific remarks.
 \section{Reviewer 1}
 
 \begin{enumerate}
-  \item The cross-entropy benchmarking technique used in the validation of the Sycamore-53 QPU in
-    quantum supremacy experiments (https://www.nature.com/articles/s41586-019-1666-5) should also
-    be mentioned in the Introduction (https://www.nature.com/articles/s41567-018-0124-x).
+  \item  In my opinion, the weakest part of the paper is the lack of a more
+    detailed analysis of the pros and cons of the suggested benchmarking scheme
+    and its thorough comparison with other existing NISQ benchmarking schemes.
+    Thus, I recommend a minor revision where I would ask the authors to better
+    describe advantages and disadvantages of the suggested NISQ benchmarking
+    scheme with respect to other existing NISQ benchmarking techniques.
+    Although the focus of the paper is the PyQBench software, I find it
+    important for the reader to have a clear understanding where and how the
+    underlying NISQ benchmarking technique and corresponding software are
+    superior to other available techniques and software.
 
-    \begin{response} We modified manuscript to include mention of cross-entropy benchmarking as
-      suggested by the referee.
+    \begin{response}
+      We improved the manuscript, which now includes a short section explaining
+      the pros and cons of our method in the context of other existing
+      benchmarking methods. Due to the length limitations in the journal, we do
+      not think this section can become any longer, but we are open to further
+      improvement suggestions if the reviewer finds the current analysis
+      lacking.
     \end{response}
-  \item The generalization of the suggested benchmarking techniqiue to multiple qubits should be
-    described in more detail, explicitly mentioning whether the complexity of the derivation and
-    actual benchmarking depends on the number of qubits.
+  \item The cross-entropy benchmarking technique used in the validation of the
+    Sycamore-53 QPU in quantum supremacy experiments
+    (\url{https://www.nature.com/articles/s41586-019-1666-5}) should also be
+    mentioned in the Introduction
+    (\url{https://www.nature.com/articles/s41567-018-0124-x}).
 
-    \begin{response} We thank the referee for this suggestion. We extended the manuscript with a
-      paragraph describing differences between a single--qubit and higher-dimensional cases.
+    \begin{response} We modified manuscript to include mention of cross-entropy
+                     benchmarking as suggested by the referee.
+    \end{response}
+  \item The generalization of the suggested benchmarking techniqiue to multiple
+    qubits should be described in more detail, explicitly mentioning whether
+    the complexity of the derivation and actual benchmarking depends on the
+    number of qubits.
+
+    \begin{response} We thank the referee for this suggestion. We extended the
+                     manuscript with a paragraph describing differences between
+                     a single--qubit and higher-dimensional cases.
     \end{response}
 
 \end{enumerate}
