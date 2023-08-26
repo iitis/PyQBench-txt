@@ -280,16 +280,22 @@ Without loss of generality\footnote{Explaining why we can consider only discrimi
 between $\PP_{\Id}$ and $\PP_{U}$ is beyond the scope of this paper. See
 \cite{puchala2018strategies} for a in depth explanation.}, we consider discrimination task between
 single qubit measurements $\PP_\Id$, performed in the computational Z-basis, and an alternative
-measurement $\PP_U$ performed in the basis $U$. Note, however, that the discrimination scheme
-described below can work regardless of dimensionality of the system, see
-\cite{puchala2018strategies} for details.
-
+measurement $\PP_U$ performed in the basis $U$. 
 The discrimination scheme presented in Fig.~\ref{fig:theoretical_scheme} requires an
 auxiliary qubit. First, the joint system is prepared in some state $\ket{\psi_0}$. Then, one of the
 measurements, either $\PP_U$ or $\PP_\1$, is performed on the first part of the system. Based on its
-outcome $i$, we choose another measurement $\mathcal{P}_{V_i}$ and perform it on the second qubit,
+outcome $i$, we choose another binary measurement $\mathcal{P}_{V_i}$ and perform it on the second qubit,
 obtaining the outcome $j$. Finally, if $j=0$, we say that the performed measurement is
-$\mathcal{P}_U$, otherwise we say that it was $\mathcal{P}_\Id$. Naturally, we need to repeat the
+$\mathcal{P}_U$, otherwise we say that it was $\mathcal{P}_\Id$. 
+
+Note, however, that the discrimination scheme described above can work regardless of dimensionality 
+of the unitary $U$. The main difference is the dimension of the auxiliary system, which in general
+can be larger than two. This dimension depends on the Schmidt rank of the optimal input state. However, 
+for most discrimination schemes, the  Schmidt rank equals at most two, and hence the auxiliary system
+is also a qubit, see \cite{puchala2018strategies} for details. Note that the final measurement $\PP_{V_i}$ 
+is always binary, independently of the dimension of auxiliary system.
+
+Naturally, we need to repeat the
 same procedure multiple times for both measurements to obtain a reliable estimate of the underlying
 probability distribution. In PyQBench, we assume that the experiment is repeated the same number of
 times for both $\PP_U$ and $\PP_\Id$.
@@ -631,7 +637,7 @@ The result of running the above command can be twofold:
 \end{itemize}
 
 For the synchronous experiment, the part of the output looks similar to the one below. The whole YAML
-file can be seen in Section \ref{app:example} in the supplemental material.
+file can be seen in Section \ref{app:example.} in the supplemental material.
 %Consider the particular experiment data
 \begin{lstlisting}[language=Python]
 data:
