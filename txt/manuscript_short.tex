@@ -230,6 +230,13 @@ allows one to measure quantum volume of a device by using its \texttt{qiskit.ign
 tion.quantum\_volume}. Other implementations of Quantum Volume can be found as well, see e.g.
 \cite{volume-in-practice}.
 
+Finally, we should mention cross-entropy
+benchmarking~\cite{boixo2018characterizing}, which was utlilized in validation
+of the Sycamore-53 QPU supremacy experiments~\cite{arute2019quantum}. In this
+approach, the quality of an algorithm implemented on the QPU is measured by
+calculating the cross entropy of bit-strings actually sampled from the QPU,
+compared to ideal bitstrings.
+
 \section{Preliminaries and discrimination scheme approach}
 
 In this section, we describe how the benchmarking process in PyQBench works. We start by
