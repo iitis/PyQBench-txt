@@ -221,14 +221,34 @@ group) and tests how much the output distribution obtained from the device runni
 differs from the ideal one. It is also common to concatenate randomly chosen circuits with their
 inverses (which should yield the identity circuit) and run those concatenated circuits on the
 device. Libraries implementing this approach include Qiskit \cite{qiskit-randomized} or PyQuil
-\cite{forest-benchmarking}.
+\cite{forest-benchmarking}. Another, equally popular benchmarking method is
+quantum tomography. Such
+Python package using this approach for benchmarking NISQ devices can be found in \cite{tomography}. The theory behind the software could be found in \cite{bantysh2021quantum}.  
+
+
+
+Different authors, Patel et al. \cite{patel2020experimental}  evaluated
+several IBM-Q machines using seven benchmarks regarding the
+error and execution time. Roughly the same time, LaRose \cite{larose2019overview} extended benchmarking methods  comparing up to
+four widely used QC programming environments i.e. PyQuil, Qiskit, Project and QDK/Q$\#$
+in terms of library support, hardware, compiler and simulator performance. 
+ 
+
+
+QASMBench \cite{li2023qasmbench} is  one of the first benchmark suite aiming at evaluating NISQ
+devices using quantum applications from a broad range of domains. Their  approach  is mainly based on fidelity estimation. They analyze and compare the fidelity of executions
+among the IBM-Q machines, the IonQ QPU and the Rigetti Aspen M-1 system.
+
+
 
 Another quantity used for benchmarking NISQ devices is quantum volume. The quantum volume
 characterizes capacity of a device for solving computational problems. It takes into account
 multiple factors like number of qubits, connectivity and measurement errors. The Qiskit library
 allows one to measure quantum volume of a device by using its \texttt{qiskit.ignis.verifica \\
-tion.quantum\_volume}. Other implementations of Quantum Volume can be found as well, see e.g.
+	tion.quantum\_volume}. Other implementations of Quantum Volume can be found as well, see e.g.
 \cite{volume-in-practice}.
+
+ 
 
 Finally, we should mention cross-entropy
 benchmarking~\cite{boixo2018characterizing}, which was utlilized in validation
