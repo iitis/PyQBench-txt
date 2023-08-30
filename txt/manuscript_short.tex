@@ -221,21 +221,35 @@ group) and tests how much the output distribution obtained from the device runni
 differs from the ideal one. It is also common to concatenate randomly chosen circuits with their
 inverses (which should yield the identity circuit) and run those concatenated circuits on the
 device. Libraries implementing this approach include Qiskit \cite{qiskit-randomized} or PyQuil
-\cite{forest-benchmarking}.
+\cite{forest-benchmarking}. Another, equally popular, benchmarking method is
+quantum tomography \cite{bantysh2021quantum}. Implementation of quantum tomography for
+benchmarking NISQ devices can be found in \cite{tomography}.
+
+In \cite{patel2020experimental}, the authors evaluated several IBM-Q machines using seven benchmarks
+taking into account the errors and execution time.
+
+QASMBench \cite{li2023qasmbench} is one of the first benchmark suites aiming at evaluating NISQ
+devices using quantum applications from a broad range of domains, mainly using an approach based on
+fidelity estimation. The benchmark presented in the paper compares the fidelity of execution among
+the IBM-Q machines, the IonQ QPU and the Rigetti Aspen M-1 system.
 
 Another quantity used for benchmarking NISQ devices is quantum volume. The quantum volume
-characterizes capacity of a device for solving computational problems. It takes into account
-multiple factors like number of qubits, connectivity and measurement errors. The Qiskit library
-allows one to measure quantum volume of a device by using its \texttt{qiskit.ignis.verifica \\
-tion.quantum\_volume}. Other implementations of Quantum Volume can be found as well, see e.g.
+characterizes the capacity of a device for solving computational problems. It takes into account
+multiple factors like the number of qubits, connectivity and measurement errors. The Qiskit library
+allows one to measure the quantum volume of a device by using its \texttt{qiskit.ignis.verification.quantum\_volume}. Other implementations of Quantum Volume can be found as well, see e.g.
 \cite{volume-in-practice}.
 
-Finally, we should mention cross-entropy
+We should also mention cross-entropy
 benchmarking~\cite{boixo2018characterizing}, which was utlilized in validation
 of the Sycamore-53 QPU supremacy experiments~\cite{arute2019quantum}. In this
 approach, the quality of an algorithm implemented on the QPU is measured by
 calculating the cross entropy of bit-strings actually sampled from the QPU,
 compared to ideal bitstrings.
+
+Finally, it is worth pointing out there is an ongoing effort towards standardization
+of benchmarking of quantum computers. In \cite{standardization}, the authors present
+plans for designing a benchmarking suite based on measuring a set of standardized
+key performance indicators (KPIs).
 
 \section{Preliminaries and discrimination scheme approach}
 
