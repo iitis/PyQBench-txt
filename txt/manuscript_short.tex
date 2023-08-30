@@ -239,14 +239,17 @@ multiple factors like the number of qubits, connectivity and measurement errors.
 allows one to measure the quantum volume of a device by using its \texttt{qiskit.ignis.verification.quantum\_volume}. Other implementations of Quantum Volume can be found as well, see e.g.
 \cite{volume-in-practice}.
 
- 
-
-Finally, we should mention cross-entropy
+We should also mention cross-entropy
 benchmarking~\cite{boixo2018characterizing}, which was utlilized in validation
 of the Sycamore-53 QPU supremacy experiments~\cite{arute2019quantum}. In this
 approach, the quality of an algorithm implemented on the QPU is measured by
 calculating the cross entropy of bit-strings actually sampled from the QPU,
 compared to ideal bitstrings.
+
+Finally, it is worth pointing out there is an ongoing effort towards standardization
+of benchmarking of quantum computers. In \cite{standardization}, the authors present
+plans for designing a benchmarking suite based on measuring a set of standardized
+key performance indicators (KPIs).
 
 \section{Preliminaries and discrimination scheme approach}
 
