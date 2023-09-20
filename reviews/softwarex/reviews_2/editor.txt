@@ -1,0 +1,27 @@
+Editor  comments:  
+Your paper is quite a bit over our limit of 3000 words. And I am not sure about your supplementary material - usually it is meant for things other than text.  You might put the supplementary text into your repository and provide a link.
+
+Some of the text - like section 2 - could be put into an appendix.  You provide a lot of text on other work.
+
+As am not an expert, I don't know what is a NISQ device.  After line 1 of the intro, you start reviewing other work.  Can you instead explain what is a NISQ and why it is interesting.  While it is important to reference other work (as in the first paragraph of the paper), I find it provided me no information as a general reader.  Again, maybe it can be more concise (just provide references or reference a review paper)?
+
+450 lines is about 5000 words Try to get down to 3500 words.  You tend to be verbose and could be more terse in your text.
+
+Also there were figures in the figure (with stick men) that were not in the paper.
+
+Specific comments
+- abstract - define NISQ
+
+-4- "solutions, such as .."
+
+-7- "paradigms, for example, D-Wave .."
+
+-10- "interface their devices."
+
+-22- "several approaches such as randomized .."
+
+-23- "that are based .."
+
+(I stopped fixing the language after the first section - please review the rest of the paper)
+
+Section 2 - make it an appendix.
