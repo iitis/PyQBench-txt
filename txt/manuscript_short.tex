@@ -171,15 +171,14 @@ Noisy Intermediate-Scale Quantum (NISQ)~\cite{preskill} devices are storming the
 selection of devices based on different architectures and accompanying software solutions. Among
 hardware providers offering public access to their gate--based devices, one could mention Rigetti
 \cite{rigetti}, IBM \cite{ibmq}, Oxford Quantum Group \cite{oxforf}, IonQ \cite{ionq} or Xanadu
-\cite{xanadu}. Other vendors offer devices operating in different paradigms. Notably, one could
-mention D-Wave \cite{dwave} and their quantum annealers, or QuEra devices \cite{quera} based on
-neural atoms. Most vendors provide their own software stack and application programming interface
-for accessing their devices. To name a few, Rigetti's computers are available through their Forest
+\cite{xanadu}. Other vendors offer devices operating in different paradigms. e.g.  D-Wave \cite{dwave}
+and their quantum annealers, or QuEra devices \cite{quera} based on neural atoms. Most vendors provide their own
+software stack for interacting with their devices. Rigetti's computers are available through Forest
 SDK \cite{sdk} and PyQuil library \cite{pyquil} and IBM Q \cite{ibmq} computers can be accessed
-through Qiskit \cite{qiskit} or IBM Quantum Experience web interface \cite{ibmqplatform}. Some cloud
-services, like Amazon Braket \cite{amazon}, offer access to several quantum devices under a unified
-API. On top of that, several libraries and frameworks can integrate with multiple hardware vendors.
-Examples of such frameworks include IBM Q's Qiskit, Zapata Computing's Orquestra \cite{zapata}, XACC \cite{xacc} and NVIDIA's CUDA Quantum \cite{cudaquantum}.
+through Qiskit \cite{qiskit} or IBM Quantum Experience web interface \cite{ibmqplatform}. Amazon Braket
+\cite{amazon} offers access to several quantum devices under a unified API. There are also several
+libraries able to integrate with multiple hardware vendors. Examples include IBM Q's Qiskit, Zapata Computing's
+Orquestra \cite{zapata}, XACC \cite{xacc} and NVIDIA's CUDA Quantum \cite{cudaquantum}.
 
 It is well known that NISQ devices have their limitations \cite{preskillnew}. The question is to
 what extent those devices can perform meaningful computations? To answer this question, one has to
@@ -187,85 +186,31 @@ devise a methodology for benchmarking them. For gate--based computers, on which 
 there already exist several approaches. One could mention randomized benchmarking
 \cite{liu2022sampling, knill2008randomized, wallman2014randomized, helsen2022general,
 cornelissen2021scalable}, benchmarks based on the quantum volume \cite{cross2019validating,
-moll2018quantum, pelofske2022volume}.
+moll2018quantum, pelofske2022volume} or quantum tomography \cite{bantysh2021quantum}.
 
 In this paper, we introduce a different approach to benchmarking gate--based devices with a simple
-operational interpretation. In our method, we test how well the given device is at guessing which of
+operational interpretation. In our method, we test how good the given device is at guessing which of
 the two known von Neumann measurements were performed during the experiment. We implemented our
-approach in an open-source Python library called PyQBench. The library supports any device available
-through the Qiskit library, and thus can be used with providers such as IBM Q or Amazon Braket.
-Along with the library, the PyQBench package contains a command line tool for running most common
+approach in an open-source Python library PyQBench. The library supports any device available
+through the Qiskit library, including all  IBM Q or Amazon Braket.
+Along with the library, the PyQBench package contains a command line tool for running the most common
 benchmarking scenarios.
-
-\section{Existing benchmarking methodologies and software}
-Unsurprisingly, PyQBench is not the only software package for benchmarking gate--based devices.
-While we believe that our approach has significant benefits over other benchmarking techniques, for
-completeness, in this section we discuss some of the currently available similar software.
-
-Probably the simplest benchmarking method one could devise is simply running known algorithms and
-comparing outputs with the expected ones. Analyzing the frequency of the correct outputs, or the
-deviation between actual and expected outputs distribution provides then a metric of the performance
-of a given device. Libraries such as Munich Quantum Toolkit (MQT) \cite{mqt2022, mqt-bench} or
-SupermarQ \cite{supermarq, supermarkq-github} contain benchmarks leveraging multiple algorithms,
-such as Shor's algorithm or Grover's algorithm.
-% or  implementing e.g. GHZ state \cite{ghz}.
-Despite being intuitive and easily interpretable, such benchmarks may have some problems. Most
-importantly, they assess the usefulness of a quantum device only for a very particular algorithm,
-and it might be hard to extrapolate their results to other algorithms and applications. For
-instance, the inability of a device to consistently find factorizations using Shor's algorithms does
-not tell anything about its usefulness in Variational Quantum Algorithm's.
-
-Another possible approach to benchmarking quantum computers is randomized benchmarking. In this
-approach, one samples circuits to be run from some predefined set of gates (e.g. from the Clifford
-group) and tests how much the output distribution obtained from the device running these circuits
-differs from the ideal one. It is also common to concatenate randomly chosen circuits with their
-inverses (which should yield the identity circuit) and run those concatenated circuits on the
-device. Libraries implementing this approach include Qiskit \cite{qiskit-randomized} or PyQuil
-\cite{forest-benchmarking}. Another, equally popular, benchmarking method is
-quantum tomography \cite{bantysh2021quantum}. Implementation of quantum tomography for
-benchmarking NISQ devices can be found in \cite{tomography}.
-
-In \cite{patel2020experimental}, the authors evaluated several IBM-Q machines using seven benchmarks
-taking into account the errors and execution time.
-
-QASMBench \cite{li2023qasmbench} is one of the first benchmark suites aiming at evaluating NISQ
-devices using quantum applications from a broad range of domains, mainly using an approach based on
-fidelity estimation. The benchmark presented in the paper compares the fidelity of execution among
-the IBM-Q machines, the IonQ QPU and the Rigetti Aspen M-1 system.
-
-Another quantity used for benchmarking NISQ devices is quantum volume. The quantum volume
-characterizes the capacity of a device for solving computational problems. It takes into account
-multiple factors like the number of qubits, connectivity and measurement errors. The Qiskit library
-allows one to measure the quantum volume of a device by using its \texttt{qiskit.ignis.verification.quantum\_volume}. Other implementations of Quantum Volume can be found as well, see e.g.
-\cite{volume-in-practice}.
-
-We should also mention cross-entropy
-benchmarking~\cite{boixo2018characterizing}, which was utlilized in validation
-of the Sycamore-53 QPU supremacy experiments~\cite{arute2019quantum}. In this
-approach, the quality of an algorithm implemented on the QPU is measured by
-calculating the cross entropy of bit-strings actually sampled from the QPU,
-compared to ideal bitstrings.
-
-Finally, it is worth pointing out there is an ongoing effort towards standardization
-of benchmarking of quantum computers. In \cite{standardization}, the authors present
-plans for designing a benchmarking suite based on measuring a set of standardized
-key performance indicators (KPIs).
 
 \section{Preliminaries and discrimination scheme approach}
 
 In this section, we describe how the benchmarking process in PyQBench works. We start by
 discussing necessary mathematical preliminaries. Then, we present the general form of the
-discrimination scheme used in PyQBench and practical considerations on how to implement it taking
-into account the limitations of the current NISQ devices. We encourage the readers interested
-in a more in--depth discussion of the mathematical foundations behind our discrimination scheme to read
-Section \ref{app:preliminaries} in the supplemental materials.
+discrimination scheme used in PyQBench and discuss it in the context of current, limited NISQ devices.
+We refer readers interested in more details concerning the mathematical foundations behind PyQBench to Section
+\ref{app:preliminaries} in the supplementary material.
+
 
 \subsection{Von Neumann Measurements}\label{sec:maths}
 
 A von Neumann measurement $\PP$ is a collection of rank--one projectors
-$\{\proj{u_0}, \ldots, \proj{u_{d-1}}\}$, called effects, that sum up to the identity operator, i.e.
+$\{\proj{u_0}, \ldots, \proj{u_{d-1}}\}$ that sum up to the identity operator, i.e.
 $ \, \, \sum_{i=0}^{d-1} \proj{u_i} = \1$. If $U$ is a unitary matrix of size $d$, one can construct
-a von Neumann measurement $\PP_{U}$ by taking projectors onto its columns. In this case we say that
+a von Neumann measurement $\PP_{U}$ by taking projectors onto its columns. In this case, we say that
 $\PP_{U}$ is described by the matrix $U$.
 
 Typically, NISQ devices can only perform measurements in computational $Z$-basis, i.e. $U=\1$. To
@@ -293,21 +238,21 @@ ideal, theoretical predictions.
 Without loss of generality\footnote{Explaining why we can consider only discrimination scheme
 between $\PP_{\Id}$ and $\PP_{U}$ is beyond the scope of this paper. See
 \cite{puchala2018strategies} for a in depth explanation.}, we consider discrimination task between
-single qubit measurements $\PP_\Id$, performed in the computational Z-basis, and an alternative
+single qubit measurements $\PP_\Id$, performed in the Z-basis, and an alternative
 measurement $\PP_U$ performed in the basis $U$. 
-The discrimination scheme presented in Fig.~\ref{fig:theoretical_scheme} requires an
+The scheme presented in Fig.~\ref{fig:theoretical_scheme} requires an
 auxiliary qubit. First, the joint system is prepared in some state $\ket{\psi_0}$. Then, one of the
 measurements, either $\PP_U$ or $\PP_\1$, is performed on the first part of the system. Based on its
 outcome $i$, we choose another binary measurement $\mathcal{P}_{V_i}$ and perform it on the second qubit,
 obtaining the outcome $j$. Finally, if $j=0$, we say that the performed measurement is
 $\mathcal{P}_U$, otherwise we say that it was $\mathcal{P}_\Id$. 
 
-Note, however, that the discrimination scheme described above can work regardless of dimensionality 
+Note, however, that the discrimination scheme described above can work regardless of the dimensionality
 of the unitary $U$. The main difference is the dimension of the auxiliary system, which in general
 can be larger than two. This dimension depends on the Schmidt rank of the optimal input state. However, 
-for most discrimination schemes, the  Schmidt rank equals at most two, and hence the auxiliary system
+for most discrimination schemes, the  Schmidt rank equals at most two, and the auxiliary system
 is also a qubit, see \cite{puchala2018strategies} for details. Note that the final measurement $\PP_{V_i}$ 
-is always binary, independently of the dimension of auxiliary system.
+is always binary, independently of the dimension of the auxiliary system.
 
 Naturally, we need to repeat the
 same procedure multiple times for both measurements to obtain a reliable estimate of the underlying
@@ -336,17 +281,16 @@ results will be less pronounced.
 \subsubsection{Implementation of discrimination scheme on actual NISQ devices}
 
 Current NISQ devices are unable to perform conditional measurements, which is the biggest obstacle
-to implementing our scheme on real hardware. However, we circumvent this problem by slightly
-adjusting our scheme so that it only uses components available on current devices. For this purpose,
-we use two possible options: using a postselection or a direct sum $V_0^\dagger\oplus V_1^\dagger$.
+to implementing our scheme on real hardware. We circumvent this problem by slightly
+adjusting our scheme to only use components available on current devices. There are two possible options: using a postselection or a direct sum $V_0^\dagger\oplus V_1^\dagger$.
 
 \begin{scheme}(Postselection)
 
 	The first idea uses a postselection scheme. In the original scheme, we measure the first qubit
-	and only then determine which measurement should be performed on the second one. Instead of doing
-	this choice, we can run two circuits, one with $\PP_{V_0}$ and one with $\PP_{V_1}$ and measure both
-	qubits. We then discard the results of the circuit for which label $i$ does not match measurement
-	label $k$. Hence, the circuit for postselection looks as depicted in Fig.
+	and only then determine which measurement should be performed on the second one. Instead, we can
+	run two circuits, one with $\PP_{V_0}$ and one with $\PP_{V_1}$ and measure both
+	qubits. We can then discard the results of the circuit for which label $i$ does not match measurement
+	label $k$. The circuit for postselection looks as depicted in Fig.
 	\ref{fig:postselection}.
 
 	\begin{figure}[h!]
@@ -413,7 +357,7 @@ presented in Fig.~\ref{fig:controlled}.
 	we can see that the direct sum in Eq. \eqref{eq:directsum} commutes with the measurement on the
 	first qubit. Thanks to this, we can switch the order of operations to obtain the circuit from
 	Fig. \ref{fig:directsum}. Now, depending on the outcome $i$, one of the summands in
-	Eq. \eqref{eq:directsum} vanishes, and we end up performing exactly the same operations as in
+	Eq. \eqref{eq:directsum} vanishes, and we end up performing the same operations as in
 	the original scheme.
 
 	\begin{figure}[h!]
@@ -439,7 +383,7 @@ presented in Fig.~\ref{fig:controlled}.
 	where $N_{\text{total}}$ is the number of trials.
 \end{scheme}
 
-Compared to these approaches, our approach allows for a very simple operational
+Compared to other approaches, our approach allows for a very simple operational
 interpretation of the scheme and its results. This is especially useful for
 newcomers to the field, who may be put off by more complicated approaches.
 Another benefit is, especially for advanced users, the ability to control
@@ -485,7 +429,7 @@ the following functionalities.
 	software simulator).
 	\item Interpreting the obtained outputs in terms of discrimination probabilities.
 \end{enumerate}
-Note that the execution of circuits by PyQBench is optional. Instead, the user might want to opt in
+Note that the execution of circuits by PyQBench is optional. The user might opt-in
 for fine-grained control over the execution of the circuits. For instance, suppose the user wants to
 simulate the discrimination experiment on a noisy simulator. In such a case, they can define the
 necessary components and assemble the circuits using PyQBench. The circuits can then be altered,
@@ -496,18 +440,15 @@ The PyQBench library also contains a readily available implementation of all nec
 needed to run discrimination experiments for parametrized Fourier family of measurements (see
 Section \ref{app:optimal-probability} in supplemental material). However, if one only wishes to use
 this particular family of measurements in their benchmarks, then using PyQBench as a command line tool
-might be more straightforward. PyQBench's command line interface allows running the benchmarking process
-without writing Python code. The configuration of CLI is done by YAML \cite{yaml} files describing the
-benchmark to be performed and the description of the backend on which the benchmark should be run.
-The same benchmark can be used with different backends and vice versa.
+is a more straightforward way. The PyQBench's CLI does not require writing Python code and is driven
+by YAML \cite{yaml} files describing the benchmark to be performed and the description of the backend on which the benchmark should be run. The same benchmark can be used with different backends and vice versa.
 
 \subsection{Software Architecture}\label{sec:sortware-architecture}
 
 \subsubsection{Overview of the software structure}
-As already described, PyQBench can be used both as a library and a CLI. Both functionalities are
+PyQBench can be used both as a library and a CLI. Both functionalities are
 implemented as a part of \texttt{qbench} Python package. The exposed CLI tool is also named
-\texttt{qbench}. For brevity, we do not discuss the exact structure of the package here, and instead limit ourselves to summarizing the architecture on the diagram in Fig. \ref{fig:architecture}. For further details, we refer an interested reader to the source code available at GitHub \cite{pyqbenchgithub} or at the
-reference manual \cite{pyqbenchdocs}.
+\texttt{qbench}. For brevity, we limit ourselves here to summarizing the architecture on the diagram in Fig. \ref{fig:architecture}. For further details, we refer an interested reader to the source code available at GitHub \cite{pyqbenchgithub} or at the reference manual \cite{pyqbenchdocs}.
 
 \begin{figure}
   \includegraphics[width=\textwidth]{pics/architecture.pdf}
@@ -515,8 +456,8 @@ reference manual \cite{pyqbenchdocs}.
   \label{fig:architecture}
 \end{figure}
 
-PyQBench can be installed from official Python Package Index (PyPI) by running \texttt{pip install
-pyqbench}. In a properly configured Python environment the installation process should also make the
+PyQBench can be installed from the official Python Package Index (PyPI) by running \texttt{pip install
+pyqbench}. In a properly configured Python environment, the installation process should also make the
 \texttt{qbench} command available to the user without a need for further configuration.
 
 \subsubsection{Integration with hardware providers and software simulators}
@@ -527,15 +468,15 @@ PyQBench is built around the Qiskit \cite{qiskit} ecosystem. Hence, both the CLI
 \texttt{qiskit-braket-provider} package \cite{qiskit-braket-provider,
 qiskit-braket-provider-github}).
 
-When using PyQBench as library, instances of Qiskit backends can be passed to functions that expect
-them as parameters. However, in CLI mode, the user has to provide a YAML file describing the
-backend. An example of such file can be found in Section \ref{sec:examples}, and the detailed
-description of the expected format can be found at PyQBench's documentation.
+When using PyQBench as a library, instances of Qiskit backends can be passed to functions that expect
+them as parameters. In CLI mode, the user has to provide a YAML file describing the
+backend. An example of such a file can be found in Section \ref{sec:examples}, and the detailed
+description of the expected format can be found in  PyQBench's documentation.
 
 \subsubsection{Command Line Interface}
 \label{sec:cli}
 
-The Command Line Interface (CLI) of PyQBench has nested structure. The general form of the CLI
+The Command Line Interface (CLI) of PyQBench has a nested structure. The general form of the CLI
 invocation is shown in listing \ref{lst:cli}.
 \begin{lstlisting}[caption=Invocation of \texttt{qbench} script, label=lst:cli]
 qbench <benchmark-type> <command> <parameters>
@@ -590,7 +531,6 @@ process, and to the Section \ref{app:hadamard} in the supplemental material, whe
 the relevant mathematical details.
 
 \subsection{Using \texttt{qbench} CLI}
-PyQBench offers a simplified way of conducting benchmarks using a Command Line Interface (CLI).
 The workflow with PyQBench's CLI can be summarized as the following list of steps:
 
 \begin{enumerate}
@@ -603,10 +543,10 @@ The workflow with PyQBench's CLI can be summarized as the following list of step
 \end{enumerate}
 \subsubsection{Preparing configuration files}
 The configuration of PyQBench CLI is driven by YAML files. The first configuration file describes
-the experiment scenario to be executed. The second file describes the backend. Typically, this
+the experiment scenari. The second file describes the backend. Typically, this
 backend will correspond to the physical device to be benchmarked, but for testing purposes, one
-might as well use any other Qiskit--compatible backend including simulators. Let us first describe
-the experiment configuration file, which might look as follow.
+might as well use any other Qiskit--compatible backend including simulators. The experiment configuration
+file, which might look as follows.
 \begin{lstlisting}[language=Python, caption=Defining the experiment, label=lst:experiment]
 type: discrimination-fourier
 qubits:
@@ -624,7 +564,7 @@ num_shots: 100
 \end{lstlisting}
 
 The second configuration file describes the backend. We decided to decouple the experiment and the
-backend files because it facilitates their reuse. For instance, the same experiment file can be used
+backend files because it facilitates their reuse. The same experiment file can be used
 to run benchmarks on multiple backends, and the same backend description file can be used with
 multiple experiments.
 
@@ -645,7 +585,7 @@ to store it in plain text, the token has to be configured separately in \texttt{
 environmental variable.
 
 \subsubsection{Running the experiment and collecting measurements data}
-After preparing YAML files defining experiment and backend,
+After preparing YAML files defining an experiment and backend,
 running the benchmark can be launched by using the following command line invocation:
 \begin{lstlisting}[language=Python]
 qbench disc-fourier benchmark experiment_file.yml backend_file.yml
@@ -696,7 +636,7 @@ qbench disc-fourier resolve async-results.yml resolved.yml
 \end{lstlisting}
 The resolved results, stored in \texttt{resolved.yml}, would look just like if the experiment was
 run synchronously. Therefore, the final results will look the same no matter in which mode the
-benchmark was run, and hence in both cases the final output file is suitable for being an input for
+benchmark was run, and hence in both cases, the final output file is suitable for being an input for
 the command computing the discrimination probabilities.
 
 \subsubsection{Computing probabilities}
@@ -740,14 +680,13 @@ A sample CSV file is provided in Table \ref{fig:tabulateresults}.
 
 \section{Impact}
 With the surge of availability of quantum computing architectures in recent years it becomes
-increasingly difficult to keep track of their relative performance. To make this case even more
-difficult, various providers give access to different figures of merit for their architectures. Our
+increasingly difficult to keep track of their relative performance. Moreover, various providers give access to different figures of merit for their architectures. Our
 package allows the user to test various architectures, available through \texttt{qiskit} and Amazon
 BraKet using problems with simple operational interpretation. We provide one example built-in in the
 package. Furthermore, we provide a powerful tool for the users to extend the range of available
 problems in a way that suits their needs.
 
-Due to this possibility of extension, the users are able to test specific aspects of their
+Due to this possibility of extension, the users can test specific aspects of their
 architecture of interest. For example, if their problem is related to the amount of coherence (the
 sum of absolute value of off-diagonal elements) of the states present during computation, they are
 able to quickly prepare a custom experiment, launch it on desired architectures, gather the result,

@@ -88,6 +88,60 @@
 
 \end{frontmatter}
 
+\section{Existing benchmarking methodologies and software}
+Unsurprisingly, PyQBench is not the only software package for benchmarking gate--based devices.
+While we believe that our approach has significant benefits over other benchmarking techniques, for
+completeness, in this section we discuss some of the currently available similar software.
+
+Probably the simplest benchmarking method one could devise is simply running known algorithms and
+comparing outputs with the expected ones. Analyzing the frequency of the correct outputs, or the
+deviation between actual and expected outputs distribution provides then a metric of the performance
+of a given device. Libraries such as Munich Quantum Toolkit (MQT) \cite{mqt2022, mqt-bench} or
+SupermarQ \cite{supermarq, supermarkq-github} contain benchmarks leveraging multiple algorithms,
+such as Shor's algorithm or Grover's algorithm.
+% or  implementing e.g. GHZ state \cite{ghz}.
+Despite being intuitive and easily interpretable, such benchmarks may have some problems. Most
+importantly, they assess the usefulness of a quantum device only for a very particular algorithm,
+and it might be hard to extrapolate their results to other algorithms and applications. For
+instance, the inability of a device to consistently find factorizations using Shor's algorithms does
+not tell anything about its usefulness in Variational Quantum Algorithm's.
+
+Another possible approach to benchmarking quantum computers is randomized benchmarking. In this
+approach, one samples circuits to be run from some predefined set of gates (e.g. from the Clifford
+group) and tests how much the output distribution obtained from the device running these circuits
+differs from the ideal one. It is also common to concatenate randomly chosen circuits with their
+inverses (which should yield the identity circuit) and run those concatenated circuits on the
+device. Libraries implementing this approach include Qiskit \cite{qiskit-randomized} or PyQuil
+\cite{forest-benchmarking}. Another, equally popular, benchmarking method is
+quantum tomography \cite{bantysh2021quantum}. Implementation of quantum tomography for
+benchmarking NISQ devices can be found in \cite{tomography}.
+
+In \cite{patel2020experimental}, the authors evaluated several IBM-Q machines using seven benchmarks
+taking into account the errors and execution time.
+
+QASMBench \cite{li2023qasmbench} is one of the first benchmark suites aiming at evaluating NISQ
+devices using quantum applications from a broad range of domains, mainly using an approach based on
+fidelity estimation. The benchmark presented in the paper compares the fidelity of execution among
+the IBM-Q machines, the IonQ QPU and the Rigetti Aspen M-1 system.
+
+Another quantity used for benchmarking NISQ devices is quantum volume. The quantum volume
+characterizes the capacity of a device for solving computational problems. It takes into account
+multiple factors like the number of qubits, connectivity and measurement errors. The Qiskit library
+allows one to measure the quantum volume of a device by using its \texttt{qiskit.ignis.verification.quantum\_volume}. Other implementations of Quantum Volume can be found as well, see e.g.
+\cite{volume-in-practice}.
+
+We should also mention cross-entropy
+benchmarking~\cite{boixo2018characterizing}, which was utlilized in validation
+of the Sycamore-53 QPU supremacy experiments~\cite{arute2019quantum}. In this
+approach, the quality of an algorithm implemented on the QPU is measured by
+calculating the cross entropy of bit-strings actually sampled from the QPU,
+compared to ideal bitstrings.
+
+Finally, it is worth pointing out there is an ongoing effort towards standardization
+of benchmarking of quantum computers. In \cite{standardization}, the authors present
+plans for designing a benchmarking suite based on measuring a set of standardized
+key performance indicators (KPIs).
+
 \section{Mathematical preliminaries} \label{app:preliminaries}
 Let $\mathcal{M}_{d_1,d_2}$ be the set of all matrices of dimension $d_1 \times d_2$ over
 the field $\mathbb{C}$. For  simplicity, square matrices will be denoted by
