@@ -167,7 +167,7 @@ C9 & Support email for questions & \url{dexter2206@gmail.com}\\
 
 \section{Motivation and significance}
 
-Noisy Intermediate-Scale Quantum (NISQ)~\cite{preskill} devices are storming the market, with a wide
+Quantum devices are storming the market, with a wide
 selection of devices based on different architectures and accompanying software solutions. Among
 hardware providers offering public access to their gate--based devices, one could mention Rigetti
 \cite{rigetti}, IBM \cite{ibmq}, Oxford Quantum Group \cite{oxforf}, IonQ \cite{ionq} or Xanadu
@@ -181,8 +181,8 @@ services, like Amazon Braket \cite{amazon}, offer access to several quantum devi
 API. On top of that, several libraries and frameworks can integrate with multiple hardware vendors.
 Examples of such frameworks include IBM Q's Qiskit, Zapata Computing's Orquestra \cite{zapata}, XACC \cite{xacc} and NVIDIA's CUDA Quantum \cite{cudaquantum}.
 
-It is well known that NISQ devices have their limitations \cite{preskillnew}. The question is to
-what extent those devices can perform meaningful computations? To answer this question, one has to
+All of the currently available quantum computers have to be classified as NISQ, or Noisy Intermediate-Scale
+Quantum devices. The term NISQ denotes quantum computers of an intermediate size expected in the next few years, typically comprising 50 to a few hundred qubits. The significance of reaching 50 qubits lies in surpassing the simulation capabilities of current digital supercomputers. The term 'Noisy' underscores the imperfect control over qubits, with noise imposing substantial limitations on the achievable outcomes of quantum devices in the short term \cite{preskill,preskillnew}. The question is to what extent those devices can perform meaningful computations? To answer this question, one has to
 devise a methodology for benchmarking them. For gate--based computers, on which this paper focuses,
 there already exist several approaches. One could mention randomized benchmarking
 \cite{liu2022sampling, knill2008randomized, wallman2014randomized, helsen2022general,
